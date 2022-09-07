@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Home Workout</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="exercise_gif">EXERCISE GIF</string>
+    <string name="add_your_weight">ADD YOUR WEIGHT</string>
+    <string name="workout">workout</string>
+    <string name="schedule">schedule</string>
+    <string name="progress">progress</string>
+    <string name="previous"><![CDATA[< previous]]></string>
+    <string name="complete">complete</string>
+    <string name="skip"><![CDATA[skip >]]></string>
+    <string name="start">start</string>
 </resources>
