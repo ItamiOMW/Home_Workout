@@ -5,21 +5,59 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.homeworkout.R
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.example.homeworkout.databinding.FragmentChooseWorkoutBinding
+import com.example.homeworkout.presentation.adapters.workouts_adapter.WorkoutAdapter
+import javax.inject.Inject
 
 
 class ChooseWorkoutFragment : Fragment() {
 
+    private var _binding: FragmentChooseWorkoutBinding? = null
+    private val binding: FragmentChooseWorkoutBinding
+        get() = _binding ?: throw RuntimeException("FragmentChooseWorkoutBinding is null")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
+
+    @Inject
+    lateinit var workoutAdapter: WorkoutAdapter
+
+    private lateinit var viewModel: ChooseWorkoutViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_choose_workout, container, false)
+    ): View {
+        _binding = FragmentChooseWorkoutBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this)[ChooseWorkoutViewModel::class.java]
+        setupRV()
+    }
+
+    private fun setupRV() {
+        binding.rvTrainings.adapter = workoutAdapter
+        viewModel.workoutList.observe(viewLifecycleOwner) {
+            workoutAdapter.submitList(it)
+        }
+        workoutAdapter.onItemClicked = {
+            //GO TO THE DETAIL WORKOUT SCREEN
+            findNavController().navigate(
+                ChooseWorkoutFragmentDirections.actionChooseWorkoutFragmentToWorkout(
+                    it,
+                    null
+                )
+            )
+        }
+        workoutAdapter.onItemLongClicked = {
+            //TODO SHOW NAVIGATION DIALOG TO DETAIL OR CALENDAR SCREENS
+        }
     }
 
 

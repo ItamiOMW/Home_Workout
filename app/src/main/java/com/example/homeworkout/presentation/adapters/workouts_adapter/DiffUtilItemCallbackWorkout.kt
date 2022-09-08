@@ -1,4 +1,4 @@
-package com.example.homeworkout.presentation.screens.adapters.workouts_adapter
+package com.example.homeworkout.presentation.adapters.workouts_adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.homeworkout.domain.models.WorkoutModel
