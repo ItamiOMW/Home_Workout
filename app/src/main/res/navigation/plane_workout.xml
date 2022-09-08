@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/plane_workout"
+    app:startDestination="@id/planeWorkoutFragment">
+
+    <fragment
+        android:id="@+id/planeWorkoutFragment"
+        android:name="com.example.homeworkout.presentation.screens.plane_workout_screen.PlaneWorkoutFragment"
+        android:label="fragment_plane_workout"
+        tools:layout="@layout/fragment_plane_workout" >
+        <action
+            android:id="@+id/action_planeWorkoutFragment_to_workout"
+            app:destination="@id/workout">
+            <argument
+                android:name="workoutModel"
+                app:argType="com.example.homeworkout.domain.models.WorkoutModel" />
+            <argument
+                android:name="plannedWorkoutModel"
+                app:argType="com.example.homeworkout.domain.models.PlannedWorkoutModel"
+                app:nullable="true" />
+        </action>
+        <argument
+            android:name="date"
+            app:argType="string" />
+    </fragment>
+    <include app:graph="@navigation/workout" />
+</navigation>
