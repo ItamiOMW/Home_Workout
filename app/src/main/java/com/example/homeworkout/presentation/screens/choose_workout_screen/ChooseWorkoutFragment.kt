@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.homeworkout.AppWorkout
 import com.example.homeworkout.databinding.FragmentChooseWorkoutBinding
 import com.example.homeworkout.presentation.adapters.workouts_adapter.WorkoutAdapter
+import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
 import javax.inject.Inject
 
 
@@ -18,9 +20,17 @@ class ChooseWorkoutFragment : Fragment() {
     private val binding: FragmentChooseWorkoutBinding
         get() = _binding ?: throw RuntimeException("FragmentChooseWorkoutBinding is null")
 
+    private val component by lazy {
+        (requireActivity().application as AppWorkout).component
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        component.inject(this)
         super.onCreate(savedInstanceState)
     }
+
+    @Inject
+    lateinit var viewModelFactory: WorkoutViewModelFactory
 
     @Inject
     lateinit var workoutAdapter: WorkoutAdapter
@@ -37,7 +47,7 @@ class ChooseWorkoutFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[ChooseWorkoutViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[ChooseWorkoutViewModel::class.java]
         setupRV()
     }
 
