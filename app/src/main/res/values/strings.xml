@@ -11,4 +11,6 @@
     <string name="complete">complete</string>
     <string name="skip"><![CDATA[skip >]]></string>
     <string name="start">start</string>
+    <string name="completed">completed</string>
+    <string name="empty"> </string>
 </resources>
