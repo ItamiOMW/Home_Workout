@@ -6,8 +6,9 @@ import com.example.homeworkout.data.database.db_models.WorkoutDbModel
 import com.example.homeworkout.domain.models.ExerciseModel
 import com.example.homeworkout.domain.models.PlannedWorkoutModel
 import com.example.homeworkout.domain.models.WorkoutModel
+import javax.inject.Inject
 
-class WorkoutMapper {
+class WorkoutMapper @Inject constructor() {
 
     fun mapWorkoutDbToWorkoutEntity(model: WorkoutDbModel) = WorkoutModel(
         id = model.id,

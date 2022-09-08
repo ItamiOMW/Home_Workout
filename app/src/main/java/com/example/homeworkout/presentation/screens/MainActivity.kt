@@ -1,4 +1,4 @@
-package com.example.homeworkout.presentation
+package com.example.homeworkout.presentation.screens
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
