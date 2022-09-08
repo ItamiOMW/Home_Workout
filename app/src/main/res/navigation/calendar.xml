@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/calendar"
+    app:startDestination="@id/calendarFragment">
+
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.example.homeworkout.presentation.screens.calendar_screen.CalendarFragment"
+        android:label="fragment_calendar"
+        tools:layout="@layout/fragment_calendar">
+        <action
+            android:id="@+id/action_calendarFragment_to_workout"
+            app:destination="@id/workout">
+            <argument
+                android:name="workoutModel"
+                app:argType="com.example.homeworkout.domain.models.WorkoutModel" />
+            <argument
+                android:name="plannedWorkoutModel"
+                app:argType="com.example.homeworkout.domain.models.PlannedWorkoutModel"
+                app:nullable="true" />
+        </action>
+        <action
+            android:id="@+id/action_calendarFragment_to_plane_workout"
+            app:destination="@id/plane_workout">
+            <argument
+                android:name="date"
+                app:argType="string" />
+        </action>
+    </fragment>
+    <include app:graph="@navigation/workout" />
+    <include app:graph="@navigation/plane_workout" />
+</navigation>

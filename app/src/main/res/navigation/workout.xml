@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/workout"
+    app:startDestination="@id/workoutDetailFragment">
+
+    <fragment
+        android:id="@+id/workoutDetailFragment"
+        android:name="com.example.homeworkout.presentation.screens.workout_detail_screen.WorkoutDetailFragment"
+        android:label="fragment_workout_detail"
+        tools:layout="@layout/fragment_workout_detail" >
+        <action
+            android:id="@+id/action_workoutDetailFragment_to_trainingFragment"
+            app:destination="@id/trainingFragment" />
+        <argument
+            android:name="workoutModel"
+            app:argType="com.example.homeworkout.domain.models.WorkoutModel" />
+        <argument
+            android:name="plannedWorkoutModel"
+            app:argType="com.example.homeworkout.domain.models.PlannedWorkoutModel"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/trainingFragment"
+        android:name="com.example.homeworkout.presentation.screens.training_screen.TrainingFragment"
+        android:label="fragment_training"
+        tools:layout="@layout/fragment_training" >
+        <argument
+            android:name="workoutModel"
+            app:argType="com.example.homeworkout.domain.models.WorkoutModel" />
+        <argument
+            android:name="plannedWorkoutModel"
+            app:argType="com.example.homeworkout.domain.models.PlannedWorkoutModel"
+            app:nullable="true" />
+    </fragment>
+</navigation>
