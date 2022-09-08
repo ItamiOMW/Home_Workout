@@ -1,4 +1,4 @@
-package com.example.homeworkout.presentation.screens.adapters.workouts_adapter
+package com.example.homeworkout.presentation.adapters.workouts_adapter
 
 import android.app.Application
 import android.view.LayoutInflater
