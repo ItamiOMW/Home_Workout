@@ -13,4 +13,7 @@
     <string name="start">start</string>
     <string name="completed">completed</string>
     <string name="empty"> </string>
+    <string name="add_workout">ADD WORKOUT</string>
+    <string name="plane_workout">plane workout</string>
+    <string name="date_format">d-M-yyyy</string>
 </resources>
