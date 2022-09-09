@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.floatingactionbutton.FloatingActionButton xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:layout_gravity="center"
+    android:background="@drawable/round_button"
+    android:contentDescription="@string/add_workout"
+    android:src="@drawable/ic_add">
+
+</com.google.android.material.floatingactionbutton.FloatingActionButton>
