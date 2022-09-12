@@ -17,13 +17,13 @@ class PlaneWorkoutViewModel @Inject constructor(
 
     val workoutList = getAllWorkoutsUseCase.invoke()
 
-    fun planeWorkout(workout: WorkoutModel, date: String) {
+    fun planeWorkout(date: String, workoutModel: WorkoutModel) {
         viewModelScope.launch(Dispatchers.IO) {
             addPlannedWorkoutUseCase.invoke(
                 PlannedWorkoutModel(
                     id = PlannedWorkoutModel.UNKNOWN_ID,
                     date = date,
-                    workoutModel = workout,
+                    workoutModel = workoutModel,
                     isCompleted = PlannedWorkoutModel.UNKNOWN_IF_COMPLETED
                 )
             )
