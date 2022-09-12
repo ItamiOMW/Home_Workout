@@ -16,4 +16,9 @@
     <string name="add_workout">ADD WORKOUT</string>
     <string name="plane_workout">plane workout</string>
     <string name="date_format">d-M-yyyy</string>
+    <string name="workout_icon">workout icon</string>
+    <string name="go_to_detail">GO TO DETAIL</string>
+    <string name="close">CLOSE</string>
+    <string name="plane_workout_caps">PLANE WORKOUT</string>
+    <string name="delete">DELETE</string>
 </resources>

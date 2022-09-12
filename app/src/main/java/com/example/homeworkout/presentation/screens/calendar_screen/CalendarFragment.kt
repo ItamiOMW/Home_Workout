@@ -1,6 +1,9 @@
 package com.example.homeworkout.presentation.screens.calendar_screen
 
+import android.app.Dialog
 import android.os.Bundle
+import android.text.format.DateFormat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +14,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.homeworkout.AppWorkout
+import com.example.homeworkout.R
+import com.example.homeworkout.databinding.CustomActionDialogBinding
 import com.example.homeworkout.databinding.FragmentCalendarBinding
+import com.example.homeworkout.domain.models.PlannedWorkoutModel
+import com.example.homeworkout.domain.models.WorkoutModel
 import com.example.homeworkout.presentation.adapters.planned_workouts_adapter.PlannedWorkoutAdapter
+import com.example.homeworkout.presentation.screens.plane_workout_screen.PlaneWorkoutFragmentDirections
 import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
 import javax.inject.Inject
 
@@ -48,10 +56,15 @@ class CalendarFragment : Fragment() {
         return binding.root
     }
 
+    private lateinit var dialog: Dialog
+
+    private lateinit var plannedWorkoutModel: PlannedWorkoutModel
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory)[CalendarViewModel::class.java]
         setupRV()
+        setupDialog()
         setCalendarDateChangedListener()
         setOnButtonAddClickListener()
     }
@@ -67,11 +80,11 @@ class CalendarFragment : Fragment() {
     }
 
     private fun setCalendarDateChangedListener() {
-        binding.calendar.setOnDateChangeListener(object : CalendarView.OnDateChangeListener {
-            override fun onSelectedDayChange(p0: CalendarView, year: Int, month: Int, day: Int) {
-                viewModel.updateDate(formatDateFromCalendarView(day, month, year))
-            }
-        })
+        binding.calendar.setOnDateChangeListener { p0, year, month, day ->
+            viewModel.updateDate(
+                formatDateFromCalendarView(day, month, year)
+            )
+        }
     }
 
     private fun formatDateFromCalendarView(day: Int, month: Int, year: Int): String {
@@ -94,7 +107,8 @@ class CalendarFragment : Fragment() {
             )
         }
         workoutAdapter.onItemLongClicked = {
-            //TODO SHOW DIALOG SHOULD DELETE OR GO TO THE DETAIL SCREEN
+            updatePlannedWorkoutModel(it)
+            dialog.show()
         }
     }
 
@@ -119,5 +133,53 @@ class CalendarFragment : Fragment() {
 
         })
         itemTouchHelper.attachToRecyclerView(recyclerView)
+    }
+
+    private fun setupDialog() {
+        dialog = Dialog(requireContext())
+        val dialogBinding = CustomActionDialogBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
+        dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        dialog.setCancelable(true)
+        dialog.window?.attributes?.windowAnimations = R.style.window_animation
+        setOnCustomDialogButtonsClickListeners(dialogBinding, dialog)
+
+    }
+
+    private fun setOnCustomDialogButtonsClickListeners(
+        binding: CustomActionDialogBinding,
+        dialog: Dialog
+    ) {
+        with(binding) {
+
+            tvCloseDialog.setOnClickListener {
+                dialog.dismiss()
+            }
+
+            tvRightward.text = getString(R.string.delete)
+            tvRightward.setOnClickListener {
+                viewModel.deletePlannedWorkout(plannedWorkoutModel)
+                dialog.dismiss()
+            }
+
+            tvLeftward.text = getString(R.string.go_to_detail)
+            tvLeftward.setOnClickListener {
+                dialog.dismiss()
+                findNavController().navigate(
+                    PlaneWorkoutFragmentDirections.actionPlaneWorkoutFragmentToWorkout(
+                        plannedWorkoutModel.workoutModel, plannedWorkoutModel
+                    )
+                )
+            }
+
+        }
+    }
+
+    private fun updatePlannedWorkoutModel(plannedWorkoutModel: PlannedWorkoutModel) {
+        this.plannedWorkoutModel = plannedWorkoutModel
     }
 }
