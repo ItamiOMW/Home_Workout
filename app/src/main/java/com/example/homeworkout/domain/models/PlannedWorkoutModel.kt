@@ -12,6 +12,6 @@ data class PlannedWorkoutModel(
 ): Parcelable {
     companion object {
         const val UNKNOWN_ID = 0
-        const val UNKNOWN_IF_COMPLETED = true
+        const val UNKNOWN_IF_COMPLETED = false
     }
 }

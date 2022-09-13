@@ -11,13 +11,13 @@ import javax.inject.Inject
 
 class WorkoutRepositoryImpl @Inject constructor(
     private val dao: WorkoutDao,
-    private val mapper: WorkoutMapper
+    private val mapper: WorkoutMapper,
 ) : WorkoutRepository {
 
-    override fun getPlannedWorkoutsByDate(date: String): LiveData<List<PlannedWorkoutModel>> =
-        Transformations.map(dao.getPlannedWorkoutsByDate(date)) {
-            it.map { mapper.mapPlannedWorkoutDbToEntity(it) }
-        }
+    override suspend fun getPlannedWorkoutsByDate(date: String): List<PlannedWorkoutModel> {
+        return dao.getPlannedWorkoutsByDate(date).map { mapper.mapPlannedWorkoutDbToEntity(it) }
+    }
+
 
     override suspend fun addPlannedWorkout(plannedWorkoutModel: PlannedWorkoutModel) {
         dao.addPlannedWorkout(mapper.mapPlannedWorkoutEntityToDb(plannedWorkoutModel))
