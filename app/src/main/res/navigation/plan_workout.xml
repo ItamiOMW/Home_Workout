@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/plan_workout"
-    app:startDestination="@id/planWorkoutFragment">
+    app:startDestination="@id/planWorkoutFragment"
+    >
 
     <fragment
         android:id="@+id/planWorkoutFragment"
@@ -12,7 +13,8 @@
         tools:layout="@layout/fragment_plan_workout" >
         <action
             android:id="@+id/action_planWorkoutFragment_to_workout"
-            app:destination="@id/workout">
+            app:destination="@id/workout"
+            app:popUpTo="@id/planWorkoutFragment">
             <argument
                 android:name="workoutModel"
                 app:argType="com.example.homeworkout.domain.models.WorkoutModel" />

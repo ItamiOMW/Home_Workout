@@ -17,7 +17,7 @@ class PlanWorkoutViewModel @Inject constructor(
 
     val workoutList = getAllWorkoutsUseCase.invoke()
 
-    fun planeWorkout(date: String, workoutModel: WorkoutModel) {
+    fun planWorkout(date: String, workoutModel: WorkoutModel) {
         viewModelScope.launch(Dispatchers.IO) {
             addPlannedWorkoutUseCase.invoke(
                 PlannedWorkoutModel(

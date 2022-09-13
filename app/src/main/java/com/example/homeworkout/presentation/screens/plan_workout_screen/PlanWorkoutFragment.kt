@@ -73,7 +73,7 @@ class PlanWorkoutFragment : Fragment() {
             dialog.show()
         }
         workoutAdapter.onItemLongClicked = {
-            viewModel.planeWorkout(args.date, it)
+            viewModel.planWorkout(args.date, it)
         }
     }
 
@@ -104,7 +104,7 @@ class PlanWorkoutFragment : Fragment() {
 
             tvRightward.text = getString(R.string.plane_workout_caps)
             tvRightward.setOnClickListener {
-                viewModel.planeWorkout(args.date, workoutModel)
+                viewModel.planWorkout(args.date, workoutModel)
                 dialog.dismiss()
             }
 
