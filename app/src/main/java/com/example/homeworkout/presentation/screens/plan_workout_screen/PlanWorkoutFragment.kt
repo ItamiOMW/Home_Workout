@@ -1,9 +1,7 @@
-package com.example.homeworkout.presentation.screens.plane_workout_screen
+package com.example.homeworkout.presentation.screens.plan_workout_screen
 
 import android.app.Dialog
 import android.os.Bundle
-import android.text.format.DateFormat
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,21 +12,18 @@ import androidx.navigation.fragment.navArgs
 import com.example.homeworkout.AppWorkout
 import com.example.homeworkout.R
 import com.example.homeworkout.databinding.CustomActionDialogBinding
-import com.example.homeworkout.databinding.FragmentCalendarBinding
-import com.example.homeworkout.databinding.FragmentPlaneWorkoutBinding
+import com.example.homeworkout.databinding.FragmentPlanWorkoutBinding
 import com.example.homeworkout.domain.models.WorkoutModel
-import com.example.homeworkout.presentation.adapters.planned_workouts_adapter.PlannedWorkoutAdapter
 import com.example.homeworkout.presentation.adapters.workouts_adapter.WorkoutAdapter
-import com.example.homeworkout.presentation.screens.calendar_screen.CalendarViewModel
 import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
 import javax.inject.Inject
 
 
-class PlaneWorkoutFragment : Fragment() {
+class PlanWorkoutFragment : Fragment() {
 
-    private var _binding: FragmentPlaneWorkoutBinding? = null
-    private val binding: FragmentPlaneWorkoutBinding
-        get() = _binding ?: throw RuntimeException("FragmentPlaneWorkoutBinding is null")
+    private var _binding: FragmentPlanWorkoutBinding? = null
+    private val binding: FragmentPlanWorkoutBinding
+        get() = _binding ?: throw RuntimeException("FragmentPlanWorkoutBinding is null")
 
     private val component by lazy {
         (requireActivity().application as AppWorkout).component
@@ -45,17 +40,17 @@ class PlaneWorkoutFragment : Fragment() {
     @Inject
     lateinit var workoutAdapter: WorkoutAdapter
 
-    private lateinit var viewModel: PlaneWorkoutViewModel
+    private lateinit var viewModel: PlanWorkoutViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentPlaneWorkoutBinding.inflate(inflater, container, false)
+        _binding = FragmentPlanWorkoutBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    private val args by navArgs<PlaneWorkoutFragmentArgs>()
+    private val args by navArgs<PlanWorkoutFragmentArgs>()
 
     private lateinit var dialog: Dialog
 
@@ -63,7 +58,7 @@ class PlaneWorkoutFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this, viewModelFactory)[PlaneWorkoutViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[PlanWorkoutViewModel::class.java]
         setupRV()
         setupDialog()
     }
@@ -117,7 +112,7 @@ class PlaneWorkoutFragment : Fragment() {
             tvLeftward.setOnClickListener {
                 dialog.dismiss()
                 findNavController().navigate(
-                    PlaneWorkoutFragmentDirections.actionPlaneWorkoutFragmentToWorkout(
+                    PlanWorkoutFragmentDirections.actionPlanWorkoutFragmentToWorkout(
                         workoutModel, null
                     )
                 )

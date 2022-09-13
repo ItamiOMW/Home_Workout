@@ -23,12 +23,12 @@
         </action>
         <action
             android:id="@+id/action_calendarFragment_to_plane_workout"
-            app:destination="@id/plane_workout">
+            app:destination="@id/plan_workout">
             <argument
                 android:name="date"
                 app:argType="string" />
         </action>
     </fragment>
     <include app:graph="@navigation/workout" />
-    <include app:graph="@navigation/plane_workout" />
+    <include app:graph="@navigation/plan_workout" />
 </navigation>
