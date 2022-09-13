@@ -12,7 +12,8 @@
         tools:layout="@layout/fragment_calendar">
         <action
             android:id="@+id/action_calendarFragment_to_workout"
-            app:destination="@id/workout">
+            app:destination="@id/workout"
+            app:popUpTo="@id/calendarFragment">
             <argument
                 android:name="workoutModel"
                 app:argType="com.example.homeworkout.domain.models.WorkoutModel" />
@@ -23,7 +24,8 @@
         </action>
         <action
             android:id="@+id/action_calendarFragment_to_plane_workout"
-            app:destination="@id/plan_workout">
+            app:destination="@id/plan_workout"
+            app:popUpTo="@id/calendarFragment">
             <argument
                 android:name="date"
                 app:argType="string" />

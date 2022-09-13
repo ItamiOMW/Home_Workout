@@ -12,7 +12,8 @@
         tools:layout="@layout/fragment_choose_workout">
         <action
             android:id="@+id/action_chooseWorkoutFragment_to_workout"
-            app:destination="@id/workout">
+            app:destination="@id/workout"
+            app:popUpTo="@id/chooseWorkoutFragment">
             <argument
                 android:name="workoutModel"
                 app:argType="com.example.homeworkout.domain.models.WorkoutModel" />
