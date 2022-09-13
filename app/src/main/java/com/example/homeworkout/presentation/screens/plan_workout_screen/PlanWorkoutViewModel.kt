@@ -1,4 +1,4 @@
-package com.example.homeworkout.presentation.screens.plane_workout_screen
+package com.example.homeworkout.presentation.screens.plan_workout_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class PlaneWorkoutViewModel @Inject constructor(
+class PlanWorkoutViewModel @Inject constructor(
     private val addPlannedWorkoutUseCase: AddPlannedWorkoutUseCase,
     private val getAllWorkoutsUseCase: GetAllWorkoutsUseCase
 ) : ViewModel() {

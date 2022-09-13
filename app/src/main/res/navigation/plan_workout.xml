@@ -2,16 +2,16 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/plane_workout"
-    app:startDestination="@id/planeWorkoutFragment">
+    android:id="@+id/plan_workout"
+    app:startDestination="@id/planWorkoutFragment">
 
     <fragment
-        android:id="@+id/planeWorkoutFragment"
-        android:name="com.example.homeworkout.presentation.screens.plane_workout_screen.PlaneWorkoutFragment"
-        android:label="fragment_plane_workout"
-        tools:layout="@layout/fragment_plane_workout" >
+        android:id="@+id/planWorkoutFragment"
+        android:name="com.example.homeworkout.presentation.screens.plan_workout_screen.PlanWorkoutFragment"
+        android:label="fragment_plan_workout"
+        tools:layout="@layout/fragment_plan_workout" >
         <action
-            android:id="@+id/action_planeWorkoutFragment_to_workout"
+            android:id="@+id/action_planWorkoutFragment_to_workout"
             app:destination="@id/workout">
             <argument
                 android:name="workoutModel"

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".presentation.screens.plane_workout_screen.PlaneWorkoutFragment">
+    tools:context=".presentation.screens.plan_workout_screen.PlanWorkoutFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_trainings"

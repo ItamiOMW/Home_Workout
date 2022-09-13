@@ -6,7 +6,7 @@ import com.example.homeworkout.di.modules.DataModule
 import com.example.homeworkout.di.modules.ViewModelModule
 import com.example.homeworkout.presentation.screens.calendar_screen.CalendarFragment
 import com.example.homeworkout.presentation.screens.choose_workout_screen.ChooseWorkoutFragment
-import com.example.homeworkout.presentation.screens.plane_workout_screen.PlaneWorkoutFragment
+import com.example.homeworkout.presentation.screens.plan_workout_screen.PlanWorkoutFragment
 import com.example.homeworkout.presentation.screens.progress_screen.ProgressFragment
 import com.example.homeworkout.presentation.screens.tabs_screen.TabsFragment
 import com.example.homeworkout.presentation.screens.training_screen.TrainingFragment
@@ -22,7 +22,7 @@ interface WorkoutComponent {
 
     fun inject(fragment: ChooseWorkoutFragment)
 
-    fun inject(fragment: PlaneWorkoutFragment)
+    fun inject(fragment: PlanWorkoutFragment)
 
     fun inject(fragment: ProgressFragment)
 

@@ -2,12 +2,9 @@ package com.example.homeworkout.presentation.screens.calendar_screen
 
 import android.app.Dialog
 import android.os.Bundle
-import android.text.format.DateFormat
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CalendarView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -18,9 +15,8 @@ import com.example.homeworkout.R
 import com.example.homeworkout.databinding.CustomActionDialogBinding
 import com.example.homeworkout.databinding.FragmentCalendarBinding
 import com.example.homeworkout.domain.models.PlannedWorkoutModel
-import com.example.homeworkout.domain.models.WorkoutModel
 import com.example.homeworkout.presentation.adapters.planned_workouts_adapter.PlannedWorkoutAdapter
-import com.example.homeworkout.presentation.screens.plane_workout_screen.PlaneWorkoutFragmentDirections
+import com.example.homeworkout.presentation.screens.plan_workout_screen.PlanWorkoutFragmentDirections
 import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
 import javax.inject.Inject
 
@@ -170,7 +166,7 @@ class CalendarFragment : Fragment() {
             tvLeftward.setOnClickListener {
                 dialog.dismiss()
                 findNavController().navigate(
-                    PlaneWorkoutFragmentDirections.actionPlaneWorkoutFragmentToWorkout(
+                    PlanWorkoutFragmentDirections.actionPlanWorkoutFragmentToWorkout(
                         plannedWorkoutModel.workoutModel, plannedWorkoutModel
                     )
                 )
