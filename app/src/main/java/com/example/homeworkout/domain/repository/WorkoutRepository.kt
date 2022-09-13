@@ -7,7 +7,7 @@ import com.example.homeworkout.domain.models.WorkoutModel
 interface WorkoutRepository {
 
     //METHODS FOR WORK WITH PLANNED WORKOUT MODEL
-    fun getPlannedWorkoutsByDate(date: String): LiveData<List<PlannedWorkoutModel>>
+    suspend fun getPlannedWorkoutsByDate(date: String): List<PlannedWorkoutModel>
 
     suspend fun addPlannedWorkout(plannedWorkoutModel: PlannedWorkoutModel)
 

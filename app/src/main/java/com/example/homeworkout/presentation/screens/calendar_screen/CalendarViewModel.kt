@@ -42,12 +42,15 @@ class CalendarViewModel @Inject constructor(
     fun deletePlannedWorkout(plannedWorkoutModel: PlannedWorkoutModel) {
         viewModelScope.launch(Dispatchers.IO) {
             deletePlannedWorkoutUseCase.invoke(plannedWorkoutModel)
+            updateList(date)
         }
     }
 
 
     private fun updateList(date: String) {
-        _plannedWorkoutList.value = getPlannedWorkoutsByDateUseCase.invoke(date).value
+        viewModelScope.launch(Dispatchers.IO) {
+            _plannedWorkoutList.postValue(getPlannedWorkoutsByDateUseCase.invoke(date))
+        }
     }
 
     private fun getCurrentDate(): String {

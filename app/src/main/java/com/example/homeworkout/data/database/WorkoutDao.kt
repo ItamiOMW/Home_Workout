@@ -13,7 +13,7 @@ interface WorkoutDao {
 
     //METHODS FOR WORK WITH PLANNED WORKOUT MODEL
     @Query("SELECT * FROM planned_workout_models WHERE date=:date")
-    fun getPlannedWorkoutsByDate(date: String): LiveData<List<PlannedWorkoutDbModel>>
+    suspend fun getPlannedWorkoutsByDate(date: String): List<PlannedWorkoutDbModel>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addPlannedWorkout(plannedWorkoutModel: PlannedWorkoutDbModel)
