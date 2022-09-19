@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_workout_detail" >
         <action
             android:id="@+id/action_workoutDetailFragment_to_trainingFragment"
-            app:destination="@id/trainingFragment" />
+            app:destination="@id/trainingFragment"
+            app:popUpTo="@id/workoutDetailFragment"
+            app:popUpToInclusive="true" />
         <argument
             android:name="workoutModel"
             app:argType="com.example.homeworkout.domain.models.WorkoutModel" />

@@ -30,7 +30,7 @@ class WorkoutRepositoryImpl @Inject constructor(
     override suspend fun completePlannedWorkout(plannedWorkoutModel: PlannedWorkoutModel) {
         val plannedWorkout = plannedWorkoutModel.copy(isCompleted = true)
         dao.addPlannedWorkout(mapper.mapPlannedWorkoutEntityToDb(plannedWorkout))
-        //TODO IMPLEMENT AFTER PROGRESS SCREEN
+        //TODO IMPLEMENT PROGRESS SCREEN
     }
 
     override fun getAllWorkouts(): LiveData<List<WorkoutModel>> =
@@ -43,7 +43,7 @@ class WorkoutRepositoryImpl @Inject constructor(
     }
 
     override suspend fun completeWorkout(workoutModel: WorkoutModel) {
-        //TODO IMPLEMENT AFTER PROGRESS SCREEN
+        //TODO IMPLEMENT PROGRESS SCREEN
     }
 
 }
