@@ -21,4 +21,7 @@
     <string name="close">CLOSE</string>
     <string name="plane_workout_caps">PLANE WORKOUT</string>
     <string name="delete">DELETE</string>
+    <string name="time_format">%02d:%02d:%02d</string>
+    <string name="exercise_count_format">%02d/%02d</string>
+    <string name="workout_completed">WORKOUT COMPLETED!</string>
 </resources>
