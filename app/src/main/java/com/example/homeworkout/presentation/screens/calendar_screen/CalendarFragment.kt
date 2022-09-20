@@ -34,6 +34,12 @@ class CalendarFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         component.inject(this)
         super.onCreate(savedInstanceState)
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.updateDate(viewModel.date)
     }
 
     @Inject
@@ -46,7 +52,7 @@ class CalendarFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
         return binding.root
@@ -117,7 +123,7 @@ class CalendarFragment : Fragment() {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
+                target: RecyclerView.ViewHolder,
             ): Boolean {
                 return false
             }
@@ -148,7 +154,7 @@ class CalendarFragment : Fragment() {
 
     private fun setOnCustomDialogButtonsClickListeners(
         binding: CustomActionDialogBinding,
-        dialog: Dialog
+        dialog: Dialog,
     ) {
         with(binding) {
 
