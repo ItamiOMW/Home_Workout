@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    app:cardCornerRadius="10dp">
+
+    <LinearLayout
+        android:id="@+id/ll_workout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:background="@color/black"
+        android:layout_margin="10dp"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/tv_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="10"
+            android:textColor="@color/crimson"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:text="75.7 KG" />
+
+        <ImageView
+            android:id="@+id/iv_user_photo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/nfoto"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/crimson"
+            android:textSize="20sp"
+            android:layout_weight="0"
+            android:textStyle="bold"
+            tools:text="25.12.2022" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

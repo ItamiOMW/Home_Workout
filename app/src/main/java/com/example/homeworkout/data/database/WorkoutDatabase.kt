@@ -6,22 +6,29 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.homeworkout.data.database.converters.BitmapConverter
 import com.example.homeworkout.data.database.converters.ExerciseConverter
 import com.example.homeworkout.data.database.converters.PlannedWorkoutConverter
 import com.example.homeworkout.data.database.converters.WorkoutConverter
 import com.example.homeworkout.data.database.db_models.PlannedWorkoutDbModel
+import com.example.homeworkout.data.database.db_models.UserInfoDbModel
 import com.example.homeworkout.data.database.db_models.WorkoutDbModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Database(
-    entities = [PlannedWorkoutDbModel::class, WorkoutDbModel::class],
-    version = 1,
+    entities = [PlannedWorkoutDbModel::class, WorkoutDbModel::class, UserInfoDbModel::class],
+    version = 3,
     exportSchema = false
 )
-@TypeConverters(WorkoutConverter::class, PlannedWorkoutConverter::class, ExerciseConverter::class)
-abstract class WorkoutDatabase(): RoomDatabase() {
+@TypeConverters(
+    WorkoutConverter::class,
+    PlannedWorkoutConverter::class,
+    ExerciseConverter::class,
+    BitmapConverter::class
+)
+abstract class WorkoutDatabase() : RoomDatabase() {
 
     abstract fun workoutDao(): WorkoutDao
 
@@ -49,7 +56,6 @@ abstract class WorkoutDatabase(): RoomDatabase() {
                         }
                     }
                 })
-                .fallbackToDestructiveMigration()
                 .build()
         }
     }

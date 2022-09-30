@@ -2,9 +2,11 @@ package com.example.homeworkout.data.mapper
 
 import com.example.homeworkout.data.database.db_models.ExerciseDbModel
 import com.example.homeworkout.data.database.db_models.PlannedWorkoutDbModel
+import com.example.homeworkout.data.database.db_models.UserInfoDbModel
 import com.example.homeworkout.data.database.db_models.WorkoutDbModel
 import com.example.homeworkout.domain.models.ExerciseModel
 import com.example.homeworkout.domain.models.PlannedWorkoutModel
+import com.example.homeworkout.domain.models.UserInfoModel
 import com.example.homeworkout.domain.models.WorkoutModel
 import javax.inject.Inject
 
@@ -51,5 +53,18 @@ class WorkoutMapper @Inject constructor() {
         date = model.date,
         workoutDbModel = mapWorkoutEntityToWorkoutDb(model.workoutModel),
         isCompleted = model.isCompleted
+    )
+
+
+    fun mapUserInfoToDbModel(model: UserInfoModel) = UserInfoDbModel(
+        date = model.date,
+        weight = model.weight,
+        photo = model.photo
+    )
+
+    fun mapDbModelToUserInfo(model: UserInfoDbModel) = UserInfoModel(
+        date = model.date,
+        weight = model.weight,
+        photo = model.photo
     )
 }

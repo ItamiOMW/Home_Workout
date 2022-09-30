@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.homeworkout.data.database.db_models.PlannedWorkoutDbModel
+import com.example.homeworkout.data.database.db_models.UserInfoDbModel
 import com.example.homeworkout.data.database.db_models.WorkoutDbModel
 
 @Dao
@@ -31,4 +32,19 @@ interface WorkoutDao {
 
     @Insert()
     suspend fun addWorkouts(listWorkoutModel: List<WorkoutDbModel>)
+
+
+    //METHODS FOR WORK WITH USER INFO
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addUserInfo(userInfoDbModel: UserInfoDbModel)
+
+    @Query("SELECT * FROM user_info ORDER BY date ASC")
+    fun getListUserInfo(): LiveData<List<UserInfoDbModel>>
+
+    @Query("SELECT * FROM user_info WHERE date=:date")
+    suspend fun getUserInfoByDate(date: String): UserInfoDbModel
+
+    @Query("DELETE FROM user_info WHERE date=:date")
+    suspend fun deleteUserInfo(date: String)
+
 }

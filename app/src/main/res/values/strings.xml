@@ -24,4 +24,13 @@
     <string name="time_format">%02d:%02d:%02d</string>
     <string name="exercise_count_format">%02d/%02d</string>
     <string name="workout_completed">WORKOUT COMPLETED!</string>
+    <string name="count_of_workout_completed">WORKOUTS COMPLETED: %s</string>
+    <string name="user_s_photo">USER\'S PHOTO</string>
+    <string name="enter_your_weight">ENTER YOUR WEIGHT (KG)</string>
+    <string name="add">ADD</string>
+    <string name="set_date">SET DATE</string>
+    <string name="weight_format">%s KG</string>
+    <string name="edit">EDIT</string>
+    <string name="weight">WEIGHT</string>
+    <string name="your_weight">YOUR WEIGHT</string>
 </resources>
