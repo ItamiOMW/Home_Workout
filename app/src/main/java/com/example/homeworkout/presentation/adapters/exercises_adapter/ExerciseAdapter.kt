@@ -3,7 +3,7 @@ package com.example.homeworkout.presentation.adapters.exercises_adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.example.fitness.presentation.adapters.exercises_adapter.ExerciseViewHolder
+import com.example.homeworkout.presentation.adapters.user_info_adapter.UserInfoViewHolder
 import com.example.homeworkout.databinding.ExerciseItemBinding
 import com.example.homeworkout.domain.models.ExerciseModel
 import javax.inject.Inject

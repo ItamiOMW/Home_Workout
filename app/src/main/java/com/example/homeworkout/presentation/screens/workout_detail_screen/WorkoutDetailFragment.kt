@@ -8,13 +8,8 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.homeworkout.AppWorkout
-import com.example.homeworkout.R
-import com.example.homeworkout.databinding.FragmentCalendarBinding
 import com.example.homeworkout.databinding.FragmentWorkoutDetailBinding
 import com.example.homeworkout.presentation.adapters.exercises_adapter.ExerciseAdapter
-import com.example.homeworkout.presentation.adapters.planned_workouts_adapter.PlannedWorkoutAdapter
-import com.example.homeworkout.presentation.screens.calendar_screen.CalendarViewModel
-import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
 import javax.inject.Inject
 
 

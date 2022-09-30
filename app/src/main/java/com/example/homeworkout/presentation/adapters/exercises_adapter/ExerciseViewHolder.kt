@@ -1,4 +1,4 @@
-package com.example.fitness.presentation.adapters.exercises_adapter
+package com.example.homeworkout.presentation.adapters.exercises_adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.homeworkout.databinding.ExerciseItemBinding
