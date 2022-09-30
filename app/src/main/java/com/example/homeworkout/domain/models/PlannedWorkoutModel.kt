@@ -1,6 +1,7 @@
 package com.example.homeworkout.domain.models
 
 import android.os.Parcelable
+import com.example.homeworkout.UNKNOWN_ID
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -11,7 +12,7 @@ data class PlannedWorkoutModel(
     val isCompleted: Boolean
 ): Parcelable {
     companion object {
-        const val UNKNOWN_ID = 0
+
         const val UNKNOWN_IF_COMPLETED = false
     }
 }

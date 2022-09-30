@@ -5,7 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.homeworkout.MILLIS_IN_SECOND
 import com.example.homeworkout.R
+import com.example.homeworkout.SECONDS_IN_HOUR
+import com.example.homeworkout.SECONDS_IN_MINUTE
 import com.example.homeworkout.domain.models.ExerciseModel
 import com.example.homeworkout.domain.models.PlannedWorkoutModel
 import com.example.homeworkout.domain.models.WorkoutModel
@@ -111,14 +114,9 @@ class TrainingViewModel @Inject constructor(
 
     companion object {
 
-        private const val MILLIS_IN_SECOND = 999L
-        private const val SECONDS_IN_HOUR = 3600
-        private const val SECONDS_IN_MINUTE = 60
+
 
         private const val FIRST_EXERCISE_POSITION = 0
-
-        const val PREVIOUS_EXERCISE = "previous_exercise"
-        const val NEXT_EXERCISE = "next_exercise"
     }
 
 }
