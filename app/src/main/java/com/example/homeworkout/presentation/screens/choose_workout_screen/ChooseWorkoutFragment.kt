@@ -57,16 +57,12 @@ class ChooseWorkoutFragment : Fragment() {
             workoutAdapter.submitList(it)
         }
         workoutAdapter.onItemClicked = {
-            //GO TO THE DETAIL WORKOUT SCREEN
             findNavController().navigate(
                 ChooseWorkoutFragmentDirections.actionChooseWorkoutFragmentToWorkout(
                     it,
                     null
                 )
             )
-        }
-        workoutAdapter.onItemLongClicked = {
-            //TODO SHOW NAVIGATION DIALOG TO DETAIL OR CALENDAR SCREENS
         }
     }
 

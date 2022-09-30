@@ -3,11 +3,8 @@ package com.example.homeworkout.presentation.screens.progress_screen
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +12,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.core.graphics.drawable.toBitmap
-import androidx.core.util.lruCache
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -26,6 +22,7 @@ import com.example.homeworkout.databinding.AddWeightDialogBinding
 import com.example.homeworkout.databinding.EditUserDialogBinding
 import com.example.homeworkout.databinding.FragmentProgressBinding
 import com.example.homeworkout.domain.models.UserInfoModel
+import com.example.homeworkout.formatDateFromDatePicker
 import com.example.homeworkout.presentation.adapters.user_info_adapter.UserInfoAdapter
 import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
 import com.github.mikephil.charting.data.BarData
@@ -64,6 +61,12 @@ class ProgressFragment : Fragment() {
     @Inject
     lateinit var userInfoAdapter: UserInfoAdapter
 
+    private lateinit var dialogAddUser: Dialog
+
+    private lateinit var dialogEditUser: Dialog
+
+    private lateinit var datePickerDialog: DatePickerDialog
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -71,12 +74,6 @@ class ProgressFragment : Fragment() {
         _binding = FragmentProgressBinding.inflate(inflater, container, false)
         return binding.root
     }
-
-    private lateinit var dialogAddUser: Dialog
-
-    private lateinit var dialogEditUser: Dialog
-
-    private lateinit var datePickerDialog: DatePickerDialog
 
     private var latestTmpUri: Uri? = null
 
@@ -304,12 +301,5 @@ class ProgressFragment : Fragment() {
 
     }
 
-    private fun formatDateFromDatePicker(day: Int, month: Int, year: Int): String {
-        //I ADDED 1 TO MONTH BECAUSE NUMBER OF FIRST MONTH IS 0
-        return "${day}-${month + 1}-$year"
-    }
-
-    private fun formatWeightToKG(weight: String) =
-        String.format(getString(R.string.weight_format), weight)
 
 }

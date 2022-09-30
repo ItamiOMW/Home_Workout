@@ -15,6 +15,7 @@ import com.example.homeworkout.R
 import com.example.homeworkout.databinding.CustomActionDialogBinding
 import com.example.homeworkout.databinding.FragmentCalendarBinding
 import com.example.homeworkout.domain.models.PlannedWorkoutModel
+import com.example.homeworkout.formatDateFromCalendarView
 import com.example.homeworkout.presentation.adapters.planned_workouts_adapter.PlannedWorkoutAdapter
 import com.example.homeworkout.presentation.screens.plan_workout_screen.PlanWorkoutFragmentDirections
 import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
@@ -87,11 +88,6 @@ class CalendarFragment : Fragment() {
                 formatDateFromCalendarView(day, month, year)
             )
         }
-    }
-
-    private fun formatDateFromCalendarView(day: Int, month: Int, year: Int): String {
-        //I ADDED 1 TO MONTH BECAUSE NUMBER OF FIRST MONTH IS 0
-        return "${day}-${month + 1}-$year"
     }
 
     private fun setupRV() {
