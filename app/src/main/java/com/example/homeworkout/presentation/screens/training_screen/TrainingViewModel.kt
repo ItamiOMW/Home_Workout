@@ -50,28 +50,32 @@ class TrainingViewModel @Inject constructor(
         this.workoutModel = workoutModel
         this.plannedWorkoutModel = plannedWorkoutModel
         startStopwatch()
-        goToNextExercise()
+        startWorkout()
     }
 
     fun goToNextExercise() {
-        if (_exercise.value == null && currentExercisePosition == FIRST_EXERCISE_POSITION) {
+        if (currentExercisePosition == FIRST_EXERCISE_POSITION && workoutModel.listExercises.size != 1) {
             _exercise.value = workoutModel.listExercises[FIRST_EXERCISE_POSITION]
-            currentExercisePosition++
+            formatCurrentPositionAndAmountExercises()
             return
         }
-        if (currentExercisePosition == workoutModel.listExercises.size) {
+        if (currentExercisePosition + 1 == workoutModel.listExercises.size) {
             completeWorkout()
-        } else {
+        } else  {
             _exercise.value = workoutModel.listExercises[++currentExercisePosition]
             formatCurrentPositionAndAmountExercises()
         }
     }
 
     fun goToPreviousExercise() {
-        if (currentExercisePosition == FIRST_EXERCISE_POSITION) {
-            return
+        if (currentExercisePosition != FIRST_EXERCISE_POSITION) {
+            _exercise.value = workoutModel.listExercises[--currentExercisePosition]
+            formatCurrentPositionAndAmountExercises()
         }
-        _exercise.value = workoutModel.listExercises[--currentExercisePosition]
+    }
+
+    private fun startWorkout() {
+        _exercise.value = workoutModel.listExercises[FIRST_EXERCISE_POSITION]
         formatCurrentPositionAndAmountExercises()
     }
 
@@ -114,9 +118,8 @@ class TrainingViewModel @Inject constructor(
 
     companion object {
 
-
-
         private const val FIRST_EXERCISE_POSITION = 0
+
     }
 
 }
