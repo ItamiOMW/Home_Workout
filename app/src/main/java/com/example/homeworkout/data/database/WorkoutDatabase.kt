@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 
 @Database(
     entities = [PlannedWorkoutDbModel::class, WorkoutDbModel::class, UserInfoDbModel::class],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 @TypeConverters(

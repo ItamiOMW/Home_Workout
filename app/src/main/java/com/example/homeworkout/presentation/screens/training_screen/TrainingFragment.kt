@@ -70,7 +70,7 @@ class TrainingFragment : Fragment() {
 //            binding.ivExerciseGif.setImageBitmap() TODO FIND OR CREATE ANIMATIONS
             binding.tvExerciseTitle.text = it.title
             binding.tvReps.text = it.reps.toString()
-//            binding.tvExerciseDetail.text TODO ADD DETAIL INFO TO EXERCISE
+            binding.tvExerciseDetail.text = it.description
         }
     }
 

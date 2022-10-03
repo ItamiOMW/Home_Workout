@@ -7,6 +7,7 @@ import kotlinx.parcelize.Parcelize
 data class ExerciseDbModel(
     val title: String,
     val reps: Int,
+    val description: String,
     val exerciseGif: String
 ): Parcelable {
 }
