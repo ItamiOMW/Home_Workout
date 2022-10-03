@@ -38,7 +38,7 @@ interface WorkoutDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addUserInfo(userInfoDbModel: UserInfoDbModel)
 
-    @Query("SELECT * FROM user_info ORDER BY date ASC")
+    @Query("SELECT * FROM user_info")
     fun getListUserInfo(): LiveData<List<UserInfoDbModel>>
 
     @Query("SELECT * FROM user_info WHERE date=:date")
