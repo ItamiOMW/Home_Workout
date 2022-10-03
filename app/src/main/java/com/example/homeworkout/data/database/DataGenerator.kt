@@ -19,7 +19,8 @@ class DataGenerator {
                     ExerciseDbModel(
                         "PUSH UP",
                         10,
-                        "HAVEN'T ADDED GIFS YET"
+                        "PERFORM THE EXERCISE KEEPING THE CORE MUSCLES IN TENSION",
+                        "HAVEN'T ADDED YET"
                     )
                 )
             )

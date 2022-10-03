@@ -22,7 +22,7 @@ class WorkoutMapper @Inject constructor() {
 
     private fun mapListDbExercisesToListEntityExercises(list: List<ExerciseDbModel>) =
         list.map {
-            ExerciseModel(it.title, it.reps, it.exerciseGif)
+            ExerciseModel(it.title, it.reps, it.description, it.exerciseGif)
         }
 
 
@@ -36,7 +36,7 @@ class WorkoutMapper @Inject constructor() {
 
     private fun mapListEntityExercisesToListDbExercises(list: List<ExerciseModel>) =
         list.map {
-            ExerciseDbModel(it.title, it.reps, it.exerciseGif)
+            ExerciseDbModel(it.title, it.reps, it.description, it.exerciseGif)
         }
 
 
