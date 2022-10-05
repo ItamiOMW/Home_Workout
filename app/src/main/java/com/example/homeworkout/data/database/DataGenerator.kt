@@ -12,15 +12,15 @@ class DataGenerator {
         fun getWorkouts() = listOf(
             WorkoutDbModel(
                 id = UNKNOWN_ID,
-                title = "FULL BODY WORKOUT",
+                title = "TEST WORKOUT",
                 imagePath = R.drawable.fullbody,
-                duration = 10f,
+                duration = 0f,
                 listExercises = listOf(
                     ExerciseDbModel(
                         "PUSH UP",
                         10,
                         "PERFORM THE EXERCISE KEEPING THE CORE MUSCLES IN TENSION",
-                        "HAVEN'T ADDED YET"
+                        R.drawable.pushup
                     )
                 )
             )
