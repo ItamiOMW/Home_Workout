@@ -8,6 +8,6 @@ data class ExerciseModel(
     val title: String,
     val reps: Int,
     val description: String,
-    val exerciseGif: String
+    val exerciseGif: Int
 ): Parcelable {
 }

@@ -1,6 +1,9 @@
 package com.example.homeworkout.presentation.screens.training_screen
 
 import android.app.Dialog
+import android.graphics.ImageDecoder
+import android.graphics.drawable.AnimatedImageDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -67,7 +70,7 @@ class TrainingFragment : Fragment() {
 
     private fun observeExercise() {
         viewModel.exercise.observe(viewLifecycleOwner) {
-//            binding.ivExerciseGif.setImageBitmap() TODO FIND OR CREATE ANIMATIONS
+            binding.ivExerciseGif.setImageDrawable(createGifSource(it.exerciseGif))
             binding.tvExerciseTitle.text = it.title
             binding.tvReps.text = it.reps.toString()
             binding.tvExerciseDetail.text = it.description
@@ -141,6 +144,14 @@ class TrainingFragment : Fragment() {
             tvWorkoutName.text = args.workoutModel.title
 
         }
+    }
+
+    private fun createGifSource(drawableId: Int): AnimatedImageDrawable {
+        val source = ImageDecoder.createSource(resources, drawableId)
+        val drawable = ImageDecoder.decodeDrawable(source)
+        val animatedDrawable = (drawable as AnimatedImageDrawable)
+        animatedDrawable.start()
+        return animatedDrawable
     }
 
 
