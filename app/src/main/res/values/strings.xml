@@ -33,4 +33,6 @@
     <string name="edit">EDIT</string>
     <string name="weight">WEIGHT</string>
     <string name="your_weight">YOUR WEIGHT</string>
+    <string name="follow_your_progress_here">FOLLOW YOUR PROGRESS HERE</string>
+    <string name="add_your_current_info_to_show_chart">ADD YOUR CURRENT INFO TO SHOW CHART</string>
 </resources>

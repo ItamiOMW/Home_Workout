@@ -113,6 +113,7 @@ class ProgressFragment : Fragment() {
     }
 
     private fun setupUserInfoAdapter() {
+
         binding.rvUserInfo.adapter = userInfoAdapter
 
         viewModel.listUserInfo.observe(viewLifecycleOwner) {
@@ -132,8 +133,12 @@ class ProgressFragment : Fragment() {
     }
 
     private fun setupBarChart(listUserInfo: List<UserInfoModel>) {
-        val array = listUserInfo.mapIndexed { index, userInfoModel ->
-            BarEntry(index.toFloat() * 10, userInfoModel.weight.toFloat())
+        val array: List<BarEntry> = if (listUserInfo.isNotEmpty()) {
+            listUserInfo.mapIndexed { index, userInfoModel ->
+                BarEntry(index.toFloat() * 10, userInfoModel.weight.toFloat())
+            }
+        } else {
+            listOf(BarEntry(0f, 0f))
         }
         val barDataSer = BarDataSet(array, getString(R.string.weight))
         barDataSer.setDrawValues(false)
@@ -141,6 +146,7 @@ class ProgressFragment : Fragment() {
         binding.barChart.animateY(1000)
         binding.barChart.description.text = getString(R.string.your_weight)
         binding.barChart.description.textColor = Color.BLUE
+
     }
 
     private fun setupOnButtonAddUserInfoClickListener() {

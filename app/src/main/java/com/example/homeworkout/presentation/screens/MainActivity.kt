@@ -7,6 +7,7 @@ import com.example.homeworkout.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        //SHOW SPLASH SCREEN BEFORE LOAD THE MAIN ACTIVITY
         installSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
