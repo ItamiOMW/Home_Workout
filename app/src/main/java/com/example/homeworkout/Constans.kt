@@ -19,3 +19,7 @@ fun formatDateFromCalendarView(day: Int, month: Int, year: Int): String {
     //I ADDED 1 TO MONTH BECAUSE NUMBER OF FIRST MONTH IS 0
     return "${day}-${month + 1}-$year"
 }
+
+fun formatDate(day: Int, month: Int, year: Int): String {
+    return "${day}-${month}-$year"
+}
