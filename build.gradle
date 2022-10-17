@@ -6,7 +6,6 @@ buildscript {
     dependencies {
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.5.2")
     }
-
     ext.room_version = '2.4.3'
     ext.life_cycle_version = '2.5.1'
     ext.nav_components_version = '2.5.2'
@@ -15,6 +14,8 @@ buildscript {
     ext.chart_version = 'v3.1.0'
     ext.splash_api_version = '1.0.0'
     ext.coroutines_version = '1.6.4'
+    ext.junit_version = '5.8.2'
+    ext.mockito_version = '4.0.0'
 }
 plugins {
     id 'com.android.application' version '7.3.0' apply false
