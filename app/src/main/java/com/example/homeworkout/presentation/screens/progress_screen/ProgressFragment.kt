@@ -15,14 +15,11 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.homeworkout.AppWorkout
-import com.example.homeworkout.BuildConfig
-import com.example.homeworkout.R
+import com.example.homeworkout.*
 import com.example.homeworkout.databinding.AddWeightDialogBinding
 import com.example.homeworkout.databinding.EditUserDialogBinding
 import com.example.homeworkout.databinding.FragmentProgressBinding
 import com.example.homeworkout.domain.models.UserInfoModel
-import com.example.homeworkout.formatDateFromDatePicker
 import com.example.homeworkout.presentation.adapters.user_info_adapter.UserInfoAdapter
 import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
 import com.github.mikephil.charting.data.BarData
@@ -100,13 +97,13 @@ class ProgressFragment : Fragment() {
 
         viewModel.dateFailure.observe(viewLifecycleOwner) {
             if (it) {
-                Toast.makeText(requireContext(), "DATE WASN'T SELECTED", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.date_wasnt_selected), Toast.LENGTH_SHORT).show()
             }
         }
 
         viewModel.weightFailure.observe(viewLifecycleOwner) {
             if (it) {
-                Toast.makeText(requireContext(), "WEIGHT WASN'T ENTERED", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.weight_wasnt_entered), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -143,7 +140,7 @@ class ProgressFragment : Fragment() {
         val barDataSer = BarDataSet(array, getString(R.string.weight))
         barDataSer.setDrawValues(false)
         binding.barChart.data = BarData(barDataSer)
-        binding.barChart.animateY(1000)
+        binding.barChart.animateY(BAR_CHART_ANIMATION_DURATION)
         binding.barChart.description.text = getString(R.string.your_weight)
         binding.barChart.description.textColor = Color.BLUE
 

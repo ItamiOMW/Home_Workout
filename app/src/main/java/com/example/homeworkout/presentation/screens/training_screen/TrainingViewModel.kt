@@ -46,6 +46,7 @@ class TrainingViewModel @Inject constructor(
     private var currentExercisePosition = FIRST_EXERCISE_POSITION
 
 
+    //SHOULD BE CALLED TO START WORKOUT
     fun start(workoutModel: WorkoutModel, plannedWorkoutModel: PlannedWorkoutModel?) {
         this.workoutModel = workoutModel
         this.plannedWorkoutModel = plannedWorkoutModel
@@ -87,6 +88,7 @@ class TrainingViewModel @Inject constructor(
     }
 
     private fun completeWorkout() {
+
         viewModelScope.launch(Dispatchers.IO) {
             if (plannedWorkoutModel != null) {
                 plannedWorkoutModel?.let { completePlannedWorkoutUseCase.invoke(it) }
@@ -94,6 +96,7 @@ class TrainingViewModel @Inject constructor(
             completeWorkoutUseCase.invoke(workoutModel)
             _isWorkoutCompleted.postValue(Any())
         }
+
     }
 
     private fun startStopwatch() {

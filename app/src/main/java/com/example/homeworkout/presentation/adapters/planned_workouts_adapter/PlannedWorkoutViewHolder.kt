@@ -4,6 +4,4 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.homeworkout.databinding.PlannedWorkoutItemBinding
 
 
-class PlannedWorkoutViewHolder(val binding: PlannedWorkoutItemBinding): RecyclerView.ViewHolder(binding.root) {
-
-}
+class PlannedWorkoutViewHolder(val binding: PlannedWorkoutItemBinding): RecyclerView.ViewHolder(binding.root)

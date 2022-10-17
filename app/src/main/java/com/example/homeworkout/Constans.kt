@@ -10,6 +10,8 @@ const val SECONDS_IN_HOUR = 3600
 
 const val SECONDS_IN_MINUTE = 60
 
+const val BAR_CHART_ANIMATION_DURATION = 1000
+
 fun formatDateFromDatePicker(day: Int, month: Int, year: Int): String {
     //I ADDED 1 TO MONTH BECAUSE NUMBER OF FIRST MONTH IS 0
     return "${day}-${month + 1}-$year"
