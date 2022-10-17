@@ -14,6 +14,7 @@ class PlannedWorkoutAdapter @Inject constructor(private val application: Applica
     ListAdapter<PlannedWorkoutModel, PlannedWorkoutViewHolder>(DiffUtilItemCallbackPlannedWorkout()) {
 
     var onItemClicked: ((PlannedWorkoutModel) -> Unit)? = null
+
     var onItemLongClicked: ((PlannedWorkoutModel) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlannedWorkoutViewHolder {

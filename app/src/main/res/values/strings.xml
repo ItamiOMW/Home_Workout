@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Home Workout</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="exercise_gif">EXERCISE GIF</string>
     <string name="add_your_weight">ADD YOUR WEIGHT</string>
@@ -35,4 +34,6 @@
     <string name="your_weight">YOUR WEIGHT</string>
     <string name="follow_your_progress_here">FOLLOW YOUR PROGRESS HERE</string>
     <string name="add_your_current_info_to_show_chart">ADD YOUR CURRENT INFO TO SHOW CHART</string>
+    <string name="date_wasnt_selected">DATE WASN\'T SELECTED</string>
+    <string name="weight_wasnt_entered">WEIGHT WASN\'T ENTERED</string>
 </resources>
