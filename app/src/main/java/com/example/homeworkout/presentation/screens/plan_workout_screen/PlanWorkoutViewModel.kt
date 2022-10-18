@@ -1,5 +1,7 @@
 package com.example.homeworkout.presentation.screens.plan_workout_screen
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.homeworkout.UNKNOWN_ID
@@ -13,10 +15,14 @@ import javax.inject.Inject
 
 class PlanWorkoutViewModel @Inject constructor(
     private val addPlannedWorkoutUseCase: AddPlannedWorkoutUseCase,
-    private val getAllWorkoutsUseCase: GetAllWorkoutsUseCase
+    private val getAllWorkoutsUseCase: GetAllWorkoutsUseCase,
 ) : ViewModel() {
 
-    val workoutList = getAllWorkoutsUseCase.invoke()
+    private var _state = MutableLiveData<PlanWorkoutViewModelState>()
+    val state: LiveData<PlanWorkoutViewModelState>
+        get() = _state
+
+    val list = getAllWorkoutsUseCase.invoke()
 
     fun planWorkout(date: String, workoutModel: WorkoutModel) {
         viewModelScope.launch(Dispatchers.IO) {

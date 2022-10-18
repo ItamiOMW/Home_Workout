@@ -1,6 +1,7 @@
 package com.example.homeworkout.presentation.screens.training_screen
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,21 +24,9 @@ class TrainingViewModel @Inject constructor(
     private val completeWorkoutUseCase: CompleteWorkoutUseCase,
 ) : ViewModel() {
 
-    private val _timerTime = MutableLiveData<String>()
-    val timerTime: LiveData<String>
-        get() = _timerTime
-
-    private val _exercise = MutableLiveData<ExerciseModel>()
-    val exercise: LiveData<ExerciseModel>
-        get() = _exercise
-
-    private val _currentExercisePositionAndAmountOfExercises = MutableLiveData<String>()
-    val currentExercisePositionAndAmountOfExercises: LiveData<String>
-        get() = _currentExercisePositionAndAmountOfExercises
-
-    private val _isWorkoutCompleted = MutableLiveData<Any>()
-    val isWorkoutCompleted: LiveData<Any>
-        get() = _isWorkoutCompleted
+    private val _state = MutableLiveData<TrainingViewModelState>()
+    val state: LiveData<TrainingViewModelState>
+        get() = _state
 
     private lateinit var workoutModel: WorkoutModel
 
@@ -45,8 +34,9 @@ class TrainingViewModel @Inject constructor(
 
     private var currentExercisePosition = FIRST_EXERCISE_POSITION
 
+    private var isWorkoutCompleted: Any? = null
 
-    //SHOULD BE CALLED TO START WORKOUT
+    //MUST BE CALLED TO START WORKOUT
     fun start(workoutModel: WorkoutModel, plannedWorkoutModel: PlannedWorkoutModel?) {
         this.workoutModel = workoutModel
         this.plannedWorkoutModel = plannedWorkoutModel
@@ -56,34 +46,39 @@ class TrainingViewModel @Inject constructor(
 
     fun goToNextExercise() {
         if (currentExercisePosition == FIRST_EXERCISE_POSITION && workoutModel.listExercises.size != 1) {
-            _exercise.value = workoutModel.listExercises[FIRST_EXERCISE_POSITION]
+            updateExercise(FIRST_EXERCISE_POSITION)
             formatCurrentPositionAndAmountExercises()
             return
         }
         if (currentExercisePosition + 1 == workoutModel.listExercises.size) {
             completeWorkout()
-        } else  {
-            _exercise.value = workoutModel.listExercises[++currentExercisePosition]
+        } else {
+            updateExercise(currentExercisePosition++)
             formatCurrentPositionAndAmountExercises()
         }
     }
 
     fun goToPreviousExercise() {
         if (currentExercisePosition != FIRST_EXERCISE_POSITION) {
-            _exercise.value = workoutModel.listExercises[--currentExercisePosition]
+            updateExercise(--currentExercisePosition)
             formatCurrentPositionAndAmountExercises()
         }
     }
 
     private fun startWorkout() {
-        _exercise.value = workoutModel.listExercises[FIRST_EXERCISE_POSITION]
+        updateExercise(FIRST_EXERCISE_POSITION)
         formatCurrentPositionAndAmountExercises()
     }
 
+    private fun updateExercise(positionInList: Int) {
+        //TODO DISCOVER WHY OBSERVER TRIGGERS ONLY with postValue BUT NOT WITH setValue
+        _state.postValue(Exercise(workoutModel.listExercises[positionInList]))
+    }
+
     private fun formatCurrentPositionAndAmountExercises() {
-        _currentExercisePositionAndAmountOfExercises.value = String.format(
+        _state.value = CurrentExercisePositionAndAmountOfExercises(String.format(
             application.getString(R.string.exercise_count_format),
-            currentExercisePosition + 1, workoutModel.listExercises.size
+            currentExercisePosition + 1, workoutModel.listExercises.size)
         )
     }
 
@@ -94,7 +89,8 @@ class TrainingViewModel @Inject constructor(
                 plannedWorkoutModel?.let { completePlannedWorkoutUseCase.invoke(it) }
             }
             completeWorkoutUseCase.invoke(workoutModel)
-            _isWorkoutCompleted.postValue(Any())
+            _state.postValue(IsWorkoutCompleted(Any()))
+            isWorkoutCompleted = Any()
         }
 
     }
@@ -104,8 +100,8 @@ class TrainingViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.Default) {
             while (true) {
                 delay(MILLIS_IN_SECOND)
-                _timerTime.postValue(formatStopwatchTime(++timeSeconds))
-                if (isWorkoutCompleted.value != null) {
+                _state.postValue(TimerTime(formatStopwatchTime(++timeSeconds)))
+                if (isWorkoutCompleted != null) {
                     this.cancel()
                 }
             }

@@ -26,25 +26,9 @@ class ProgressViewModel @Inject constructor(
     private val deleteUserInfoUseCase: DeleteUserInfoUseCase,
 ) : ViewModel() {
 
-    private val _completedWorkouts = MutableLiveData<Int>()
-    val completedWorkouts: LiveData<Int>
-        get() = _completedWorkouts
-
-    private val _imageUri = MutableLiveData<Uri>()
-    val imageUri: LiveData<Uri>
-        get() = _imageUri
-
-    private val _date = MutableLiveData<String>()
-    val date: LiveData<String>
-        get() = _date
-
-    private val _dateFailure = MutableLiveData<Boolean>()
-    val dateFailure: LiveData<Boolean>
-        get() = _dateFailure
-
-    private val _weightFailure = MutableLiveData<Boolean>()
-    val weightFailure: LiveData<Boolean>
-        get() = _weightFailure
+    private val _state = MutableLiveData<ProgressViewModelState>()
+    val state: LiveData<ProgressViewModelState>
+        get() = _state
 
     val listUserInfo = getListUserInfoUseCase.invoke()
 
@@ -54,16 +38,16 @@ class ProgressViewModel @Inject constructor(
     }
 
     fun updateImageUri(uri: Uri) {
-        _imageUri.value = uri
+        _state.value = ImageUri(uri)
     }
 
     fun updateDate(date: String) {
-        _date.value = date
+        _state.value = DateForProgressScreen(date)
     }
 
     fun getCountOfCompletedWorkouts() {
         viewModelScope.launch(Dispatchers.IO) {
-            _completedWorkouts.postValue(getCountOfCompletedWorkoutsUseCase.invoke())
+            _state.postValue(CompletedWorkouts(getCountOfCompletedWorkoutsUseCase.invoke()))
         }
     }
 
@@ -108,7 +92,7 @@ class ProgressViewModel @Inject constructor(
 
     private fun checkDate(date: String): Boolean {
         if (date.isEmpty()) {
-            _dateFailure.value = true
+            _state.value = DateFailure(true)
             return false
         }
         return true
@@ -116,15 +100,15 @@ class ProgressViewModel @Inject constructor(
 
     private fun checkWeight(weight: String): Boolean {
         if (weight.isEmpty()) {
-            _weightFailure.value = true
+            _state.value = WeightFailure(true)
             return false
         }
         return true
     }
 
     private fun resetFailures() {
-        _dateFailure.value = false
-        _weightFailure.value = false
+        _state.value = DateFailure(false)
+        _state.value = WeightFailure(false)
     }
 
 }

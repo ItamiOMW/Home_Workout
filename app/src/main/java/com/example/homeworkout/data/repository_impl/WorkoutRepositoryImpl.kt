@@ -36,8 +36,9 @@ class WorkoutRepositoryImpl @Inject constructor(
 
     override fun getAllWorkouts(): LiveData<List<WorkoutModel>> =
         Transformations.map(dao.getAllWorkouts()) {
-            it.map { mapper.mapWorkoutDbToWorkoutEntity(it) }
-        }
+        it.map { mapper.mapWorkoutDbToWorkoutEntity(it) }
+    }
+
 
     override suspend fun addWorkout(workoutModel: WorkoutModel) {
         dao.addWorkout(mapper.mapWorkoutEntityToWorkoutDb(workoutModel))
