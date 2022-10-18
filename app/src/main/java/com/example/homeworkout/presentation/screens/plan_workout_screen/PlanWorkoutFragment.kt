@@ -44,7 +44,7 @@ class PlanWorkoutFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentPlanWorkoutBinding.inflate(inflater, container, false)
         return binding.root
@@ -60,12 +60,21 @@ class PlanWorkoutFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory)[PlanWorkoutViewModel::class.java]
         setupRV()
+        observeViewModelState()
         setupDialog()
+    }
+
+    private fun observeViewModelState() {
+        viewModel.state.observe(viewLifecycleOwner) {
+            when (it) {
+                //todo add new functions to plan workout screen
+            }
+        }
     }
 
     private fun setupRV() {
         binding.rvTrainings.adapter = workoutAdapter
-        viewModel.workoutList.observe(viewLifecycleOwner) {
+        viewModel.list.observe(viewLifecycleOwner) {
             workoutAdapter.submitList(it)
         }
         workoutAdapter.onItemClicked = {
@@ -94,7 +103,7 @@ class PlanWorkoutFragment : Fragment() {
 
     private fun setOnCustomDialogButtonsClickListeners(
         binding: CustomActionDialogBinding,
-        dialog: Dialog
+        dialog: Dialog,
     ) {
         with(binding) {
 

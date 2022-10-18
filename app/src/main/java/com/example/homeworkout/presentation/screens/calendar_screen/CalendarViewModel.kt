@@ -22,9 +22,9 @@ class CalendarViewModel @Inject constructor(
     private val deletePlannedWorkoutUseCase: DeletePlannedWorkoutUseCase,
 ) : ViewModel() {
 
-    private var _plannedWorkoutList = MutableLiveData<List<PlannedWorkoutModel>>()
-    val plannedWorkoutList: LiveData<List<PlannedWorkoutModel>>
-        get() = _plannedWorkoutList
+    private var _state = MutableLiveData<CalendarViewModelState>()
+    val state: LiveData<CalendarViewModelState>
+        get() = _state
 
     private var _date: String = getCurrentDate()
     val date: String = _date
@@ -49,7 +49,7 @@ class CalendarViewModel @Inject constructor(
 
     private fun updateList(date: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            _plannedWorkoutList.postValue(getPlannedWorkoutsByDateUseCase.invoke(date))
+            _state.postValue(PlannedWorkoutList(getPlannedWorkoutsByDateUseCase.invoke(date)))
         }
     }
 

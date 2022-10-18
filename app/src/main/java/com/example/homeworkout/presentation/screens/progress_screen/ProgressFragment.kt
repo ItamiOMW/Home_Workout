@@ -88,34 +88,36 @@ class ProgressFragment : Fragment() {
 
         viewModel.listUserInfo.observe(viewLifecycleOwner) {
             setupBarChart(it)
+            userInfoAdapter.submitList(it)
         }
 
-        viewModel.completedWorkouts.observe(viewLifecycleOwner) {
-            binding.tvCompletedWorkouts.text = String.format(
-                getString(R.string.count_of_workout_completed, it.toString()))
-        }
-
-        viewModel.dateFailure.observe(viewLifecycleOwner) {
-            if (it) {
-                Toast.makeText(requireContext(), getString(R.string.date_wasnt_selected), Toast.LENGTH_SHORT).show()
+        viewModel.state.observe(viewLifecycleOwner) {
+            when (it) {
+                is CompletedWorkouts -> {
+                    binding.tvCompletedWorkouts.text = String.format(
+                        getString(R.string.count_of_workout_completed, it.count.toString()))
+                }
+                is DateFailure -> {
+                    if (it.boolean) {
+                        Toast.makeText(requireContext(),
+                            getString(R.string.date_wasnt_selected),
+                            Toast.LENGTH_SHORT).show()
+                    }
+                }
+                is WeightFailure -> {
+                    if (it.boolean) {
+                        Toast.makeText(requireContext(),
+                            getString(R.string.weight_wasnt_entered),
+                            Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
-
-        viewModel.weightFailure.observe(viewLifecycleOwner) {
-            if (it) {
-                Toast.makeText(requireContext(), getString(R.string.weight_wasnt_entered), Toast.LENGTH_SHORT).show()
-            }
-        }
-
     }
 
     private fun setupUserInfoAdapter() {
 
         binding.rvUserInfo.adapter = userInfoAdapter
-
-        viewModel.listUserInfo.observe(viewLifecycleOwner) {
-            userInfoAdapter.submitList(it)
-        }
 
         userInfoAdapter.onItemClicked = {
             setupDialogEditUser(it)
@@ -192,14 +194,16 @@ class ProgressFragment : Fragment() {
                 datePickerDialog.show()
             }
 
-            viewModel.date.observe(viewLifecycleOwner) {
-                tvDate.text = it
+            viewModel.state.observe(viewLifecycleOwner) {
+                when (it) {
+                    is ImageUri -> {
+                        ivUserPhoto.setImageURI(it.uri)
+                    }
+                    is DateForProgressScreen -> {
+                        tvDate.text = it.date
+                    }
+                }
             }
-
-            viewModel.imageUri.observe(viewLifecycleOwner) {
-                ivUserPhoto.setImageURI(it)
-            }
-
         }
     }
 
@@ -286,8 +290,10 @@ class ProgressFragment : Fragment() {
 
             tvDate.text = userInfo.date
 
-            viewModel.imageUri.observe(viewLifecycleOwner) {
-                ivUserPhoto.setImageURI(it)
+            viewModel.state.observe(viewLifecycleOwner) {
+                if (it is ImageUri) {
+                    ivUserPhoto.setImageURI(it.uri)
+                }
             }
 
         }
@@ -303,6 +309,4 @@ class ProgressFragment : Fragment() {
         }
 
     }
-
-
 }

@@ -1,6 +1,7 @@
 package com.example.homeworkout.presentation.screens.choose_workout_screen
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -39,7 +40,7 @@ class ChooseWorkoutFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentChooseWorkoutBinding.inflate(inflater, container, false)
         return binding.root
@@ -49,11 +50,21 @@ class ChooseWorkoutFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory)[ChooseWorkoutViewModel::class.java]
         setupRV()
+        observeViewModelState()
+    }
+
+    private fun observeViewModelState() {
+
+        viewModel.state.observe(viewLifecycleOwner) {
+            when (it) {
+                //todo add new functions to choose workout
+            }
+        }
     }
 
     private fun setupRV() {
         binding.rvTrainings.adapter = workoutAdapter
-        viewModel.workoutList.observe(viewLifecycleOwner) {
+        viewModel.list.observe(viewLifecycleOwner) {
             workoutAdapter.submitList(it)
         }
         workoutAdapter.onItemClicked = {

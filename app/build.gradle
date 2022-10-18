@@ -53,7 +53,7 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:1.5.3"
     implementation 'androidx.test:monitor:1.5.0'
 
-    //JUNIT 5
+    //JUNIT
     testImplementation "org.junit.jupiter:junit-jupiter:$junit_version"
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junit_version")
 

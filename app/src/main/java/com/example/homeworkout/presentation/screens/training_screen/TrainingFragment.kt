@@ -3,8 +3,8 @@ package com.example.homeworkout.presentation.screens.training_screen
 import android.app.Dialog
 import android.graphics.ImageDecoder
 import android.graphics.drawable.AnimatedImageDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -59,41 +59,35 @@ class TrainingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory)[TrainingViewModel::class.java]
+        observeViewModel()
         viewModel.start(args.workoutModel, args.plannedWorkoutModel)
-        observeCurrentExercisePositionAndAmountOfExercises()
-        observeExercise()
-        observeTimer()
-        observeIfWorkoutCompleted()
         setupOnButtonsClickListener()
         setupDialog()
     }
 
-    private fun observeExercise() {
-        viewModel.exercise.observe(viewLifecycleOwner) {
-            binding.ivExerciseGif.setImageDrawable(createGifSource(it.exerciseGif))
-            binding.tvExerciseTitle.text = it.title
-            binding.tvReps.text = it.reps.toString()
-            binding.tvExerciseDetail.text = it.description
+    private fun observeViewModel() {
+
+        viewModel.state.observe(viewLifecycleOwner) {
+            when (it) {
+                is Exercise -> {
+                    binding.ivExerciseGif.setImageDrawable(createGifSource(it.exerciseModel.exerciseGif))
+                    binding.tvExerciseTitle.text = it.exerciseModel.title
+                    binding.tvReps.text = it.exerciseModel.reps.toString()
+                    binding.tvExerciseDetail.text = it.exerciseModel.description
+                }
+                is TimerTime -> {
+                    binding.tvTimer.text = it.time
+                }
+                is CurrentExercisePositionAndAmountOfExercises -> {
+                    binding.tvCountOfExercises.text = it.position
+                }
+                is IsWorkoutCompleted -> {
+                    dialog.show()
+                }
+            }
         }
     }
 
-    private fun observeCurrentExercisePositionAndAmountOfExercises() {
-        viewModel.currentExercisePositionAndAmountOfExercises.observe(viewLifecycleOwner) {
-            binding.tvCountOfExercises.text = it
-        }
-    }
-
-    private fun observeTimer() {
-        viewModel.timerTime.observe(viewLifecycleOwner) {
-            binding.tvTimer.text = it
-        }
-    }
-
-    private fun observeIfWorkoutCompleted() {
-        viewModel.isWorkoutCompleted.observe(viewLifecycleOwner) {
-            dialog.show()
-        }
-    }
 
     private fun setupOnButtonsClickListener() {
 
@@ -137,12 +131,13 @@ class TrainingFragment : Fragment() {
                 findNavController().popBackStack()
             }
 
-            viewModel.timerTime.observe(viewLifecycleOwner) {
-                binding.tvTime.text = it
+            viewModel.state.observe(viewLifecycleOwner) {
+                if (it is TimerTime) {
+                    binding.tvTime.text = it.time
+                }
             }
 
             tvWorkoutName.text = args.workoutModel.title
-
         }
     }
 

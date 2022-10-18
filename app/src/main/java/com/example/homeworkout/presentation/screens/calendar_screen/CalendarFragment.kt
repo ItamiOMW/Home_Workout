@@ -66,9 +66,20 @@ class CalendarFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory)[CalendarViewModel::class.java]
         setupRV()
+        observeViewModelState()
         setupDialog()
         setCalendarDateChangedListener()
         setOnButtonAddClickListener()
+    }
+
+    private fun observeViewModelState() {
+        viewModel.state.observe(viewLifecycleOwner) {
+            when(it) {
+                is PlannedWorkoutList -> {
+                    workoutAdapter.submitList(it.list)
+                }
+            }
+        }
     }
 
     private fun setOnButtonAddClickListener() {
@@ -92,9 +103,9 @@ class CalendarFragment : Fragment() {
     private fun setupRV() {
         binding.rvScheduledWorkouts.adapter = workoutAdapter
         setOnSwapListener(binding.rvScheduledWorkouts)
-        viewModel.plannedWorkoutList.observe(viewLifecycleOwner) {
-            workoutAdapter.submitList(it)
-        }
+//        viewModel.plannedWorkoutList.observe(viewLifecycleOwner) {
+//            workoutAdapter.submitList(it)
+//        }
         workoutAdapter.onItemClicked = {
             findNavController().navigate(
                 CalendarFragmentDirections.actionCalendarFragmentToWorkout(
