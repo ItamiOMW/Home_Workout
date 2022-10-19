@@ -51,6 +51,6 @@ internal class GetAllWorkoutsUseCaseTest {
     @Test
     fun `should return list with all workouts (WorkoutModel only) `() {
         val list = getAllWorkoutsUseCase.invoke()
-        assertEquals(listWorkout, list)
+        assertEquals(listWorkout, list.value)
     }
 }

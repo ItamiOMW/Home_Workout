@@ -41,8 +41,8 @@ class FakeWorkoutRepository : WorkoutRepository {
         completeWorkout(plannedWorkoutModel.workoutModel)
     }
 
-    override suspend fun getAllWorkouts(): List<WorkoutModel> {
-        return workoutList
+    override fun getAllWorkouts(): LiveData<List<WorkoutModel>> {
+        return MutableLiveData(workoutList)
     }
 
     override suspend fun addWorkout(workoutModel: WorkoutModel) {
