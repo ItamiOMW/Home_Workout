@@ -35,7 +35,8 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@drawable/nfoto"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:contentDescription="@string/your_photo" />
 
         <TextView
             android:id="@+id/tv_date"
