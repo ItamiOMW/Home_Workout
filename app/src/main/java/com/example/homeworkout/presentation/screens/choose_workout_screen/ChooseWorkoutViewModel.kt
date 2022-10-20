@@ -7,7 +7,7 @@ import com.example.homeworkout.domain.usecases.GetAllWorkoutsUseCase
 import javax.inject.Inject
 
 class ChooseWorkoutViewModel @Inject constructor(
-    private val getAllWorkoutsUseCase: GetAllWorkoutsUseCase,
+    getAllWorkoutsUseCase: GetAllWorkoutsUseCase,
 ) : ViewModel() {
 
     private var _state = MutableLiveData<ChooseWorkoutViewModelState>()

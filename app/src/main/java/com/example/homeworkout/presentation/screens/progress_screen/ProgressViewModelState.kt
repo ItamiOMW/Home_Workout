@@ -2,7 +2,7 @@ package com.example.homeworkout.presentation.screens.progress_screen
 
 import android.net.Uri
 
-open class ProgressViewModelState()
+open class ProgressViewModelState
 
 class CompletedWorkouts(val count: Int): ProgressViewModelState()
 

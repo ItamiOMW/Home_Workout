@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 class PlanWorkoutViewModel @Inject constructor(
     private val addPlannedWorkoutUseCase: AddPlannedWorkoutUseCase,
-    private val getAllWorkoutsUseCase: GetAllWorkoutsUseCase,
+    getAllWorkoutsUseCase: GetAllWorkoutsUseCase,
 ) : ViewModel() {
 
     private var _state = MutableLiveData<PlanWorkoutViewModelState>()

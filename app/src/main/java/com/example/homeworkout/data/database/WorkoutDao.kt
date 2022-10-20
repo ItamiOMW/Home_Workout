@@ -30,7 +30,7 @@ interface WorkoutDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addWorkout(workoutModel: WorkoutDbModel)
 
-    @Insert()
+    @Insert
     suspend fun addWorkouts(listWorkoutModel: List<WorkoutDbModel>)
 
 

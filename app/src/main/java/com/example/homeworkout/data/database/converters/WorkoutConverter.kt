@@ -6,7 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.Serializable
 
-class WorkoutConverter() : Serializable {
+class WorkoutConverter : Serializable {
 
     @TypeConverter
     fun fromWorkout(value: WorkoutDbModel): String {

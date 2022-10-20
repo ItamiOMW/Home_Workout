@@ -1,7 +1,6 @@
 package com.example.homeworkout.presentation.screens.training_screen
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,12 +9,14 @@ import com.example.homeworkout.MILLIS_IN_SECOND
 import com.example.homeworkout.R
 import com.example.homeworkout.SECONDS_IN_HOUR
 import com.example.homeworkout.SECONDS_IN_MINUTE
-import com.example.homeworkout.domain.models.ExerciseModel
 import com.example.homeworkout.domain.models.PlannedWorkoutModel
 import com.example.homeworkout.domain.models.WorkoutModel
 import com.example.homeworkout.domain.usecases.CompletePlannedWorkoutUseCase
 import com.example.homeworkout.domain.usecases.CompleteWorkoutUseCase
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TrainingViewModel @Inject constructor(
@@ -89,7 +90,7 @@ class TrainingViewModel @Inject constructor(
                 plannedWorkoutModel?.let { completePlannedWorkoutUseCase.invoke(it) }
             }
             completeWorkoutUseCase.invoke(workoutModel)
-            _state.postValue(IsWorkoutCompleted(Any()))
+            _state.postValue(IsWorkoutCompleted())
             isWorkoutCompleted = Any()
         }
 

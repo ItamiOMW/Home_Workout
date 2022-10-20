@@ -6,5 +6,4 @@ data class UserInfoModel(
     val date: String,
     val weight: String,
     val photo: Bitmap
-) {
-}
+)

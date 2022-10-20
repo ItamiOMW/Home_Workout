@@ -9,5 +9,4 @@ data class ExerciseDbModel(
     val reps: Int,
     val description: String,
     val exerciseGif: Int
-): Parcelable {
-}
+): Parcelable

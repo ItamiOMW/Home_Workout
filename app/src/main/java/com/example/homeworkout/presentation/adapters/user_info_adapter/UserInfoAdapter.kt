@@ -1,15 +1,12 @@
 package com.example.homeworkout.presentation.adapters.user_info_adapter
 
 import android.app.Application
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.example.homeworkout.R
-import com.example.homeworkout.databinding.ExerciseItemBinding
 import com.example.homeworkout.databinding.UserItemBinding
 import com.example.homeworkout.domain.models.UserInfoModel
-import com.example.homeworkout.domain.models.WorkoutModel
 import javax.inject.Inject
 
 class UserInfoAdapter @Inject constructor(val application: Application) :

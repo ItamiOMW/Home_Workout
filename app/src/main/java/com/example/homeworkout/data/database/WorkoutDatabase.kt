@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
     ExerciseConverter::class,
     BitmapConverter::class
 )
-abstract class WorkoutDatabase() : RoomDatabase() {
+abstract class WorkoutDatabase : RoomDatabase() {
 
     abstract fun workoutDao(): WorkoutDao
 
@@ -46,7 +46,7 @@ abstract class WorkoutDatabase() : RoomDatabase() {
 
         private fun buildDatabase(context: Context): WorkoutDatabase {
             return Room.databaseBuilder(context, WorkoutDatabase::class.java, DB_NAME)
-                .addCallback(object : RoomDatabase.Callback() {
+                .addCallback(object : Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         super.onCreate(db)
                         instance?.let {
