@@ -2,7 +2,6 @@ package com.example.homeworkout.presentation.screens.calendar_screen
 
 import android.app.Application
 import android.text.format.DateFormat
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

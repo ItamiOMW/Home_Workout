@@ -17,7 +17,7 @@ import java.util.*
 import javax.inject.Inject
 
 class ProgressViewModel @Inject constructor(
-    private val getListUserInfoUseCase: GetListUserInfoUseCase,
+    getListUserInfoUseCase: GetListUserInfoUseCase,
     private val application: Application,
     private val addUserInfoUseCase: AddUserInfoUseCase,
     private val updateUserInfoUseCase: UpdateUserInfoUseCase,

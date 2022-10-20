@@ -2,14 +2,14 @@ package com.example.homeworkout.domain.usecases
 
 import com.example.homeworkout.data.repository_impl.FakeWorkoutRepository
 import com.example.homeworkout.domain.models.ExerciseModel
-import com.example.homeworkout.domain.models.PlannedWorkoutModel
 import com.example.homeworkout.domain.models.WorkoutModel
-import com.example.homeworkout.formatDate
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
+@ExperimentalCoroutinesApi
 internal class GetAllWorkoutsUseCaseTest {
 
     private lateinit var getAllWorkoutsUseCase: GetAllWorkoutsUseCase

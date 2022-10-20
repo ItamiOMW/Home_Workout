@@ -1,7 +1,6 @@
 package com.example.homeworkout.data.database.db_models
 
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -11,5 +10,4 @@ data class UserInfoDbModel(
     val date: String,
     val weight: String,
     val photo: Bitmap
-) {
-}
+)

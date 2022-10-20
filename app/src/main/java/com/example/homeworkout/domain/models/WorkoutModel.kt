@@ -11,6 +11,4 @@ data class WorkoutModel(
     val imagePath: Int,
     val duration: Float,
     val listExercises: List<ExerciseModel>,
-): Parcelable {
-
-}
+): Parcelable
