@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import com.example.homeworkout.di.annotations.ViewModelKey
 import com.example.homeworkout.presentation.screens.calendar_screen.CalendarViewModel
 import com.example.homeworkout.presentation.screens.choose_workout_screen.ChooseWorkoutViewModel
+import com.example.homeworkout.presentation.screens.login_screen.LoginViewModel
+import com.example.homeworkout.presentation.screens.parent_screen.MainViewModel
 import com.example.homeworkout.presentation.screens.plan_workout_screen.PlanWorkoutViewModel
 import com.example.homeworkout.presentation.screens.progress_screen.ProgressViewModel
 import com.example.homeworkout.presentation.screens.training_screen.TrainingViewModel
@@ -38,4 +40,14 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(ProgressViewModel::class)
     fun bindProgressViewModel(viewModel: ProgressViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(LoginViewModel::class)
+    fun bindLoginViewModel(viewModel: LoginViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MainViewModel::class)
+    fun bindMainViewModel(viewModel: MainViewModel): ViewModel
 }

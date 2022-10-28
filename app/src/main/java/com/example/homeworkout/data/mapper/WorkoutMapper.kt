@@ -1,9 +1,9 @@
 package com.example.homeworkout.data.mapper
 
-import com.example.homeworkout.data.database.db_models.ExerciseDbModel
-import com.example.homeworkout.data.database.db_models.PlannedWorkoutDbModel
-import com.example.homeworkout.data.database.db_models.UserInfoDbModel
-import com.example.homeworkout.data.database.db_models.WorkoutDbModel
+import com.example.homeworkout.data.database.room.room_db_models.ExerciseDbModel
+import com.example.homeworkout.data.database.room.room_db_models.PlannedWorkoutDbModel
+import com.example.homeworkout.data.database.room.room_db_models.UserInfoDbModel
+import com.example.homeworkout.data.database.room.room_db_models.WorkoutDbModel
 import com.example.homeworkout.domain.models.ExerciseModel
 import com.example.homeworkout.domain.models.PlannedWorkoutModel
 import com.example.homeworkout.domain.models.UserInfoModel

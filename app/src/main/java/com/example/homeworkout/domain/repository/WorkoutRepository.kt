@@ -4,7 +4,10 @@ import androidx.lifecycle.LiveData
 import com.example.homeworkout.domain.models.PlannedWorkoutModel
 import com.example.homeworkout.domain.models.UserInfoModel
 import com.example.homeworkout.domain.models.WorkoutModel
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 
+//HERE THE METHODS THAT USED WITH WORKOUT MODEL, PLANNED WORKOUT MODEL, USER INFO MODEL
 interface WorkoutRepository {
 
     //METHODS FOR WORK WITH PLANNED WORKOUT MODEL

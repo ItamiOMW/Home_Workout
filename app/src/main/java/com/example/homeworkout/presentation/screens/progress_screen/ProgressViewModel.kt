@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.homeworkout.R
 import com.example.homeworkout.domain.models.UserInfoModel
-import com.example.homeworkout.domain.usecases.*
+import com.example.homeworkout.domain.usecase.workout_repository_usecases.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
