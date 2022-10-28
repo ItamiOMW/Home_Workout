@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.homeworkout.R
 import com.example.homeworkout.domain.models.PlannedWorkoutModel
-import com.example.homeworkout.domain.usecases.DeletePlannedWorkoutUseCase
-import com.example.homeworkout.domain.usecases.GetPlannedWorkoutsByDateUseCase
+import com.example.homeworkout.domain.usecase.workout_repository_usecases.DeletePlannedWorkoutUseCase
+import com.example.homeworkout.domain.usecase.workout_repository_usecases.GetPlannedWorkoutsByDateUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*

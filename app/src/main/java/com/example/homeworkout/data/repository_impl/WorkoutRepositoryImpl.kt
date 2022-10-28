@@ -2,13 +2,15 @@ package com.example.homeworkout.data.repository_impl
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import com.example.homeworkout.data.database.WorkoutDao
+import com.example.homeworkout.data.database.room.WorkoutDao
 import com.example.homeworkout.data.mapper.WorkoutMapper
 import com.example.homeworkout.data.shared_preferences.PreferencesHelper
 import com.example.homeworkout.domain.models.PlannedWorkoutModel
 import com.example.homeworkout.domain.models.UserInfoModel
 import com.example.homeworkout.domain.models.WorkoutModel
 import com.example.homeworkout.domain.repository.WorkoutRepository
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import javax.inject.Inject
 
 class WorkoutRepositoryImpl @Inject constructor(
@@ -73,5 +75,4 @@ class WorkoutRepositoryImpl @Inject constructor(
     override suspend fun getCountOfCompletedWorkouts(): Int {
         return preferencesHelper.getCountOfCompletedWorkouts()
     }
-
 }

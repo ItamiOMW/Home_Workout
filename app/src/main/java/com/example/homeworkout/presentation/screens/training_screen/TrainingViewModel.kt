@@ -11,8 +11,8 @@ import com.example.homeworkout.SECONDS_IN_HOUR
 import com.example.homeworkout.SECONDS_IN_MINUTE
 import com.example.homeworkout.domain.models.PlannedWorkoutModel
 import com.example.homeworkout.domain.models.WorkoutModel
-import com.example.homeworkout.domain.usecases.CompletePlannedWorkoutUseCase
-import com.example.homeworkout.domain.usecases.CompleteWorkoutUseCase
+import com.example.homeworkout.domain.usecase.workout_repository_usecases.CompletePlannedWorkoutUseCase
+import com.example.homeworkout.domain.usecase.workout_repository_usecases.CompleteWorkoutUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay

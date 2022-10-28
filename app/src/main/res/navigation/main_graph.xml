@@ -3,11 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_graph"
-    app:startDestination="@id/tabsFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/tabsFragment"
         android:name="com.example.homeworkout.presentation.screens.tabs_screen.TabsFragment"
         android:label="fragment_tabs"
         tools:layout="@layout/fragment_tabs" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.homeworkout.presentation.screens.login_screen.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_tabsFragment"
+            app:destination="@id/tabsFragment" />
+    </fragment>
 </navigation>

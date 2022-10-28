@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.homeworkout.UNKNOWN_ID
 import com.example.homeworkout.domain.models.PlannedWorkoutModel
 import com.example.homeworkout.domain.models.WorkoutModel
-import com.example.homeworkout.domain.usecases.AddPlannedWorkoutUseCase
-import com.example.homeworkout.domain.usecases.GetAllWorkoutsUseCase
+import com.example.homeworkout.domain.usecase.workout_repository_usecases.AddPlannedWorkoutUseCase
+import com.example.homeworkout.domain.usecase.workout_repository_usecases.GetAllWorkoutsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject

@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id("kotlin-parcelize")
     id("androidx.navigation.safeargs.kotlin")
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -89,4 +90,11 @@ dependencies {
 
     //GSON
     implementation "com.google.code.gson:gson:$gson_version"
+
+    //FIREBASE BOM
+    implementation platform('com.google.firebase:firebase-bom:31.0.0')
+
+    //FIREBASE AUTH
+    implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
+    implementation 'com.google.android.gms:play-services-auth:20.3.0'
 }
