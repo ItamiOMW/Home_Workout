@@ -74,7 +74,7 @@ class CalendarFragment : Fragment() {
 
     private fun observeViewModelState() {
         viewModel.state.observe(viewLifecycleOwner) {
-            when(it) {
+            when (it) {
                 is PlannedWorkoutList -> {
                     workoutAdapter.submitList(it.list)
                 }
@@ -103,9 +103,6 @@ class CalendarFragment : Fragment() {
     private fun setupRV() {
         binding.rvScheduledWorkouts.adapter = workoutAdapter
         setOnSwapListener(binding.rvScheduledWorkouts)
-//        viewModel.plannedWorkoutList.observe(viewLifecycleOwner) {
-//            workoutAdapter.submitList(it)
-//        }
         workoutAdapter.onItemClicked = {
             findNavController().navigate(
                 CalendarFragmentDirections.actionCalendarFragmentToWorkout(
@@ -178,8 +175,9 @@ class CalendarFragment : Fragment() {
             tvLeftward.setOnClickListener {
                 dialog.dismiss()
                 findNavController().navigate(
-                    PlanWorkoutFragmentDirections.actionPlanWorkoutFragmentToWorkout(
-                        plannedWorkoutModel.workoutModel, plannedWorkoutModel
+                    CalendarFragmentDirections.actionCalendarFragmentToWorkout(
+                        plannedWorkoutModel.workoutModel,
+                        plannedWorkoutModel
                     )
                 )
             }
