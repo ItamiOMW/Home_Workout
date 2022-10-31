@@ -2,6 +2,7 @@ package com.example.homeworkout.domain.repository
 
 import androidx.lifecycle.LiveData
 import com.example.homeworkout.domain.models.Response
+import com.example.homeworkout.domain.models.UserModel
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseUser
 
@@ -14,6 +15,6 @@ interface AuthRepository {
 
     suspend fun checkSignedIn(): Boolean
 
-    suspend fun getCurrentUser(): FirebaseUser?
+    suspend fun getCurrentUser(): UserModel?
 
 }

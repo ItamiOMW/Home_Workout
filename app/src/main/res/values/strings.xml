@@ -40,4 +40,8 @@
     <string name="login_with_google">LOGIN WITH GOOGLE</string>
     <string name="welcome">WELCOME :)</string>
     <string name="web_client_id">303570052925-8tkf09ut72pjefdg4ifin63jmanif46s.apps.googleusercontent.com</string>
+    <string name="profile">profile</string>
+    <string name="user_photo">USER PHOTO</string>
+    <string name="user_name">USER NAME</string>
+    <string name="sign_out">SIGN OUT</string>
 </resources>

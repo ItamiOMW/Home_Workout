@@ -11,6 +11,7 @@ import com.example.homeworkout.presentation.screens.choose_workout_screen.Choose
 import com.example.homeworkout.presentation.screens.login_screen.LoginFragment
 import com.example.homeworkout.presentation.screens.parent_screen.MainActivity
 import com.example.homeworkout.presentation.screens.plan_workout_screen.PlanWorkoutFragment
+import com.example.homeworkout.presentation.screens.profile_screen.ProfileFragment
 import com.example.homeworkout.presentation.screens.progress_screen.ProgressFragment
 import com.example.homeworkout.presentation.screens.tabs_screen.TabsFragment
 import com.example.homeworkout.presentation.screens.training_screen.TrainingFragment
@@ -37,6 +38,8 @@ interface WorkoutComponent {
     fun inject(fragment: WorkoutDetailFragment)
 
     fun inject(fragment: LoginFragment)
+
+    fun inject(fragment: ProfileFragment)
 
     fun inject(activity: MainActivity)
 
