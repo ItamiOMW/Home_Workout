@@ -3,20 +3,22 @@
 
     <item
         android:id="@+id/choose_workout"
-        android:title="@string/workout"
         android:icon="@drawable/ic_workout"
-        />
+        android:title="@string/workout" />
 
     <item
         android:id="@+id/calendar"
-        android:title="@string/schedule"
         android:icon="@drawable/ic_calendar"
-        />
+        android:title="@string/schedule" />
 
     <item
         android:id="@+id/progress"
-        android:title="@string/progress"
         android:icon="@drawable/ic_goals"
-        />
+        android:title="@string/progress" />
+
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/profile" />
 
 </menu>

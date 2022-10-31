@@ -10,4 +10,6 @@
 
     <include app:graph="@navigation/calendar" />
 
+    <include app:graph="@navigation/profile" />
+
 </navigation>

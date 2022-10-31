@@ -7,6 +7,7 @@ import com.example.homeworkout.presentation.screens.choose_workout_screen.Choose
 import com.example.homeworkout.presentation.screens.login_screen.LoginViewModel
 import com.example.homeworkout.presentation.screens.parent_screen.MainViewModel
 import com.example.homeworkout.presentation.screens.plan_workout_screen.PlanWorkoutViewModel
+import com.example.homeworkout.presentation.screens.profile_screen.ProfileViewModel
 import com.example.homeworkout.presentation.screens.progress_screen.ProgressViewModel
 import com.example.homeworkout.presentation.screens.training_screen.TrainingViewModel
 import dagger.Binds
@@ -50,4 +51,9 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(MainViewModel::class)
     fun bindMainViewModel(viewModel: MainViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ProfileViewModel::class)
+    fun bindProfileViewModel(viewModel: ProfileViewModel): ViewModel
 }

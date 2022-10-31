@@ -39,6 +39,7 @@ class TabsFragment : Fragment() {
                 R.id.calendarFragment -> showBottomNav()
                 R.id.progressFragment -> showBottomNav()
                 R.id.chooseWorkoutFragment -> showBottomNav()
+                R.id.profileFragment -> showBottomNav()
                 else -> hideBottomNav()
             }
         }
