@@ -36,6 +36,7 @@ class ProgressFragment : Fragment() {
     private val binding: FragmentProgressBinding
         get() = _binding ?: throw RuntimeException("FragmentProgressBinding is null")
 
+
     private val component by lazy {
         (requireActivity().application as AppWorkout).component
     }
@@ -48,6 +49,7 @@ class ProgressFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.getCountOfCompletedWorkouts()
+        viewModel.getListUserInfo()
     }
 
     @Inject
@@ -78,41 +80,53 @@ class ProgressFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory)[ProgressViewModel::class.java]
         setupUserInfoAdapter()
-        observeViewModel()
+        collectUIState()
         setupDatePicker()
         setupDialogAddUser()
         setupOnButtonAddUserInfoClickListener()
     }
 
-    private fun observeViewModel() {
+    private fun collectUIState() {
 
-        viewModel.listUserInfo.observe(viewLifecycleOwner) {
-            setupBarChart(it)
-            userInfoAdapter.submitList(it)
-        }
-
-        viewModel.state.observe(viewLifecycleOwner) {
-            when (it) {
-                is CompletedWorkouts -> {
-                    binding.tvCompletedWorkouts.text = String.format(
-                        getString(R.string.count_of_workout_completed, it.count.toString()))
+        lifecycleScope.launchWhenStarted {
+            viewModel.state.collect { state ->
+                if (state is Loading) {
+                    binding.progressBarLoading.visibility = View.VISIBLE
+                } else {
+                    binding.progressBarLoading.visibility = View.GONE
                 }
-                is DateFailure -> {
-                    if (it.boolean) {
-                        Toast.makeText(requireContext(),
-                            getString(R.string.date_wasnt_selected),
-                            Toast.LENGTH_SHORT).show()
+                when (state) {
+                    is Failure -> {
+                        Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
                     }
-                }
-                is WeightFailure -> {
-                    if (it.boolean) {
-                        Toast.makeText(requireContext(),
-                            getString(R.string.weight_wasnt_entered),
-                            Toast.LENGTH_SHORT).show()
+                    is ListUserInfo -> {
+                        setupBarChart(state.list)
+                        userInfoAdapter.submitList(state.list)
+                    }
+                    is AddedUserInfo -> {
+                        Toast.makeText(context, getString(R.string.added_scfly), Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    is UpdatedUserInfo -> {
+                        Toast.makeText(context,
+                            getString(R.string.updated_scfly),
+                            Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    is DeletedUserInfo -> {
+                        Toast.makeText(context,
+                            getString(R.string.deleted_scfly),
+                            Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    is CompletedWorkouts -> {
+                        binding.tvCompletedWorkouts.text = String.format(
+                            getString(R.string.count_of_workout_completed, state.count.toString()))
                     }
                 }
             }
         }
+
     }
 
     private fun setupUserInfoAdapter() {
@@ -157,9 +171,9 @@ class ProgressFragment : Fragment() {
     }
 
     private fun setupDialogAddUser() {
+        val addWeightDialogBinding = AddWeightDialogBinding.inflate(layoutInflater)
         dialogAddUser = Dialog(requireContext())
-        val dialogBinding = AddWeightDialogBinding.inflate(layoutInflater)
-        dialogAddUser.setContentView(dialogBinding.root)
+        dialogAddUser.setContentView(addWeightDialogBinding.root)
         dialogAddUser.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
         dialogAddUser.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -167,7 +181,7 @@ class ProgressFragment : Fragment() {
         )
         dialogAddUser.setCancelable(true)
         dialogAddUser.window?.attributes?.windowAnimations = R.style.window_animation
-        setOnDialogAddUserButtonsClickListeners(dialogBinding, dialogAddUser)
+        setOnDialogAddUserButtonsClickListeners(addWeightDialogBinding, dialogAddUser)
     }
 
 
@@ -194,16 +208,15 @@ class ProgressFragment : Fragment() {
                 datePickerDialog.show()
             }
 
-            viewModel.state.observe(viewLifecycleOwner) {
-                when (it) {
-                    is ImageUri -> {
-                        ivUserPhoto.setImageURI(it.uri)
-                    }
-                    is DateForProgressScreen -> {
-                        tvDate.text = it.date
+            lifecycleScope.launchWhenStarted {
+                viewModel.state.collect { state ->
+                    when (state) {
+                        is ImageUri -> binding.ivUserPhoto.setImageURI(state.uri)
+                        is DateForProgressScreen -> binding.tvDate.text = state.date
                     }
                 }
             }
+
         }
     }
 
@@ -246,9 +259,9 @@ class ProgressFragment : Fragment() {
     }
 
     private fun setupDialogEditUser(userInfo: UserInfoModel) {
+        val editUserDialogBinding = EditUserDialogBinding.inflate(layoutInflater)
         dialogEditUser = Dialog(requireContext())
-        val dialogBinding = EditUserDialogBinding.inflate(layoutInflater)
-        dialogEditUser.setContentView(dialogBinding.root)
+        dialogEditUser.setContentView(editUserDialogBinding.root)
         dialogEditUser.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
         dialogEditUser.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -256,7 +269,7 @@ class ProgressFragment : Fragment() {
         )
         dialogEditUser.setCancelable(true)
         dialogEditUser.window?.attributes?.windowAnimations = R.style.window_animation
-        setOnDialogEditUserButtonsClickListeners(dialogBinding, dialogEditUser, userInfo)
+        setOnDialogEditUserButtonsClickListeners(editUserDialogBinding, dialogEditUser, userInfo)
     }
 
     private fun setOnDialogEditUserButtonsClickListeners(
@@ -290,9 +303,11 @@ class ProgressFragment : Fragment() {
 
             tvDate.text = userInfo.date
 
-            viewModel.state.observe(viewLifecycleOwner) {
-                if (it is ImageUri) {
-                    ivUserPhoto.setImageURI(it.uri)
+            lifecycleScope.launchWhenStarted {
+                viewModel.state.collect { state ->
+                    if (state is ImageUri) {
+                        binding.ivUserPhoto.setImageURI(state.uri)
+                    }
                 }
             }
 

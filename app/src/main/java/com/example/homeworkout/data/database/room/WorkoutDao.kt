@@ -8,6 +8,7 @@ import androidx.room.Query
 import com.example.homeworkout.data.database.room.room_db_models.PlannedWorkoutDbModel
 import com.example.homeworkout.data.database.room.room_db_models.UserInfoDbModel
 import com.example.homeworkout.data.database.room.room_db_models.WorkoutDbModel
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface WorkoutDao {
@@ -22,10 +23,9 @@ interface WorkoutDao {
     @Query("DELETE FROM planned_workout_models WHERE id=:id")
     suspend fun deletePlannedWorkout(id: Int)
 
-
     //METHODS FOR WORK WITH WORKOUT MODEL
     @Query("SELECT * FROM workout_models")
-    fun getAllWorkouts(): LiveData<List<WorkoutDbModel>>
+    fun getAllWorkouts(): List<WorkoutDbModel>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addWorkout(workoutModel: WorkoutDbModel)
@@ -39,7 +39,7 @@ interface WorkoutDao {
     suspend fun addUserInfo(userInfoDbModel: UserInfoDbModel)
 
     @Query("SELECT * FROM user_info")
-    fun getListUserInfo(): LiveData<List<UserInfoDbModel>>
+    fun getListUserInfo(): List<UserInfoDbModel>
 
     @Query("SELECT * FROM user_info WHERE date=:date")
     suspend fun getUserInfoByDate(date: String): UserInfoDbModel

@@ -1,22 +1,27 @@
 package com.example.homeworkout.domain.models
 
-import com.example.homeworkout.domain.models.Status.*
+sealed class Response<out T> {
 
-data class Response<out T>(val status: Status, val data: T?, val message: String?) {
+    //Loading State
+    class Loading<T> : Response<T>()
+
+    //Success state
+    data class Success<T>(val data: T) : Response<T>()
+
+    //Failed state
+    data class Failed<T>(val message: String) : Response<T>()
+
 
     companion object {
 
-        fun <T> success(data: T?): Response<T> {
-            return Response(SUCCESS, data, null)
-        }
+        //GET LOADING STATE
+        fun <T> loading() = Loading<T>()
 
-        fun <T> error(msg: String, data: T?): Response<T> {
-            return Response(ERROR, data, msg)
-        }
+        //GET SUCCESS STATE
+        fun <T> success(data: T) = Success(data)
 
-        fun <T> loading(data: T?): Response<T> {
-            return Response(LOADING, data, null)
-        }
+        //GET FAILED STATE
+        fun <T> failed(message: String) = Failed<T>(message)
 
     }
 

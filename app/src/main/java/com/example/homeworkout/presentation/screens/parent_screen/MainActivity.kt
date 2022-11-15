@@ -2,11 +2,12 @@ package com.example.homeworkout.presentation.screens.parent_screen
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import com.example.homeworkout.AppWorkout
 import com.example.homeworkout.R
 import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
@@ -34,18 +35,25 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         navController = getRootNavController()
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
-        observeViewModel()
+        collectUIState()
         checkSignedIn()
     }
 
-    private fun observeViewModel() {
-        viewModel.state.observe(this) {
-            when (it) {
-                is IsSignedIn -> {
-                    setStartDestination(it.isSignedIn, navController)
+    private fun collectUIState() {
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.state.collect { state ->
+                when (state) {
+                    is IsSignedIn -> {
+                        setStartDestination(state.isSignedIn, navController)
+                    }
+                    is Failure -> {
+                        Toast.makeText(applicationContext, state.message, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
+
     }
 
     private fun getRootNavController(): NavController {

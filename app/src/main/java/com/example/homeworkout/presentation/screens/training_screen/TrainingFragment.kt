@@ -7,8 +7,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.homeworkout.AppWorkout
@@ -58,33 +60,49 @@ class TrainingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory)[TrainingViewModel::class.java]
-        observeViewModel()
+        collectUIState()
         viewModel.start(args.workoutModel, args.plannedWorkoutModel)
         setupOnButtonsClickListener()
         setupDialog()
     }
 
-    private fun observeViewModel() {
+    private fun collectUIState() {
 
-        viewModel.state.observe(viewLifecycleOwner) {
-            when (it) {
-                is Exercise -> {
-                    binding.ivExerciseGif.setImageDrawable(createGifSource(it.exerciseModel.exerciseGif))
-                    binding.tvExerciseTitle.text = it.exerciseModel.title
-                    binding.tvReps.text = it.exerciseModel.reps.toString()
-                    binding.tvExerciseDetail.text = it.exerciseModel.description
+        lifecycleScope.launchWhenStarted {
+            viewModel.state.collect { state ->
+                if (state is Loading) {
+                    binding.progressBarLoading.visibility = View.VISIBLE
+                } else {
+                    binding.progressBarLoading.visibility = View.GONE
                 }
-                is TimerTime -> {
-                    binding.tvTimer.text = it.time
-                }
-                is CurrentExercisePositionAndAmountOfExercises -> {
-                    binding.tvCountOfExercises.text = it.position
-                }
-                is IsWorkoutCompleted -> {
-                    dialog.show()
+                when (state) {
+                    is Exercise -> {
+                        binding.ivExerciseGif.setImageDrawable(createGifSource(state.exerciseModel.exerciseGif))
+                        binding.tvExerciseTitle.text = state.exerciseModel.title
+                        binding.tvReps.text = state.exerciseModel.reps.toString()
+                        binding.tvExerciseDetail.text = state.exerciseModel.description
+                    }
+                    is TimerTime -> {
+                        binding.tvTimer.text = state.time
+                    }
+                    is CurrentExercisePositionAndAmountOfExercises -> {
+                        binding.tvCountOfExercises.text = state.position
+                    }
+                    is IsWorkoutCompleted -> {
+                        dialog.show()
+                    }
+                    is IsPlannedWorkoutCompleted -> {
+                        Toast.makeText(context,
+                            getString(R.string.comleted_planned_workout),
+                            Toast.LENGTH_SHORT).show()
+                    }
+                    is Failure -> {
+                        Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
+
     }
 
 
@@ -106,8 +124,8 @@ class TrainingFragment : Fragment() {
 
     private fun setupDialog() {
         dialog = Dialog(requireContext())
-        val dialogBinding = WorkoutCompletedDialogBinding.inflate(layoutInflater)
-        dialog.setContentView(dialogBinding.root)
+        val workoutCompletedDialogBinding = WorkoutCompletedDialogBinding.inflate(layoutInflater)
+        dialog.setContentView(workoutCompletedDialogBinding.root)
         dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
         dialog.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -115,7 +133,7 @@ class TrainingFragment : Fragment() {
         )
         dialog.setCancelable(false)
         dialog.window?.attributes?.windowAnimations = R.style.window_animation
-        setupDialogButtons(dialogBinding, dialog)
+        setupDialogButtons(workoutCompletedDialogBinding, dialog)
 
     }
 
@@ -130,13 +148,15 @@ class TrainingFragment : Fragment() {
                 findNavController().popBackStack()
             }
 
-            viewModel.state.observe(viewLifecycleOwner) {
-                if (it is TimerTime) {
-                    binding.tvTime.text = it.time
+            tvWorkoutName.text = args.workoutModel.title
+
+            lifecycleScope.launchWhenStarted {
+                viewModel.state.collect { state ->
+                    if (state is TimerTime) {
+                        binding.tvTime.text = state.time
+                    }
                 }
             }
-
-            tvWorkoutName.text = args.workoutModel.title
         }
     }
 

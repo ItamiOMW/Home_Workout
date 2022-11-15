@@ -1,11 +1,14 @@
 package com.example.homeworkout.presentation.screens.choose_workout_screen
 
+import android.os.Binder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.homeworkout.AppWorkout
 import com.example.homeworkout.databinding.FragmentChooseWorkoutBinding
@@ -14,7 +17,7 @@ import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFa
 import javax.inject.Inject
 
 
-class ChooseWorkoutFragment : Fragment() {
+open class ChooseWorkoutFragment : Fragment() {
 
     private var _binding: FragmentChooseWorkoutBinding? = null
     private val binding: FragmentChooseWorkoutBinding
@@ -49,23 +52,34 @@ class ChooseWorkoutFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory)[ChooseWorkoutViewModel::class.java]
         setupRV()
-        observeViewModelState()
+        collectUIState()
     }
 
-    private fun observeViewModelState() {
+    private fun collectUIState() {
 
-        viewModel.state.observe(viewLifecycleOwner) {
-            when (it) {
-                //todo add new functions to choose workout
+        lifecycleScope.launchWhenStarted {
+            viewModel.state.collect { state ->
+                if (state is Loading) {
+                    binding.progressBarLoading.visibility = View.VISIBLE
+                } else {
+                    binding.progressBarLoading.visibility = View.GONE
+                }
+                when (state) {
+                    is WorkoutList -> {
+                        workoutAdapter.submitList(state.list)
+                    }
+                    is Failure -> {
+                        Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
+
     }
 
     private fun setupRV() {
         binding.rvTrainings.adapter = workoutAdapter
-        viewModel.list.observe(viewLifecycleOwner) {
-            workoutAdapter.submitList(it)
-        }
+
         workoutAdapter.onItemClicked = {
             findNavController().navigate(
                 ChooseWorkoutFragmentDirections.actionChooseWorkoutFragmentToWorkout(

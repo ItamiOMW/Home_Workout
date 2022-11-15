@@ -44,4 +44,11 @@
     <string name="user_photo">USER PHOTO</string>
     <string name="user_name">USER NAME</string>
     <string name="sign_out">SIGN OUT</string>
+    <string name="workout_deleted">WORKOUT HAS BEEN DELETED</string>
+    <string name="workout_planned">WORKOUT PLANNED</string>
+    <string name="date_wasnt_selectedd">DATE WASN\'T SELECTED</string>
+    <string name="added_scfly">ADDED SUCCESSFULLY</string>
+    <string name="updated_scfly">UPDATED SUCCESSFULLY</string>
+    <string name="deleted_scfly">DELETED SUCCESSFULLY</string>
+    <string name="comleted_planned_workout">YOU HAVE JUST COMPLETED PLANNED WORKOUT</string>
 </resources>
