@@ -2,15 +2,17 @@ package com.example.homeworkout.presentation.screens.calendar_screen
 
 import android.app.Application
 import android.text.format.DateFormat
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.homeworkout.R
 import com.example.homeworkout.domain.models.PlannedWorkoutModel
+import com.example.homeworkout.domain.models.Response
 import com.example.homeworkout.domain.usecase.workout_repository_usecases.DeletePlannedWorkoutUseCase
 import com.example.homeworkout.domain.usecase.workout_repository_usecases.GetPlannedWorkoutsByDateUseCase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -21,9 +23,8 @@ class CalendarViewModel @Inject constructor(
     private val deletePlannedWorkoutUseCase: DeletePlannedWorkoutUseCase,
 ) : ViewModel() {
 
-    private var _state = MutableLiveData<CalendarViewModelState>()
-    val state: LiveData<CalendarViewModelState>
-        get() = _state
+    private val _state = MutableStateFlow(CalendarUIState())
+    val state = _state.asStateFlow()
 
     private var _date: String = getCurrentDate()
     val date: String = _date
@@ -39,16 +40,40 @@ class CalendarViewModel @Inject constructor(
     }
 
     fun deletePlannedWorkout(plannedWorkoutModel: PlannedWorkoutModel) {
-        viewModelScope.launch(Dispatchers.IO) {
-            deletePlannedWorkoutUseCase.invoke(plannedWorkoutModel)
+        viewModelScope.launch {
+            deletePlannedWorkoutUseCase.invoke(plannedWorkoutModel).collect {
+                when (it) {
+                    is Response.Loading -> {
+                        _state.value = Loading
+                    }
+                    is Response.Success -> {
+                        _state.value = WorkoutDeleted
+                    }
+                    is Response.Failed -> {
+                        _state.value = Failure(it.message)
+                    }
+                }
+            }
             updateList(date)
         }
     }
 
 
     private fun updateList(date: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            _state.postValue(PlannedWorkoutList(getPlannedWorkoutsByDateUseCase.invoke(date)))
+        viewModelScope.launch {
+            getPlannedWorkoutsByDateUseCase.invoke(date).collect {
+                when (it) {
+                    is Response.Loading -> {
+                        _state.value = Loading
+                    }
+                    is Response.Success -> {
+                        _state.value = PlannedWorkoutList(it.data)
+                    }
+                    is Response.Failed -> {
+                        _state.value = Failure(it.message)
+                    }
+                }
+            }
         }
     }
 

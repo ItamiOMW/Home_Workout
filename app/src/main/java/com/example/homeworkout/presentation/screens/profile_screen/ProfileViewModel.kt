@@ -1,12 +1,15 @@
 package com.example.homeworkout.presentation.screens.profile_screen
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.homeworkout.domain.models.Response
 import com.example.homeworkout.domain.usecase.auth_repository_usecases.GetCurrentUserUseCase
 import com.example.homeworkout.domain.usecase.auth_repository_usecases.SignOutUseCase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,9 +18,8 @@ class ProfileViewModel @Inject constructor(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
 ) : ViewModel() {
 
-    private val _state = MutableLiveData<ProfileViewModelState>()
-    val state: LiveData<ProfileViewModelState>
-        get() = _state
+    private val _state = MutableStateFlow(ProfileUIState())
+    val state = _state.asStateFlow()
 
     init {
         getCurrentUser()
@@ -26,19 +28,42 @@ class ProfileViewModel @Inject constructor(
 
     fun signOut() {
 
-        viewModelScope.launch(Dispatchers.IO) {
-            val isSignedOut = signOutUseCase.invoke()
-            _state.postValue(SignedOutSuccessfully(isSignedOut))
+        viewModelScope.launch {
+            signOutUseCase.invoke().collect {
+                when (it) {
+                    is Response.Loading -> {
+                        _state.value = Loading
+                    }
+                    is Response.Failed -> {
+                        _state.value = Failure(it.message)
+                    }
+                    is Response.Success -> {
+                        _state.value = SignedOutSuccessfully(it.data)
+                    }
+                }
+            }
+
         }
 
     }
 
     private fun getCurrentUser() {
 
-        viewModelScope.launch(Dispatchers.IO) {
-            val user = getCurrentUserUseCase.invoke()
-            if (user != null) {
-                _state.postValue(CurrentUser(user))
+        viewModelScope.launch {
+            getCurrentUserUseCase.invoke().collect {
+                when (it) {
+                    is Response.Loading -> {
+                        _state.value = Loading
+                    }
+                    is Response.Failed -> {
+                        _state.value = Failure(it.message)
+                    }
+                    is Response.Success -> {
+                        if (it.data != null) {
+                            _state.value = CurrentUser(it.data)
+                        }
+                    }
+                }
             }
         }
 

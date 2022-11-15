@@ -2,31 +2,66 @@ package com.example.homeworkout.data.repository_impl
 
 import com.example.homeworkout.data.database.firebase.UserAuthHelper
 import com.example.homeworkout.data.mapper.UserMapper
-import com.example.homeworkout.domain.models.UserModel
+import com.example.homeworkout.domain.models.Response
 import com.example.homeworkout.domain.repository.AuthRepository
 import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
     private val authHelper: UserAuthHelper,
-    private val mapper: UserMapper
+    private val mapper: UserMapper,
 ) : AuthRepository {
 
-    override suspend fun signIn(credential: AuthCredential): Boolean {
-        return authHelper.signIn(credential)
-    }
+    override fun signIn(credential: AuthCredential) = flow {
+        emit(Response.loading())
 
-    override suspend fun signOut(): Boolean {
-        return authHelper.signOut()
-    }
+        authHelper.signIn(credential)
 
-    override suspend fun checkSignedIn(): Boolean {
-        return authHelper.checkSignedIn()
-    }
+        emit(Response.success(true))
 
-    override suspend fun getCurrentUser(): UserModel? {
-        return authHelper.getCurrentUser()?.let { mapper.mapFireBaseUserToUserModel(it) }
-    }
+    }.catch {
+        emit(Response.failed(it.message.toString()))
+    }.flowOn(Dispatchers.IO)
+
+
+    override fun signOut() = flow {
+        emit(Response.loading())
+
+        authHelper.signOut()
+
+        emit(Response.success(true))
+
+    }.catch {
+        emit(Response.failed(it.message.toString()))
+    }.flowOn(Dispatchers.IO)
+
+
+    override fun checkSignedIn() = flow {
+        emit(Response.loading())
+
+        val isSignedIn = authHelper.checkSignedIn()
+
+        emit(Response.success(isSignedIn))
+
+    }.catch {
+        emit(Response.failed(it.message.toString()))
+    }.flowOn(Dispatchers.IO)
+
+
+    override fun getCurrentUser() = flow {
+        emit(Response.loading())
+
+        val currentFirebaseUser = authHelper.getCurrentUser()
+        val userModel = currentFirebaseUser?.let { mapper.mapFireBaseUserToUserModel(it) }
+
+        emit(Response.success(userModel))
+
+    }.catch {
+        emit(Response.failed(it.message.toString()))
+    }.flowOn(Dispatchers.IO)
 
 }

@@ -1,45 +1,45 @@
 package com.example.homeworkout.domain.repository
 
-import androidx.lifecycle.LiveData
 import com.example.homeworkout.domain.models.PlannedWorkoutModel
+import com.example.homeworkout.domain.models.Response
 import com.example.homeworkout.domain.models.UserInfoModel
 import com.example.homeworkout.domain.models.WorkoutModel
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import kotlinx.coroutines.flow.Flow
 
+//TODO CREATE 2 REPOSITORY IMPLEMENTATIONS: REMOTE AND LOCAL(firebase and room)
 //HERE THE METHODS THAT USED WITH WORKOUT MODEL, PLANNED WORKOUT MODEL, USER INFO MODEL
 interface WorkoutRepository {
 
     //METHODS FOR WORK WITH PLANNED WORKOUT MODEL
-    suspend fun getPlannedWorkoutsByDate(date: String): List<PlannedWorkoutModel>
+    fun getPlannedWorkoutsByDate(date: String): Flow<Response<List<PlannedWorkoutModel>>>
 
-    suspend fun addPlannedWorkout(plannedWorkoutModel: PlannedWorkoutModel)
+    fun addPlannedWorkout(plannedWorkoutModel: PlannedWorkoutModel): Flow<Response<Boolean>>
 
-    suspend fun deletePlannedWorkout(plannedWorkoutModel: PlannedWorkoutModel)
+    fun deletePlannedWorkout(plannedWorkoutModel: PlannedWorkoutModel): Flow<Response<Boolean>>
 
-    suspend fun completePlannedWorkout(plannedWorkoutModel: PlannedWorkoutModel)
+    fun completePlannedWorkout(plannedWorkoutModel: PlannedWorkoutModel): Flow<Response<Boolean>>
 
     //METHODS FOR WORK WITH WORKOUT MODEL
-    fun getAllWorkouts(): LiveData<List<WorkoutModel>>
+    fun getAllWorkouts(): Flow<Response<List<WorkoutModel>>>
 
-    suspend fun addWorkout(workoutModel: WorkoutModel)
+    fun addWorkout(workoutModel: WorkoutModel): Flow<Response<Boolean>>
 
-    suspend fun completeWorkout(workoutModel: WorkoutModel)
+    fun completeWorkout(workoutModel: WorkoutModel): Flow<Response<Boolean>>
 
 
     //METHODS FOR WORK WITH USER INFO
-    fun getListUserInfo(): LiveData<List<UserInfoModel>>
+    fun getListUserInfo(): Flow<Response<List<UserInfoModel>>>
 
-    suspend fun getUserInfoByDate(date: String): UserInfoModel
+    fun getUserInfoByDate(date: String): Flow<Response<UserInfoModel>>
 
-    suspend fun updateUserInfo(userInfoModel: UserInfoModel)
+    fun updateUserInfo(userInfoModel: UserInfoModel): Flow<Response<Boolean>>
 
-    suspend fun addUserInfo(userInfoModel: UserInfoModel)
+    fun addUserInfo(userInfoModel: UserInfoModel): Flow<Response<Boolean>>
 
-    suspend fun deleteUserInfo(userInfoModel: UserInfoModel)
+    fun deleteUserInfo(userInfoModel: UserInfoModel): Flow<Response<Boolean>>
 
 
     //FOR WORK WITH PREFERENCES
-    suspend fun getCountOfCompletedWorkouts(): Int
+    fun getCountOfCompletedWorkouts(): Flow<Response<Int>>
 
 }

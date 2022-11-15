@@ -5,9 +5,9 @@ import com.google.firebase.auth.FirebaseUser
 
 interface UserAuthHelper {
 
-    suspend fun signIn(credential: AuthCredential): Boolean
+    suspend fun signIn(credential: AuthCredential)
 
-    suspend fun signOut(): Boolean
+    suspend fun signOut()
 
     suspend fun checkSignedIn(): Boolean
 

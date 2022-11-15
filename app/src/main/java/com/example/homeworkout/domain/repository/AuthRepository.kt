@@ -1,20 +1,19 @@
 package com.example.homeworkout.domain.repository
 
-import androidx.lifecycle.LiveData
 import com.example.homeworkout.domain.models.Response
 import com.example.homeworkout.domain.models.UserModel
 import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.flow.Flow
 
 //HERE THE METHODS THAT USED WITH AUTHENTICATION
 interface AuthRepository {
 
-    suspend fun signIn(credential: AuthCredential): Boolean
+    fun signIn(credential: AuthCredential): Flow<Response<Boolean>>
 
-    suspend fun signOut(): Boolean
+    fun signOut(): Flow<Response<Boolean>>
 
-    suspend fun checkSignedIn(): Boolean
+    fun checkSignedIn(): Flow<Response<Boolean>>
 
-    suspend fun getCurrentUser(): UserModel?
+    fun getCurrentUser(): Flow<Response<UserModel?>>
 
 }

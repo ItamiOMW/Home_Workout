@@ -1,8 +1,6 @@
 package com.example.homeworkout.presentation.screens.training_screen
 
 import android.app.Application
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.homeworkout.MILLIS_IN_SECOND
@@ -10,12 +8,15 @@ import com.example.homeworkout.R
 import com.example.homeworkout.SECONDS_IN_HOUR
 import com.example.homeworkout.SECONDS_IN_MINUTE
 import com.example.homeworkout.domain.models.PlannedWorkoutModel
+import com.example.homeworkout.domain.models.Response
 import com.example.homeworkout.domain.models.WorkoutModel
 import com.example.homeworkout.domain.usecase.workout_repository_usecases.CompletePlannedWorkoutUseCase
 import com.example.homeworkout.domain.usecase.workout_repository_usecases.CompleteWorkoutUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,9 +26,8 @@ class TrainingViewModel @Inject constructor(
     private val completeWorkoutUseCase: CompleteWorkoutUseCase,
 ) : ViewModel() {
 
-    private val _state = MutableLiveData<TrainingViewModelState>()
-    val state: LiveData<TrainingViewModelState>
-        get() = _state
+    private val _state = MutableStateFlow(TrainingUIState())
+    val state = _state.asStateFlow()
 
     private lateinit var workoutModel: WorkoutModel
 
@@ -72,8 +72,10 @@ class TrainingViewModel @Inject constructor(
     }
 
     private fun updateExercise(positionInList: Int) {
-        //TODO DISCOVER WHY OBSERVER TRIGGERS ONLY with postValue BUT NOT WITH setValue
-        _state.postValue(Exercise(workoutModel.listExercises[positionInList]))
+        viewModelScope.launch(Dispatchers.Main) {
+            val exercise = Exercise(workoutModel.listExercises[positionInList])
+            _state.value = exercise
+        }
     }
 
     private fun formatCurrentPositionAndAmountExercises() {
@@ -85,12 +87,39 @@ class TrainingViewModel @Inject constructor(
 
     private fun completeWorkout() {
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             if (plannedWorkoutModel != null) {
-                plannedWorkoutModel?.let { completePlannedWorkoutUseCase.invoke(it) }
+                plannedWorkoutModel?.let {
+                    completePlannedWorkoutUseCase.invoke(it).collect {
+                        when (it) {
+                            is Response.Loading -> {
+                                _state.value = Loading
+                            }
+                            is Response.Failed -> {
+                                _state.value = Failure(it.message)
+                            }
+                            is Response.Success -> {
+                                _state.value = IsPlannedWorkoutCompleted
+                            }
+                        }
+                    }
+                }
             }
-            completeWorkoutUseCase.invoke(workoutModel)
-            _state.postValue(IsWorkoutCompleted())
+            viewModelScope.launch {
+                completeWorkoutUseCase.invoke(workoutModel).collect {
+                    when (it) {
+                        is Response.Loading -> {
+                            _state.value = Loading
+                        }
+                        is Response.Failed -> {
+                            _state.value = Failure(it.message)
+                        }
+                        is Response.Success -> {
+                            _state.value = IsWorkoutCompleted
+                        }
+                    }
+                }
+            }
             isWorkoutCompleted = Any()
         }
 
@@ -100,11 +129,11 @@ class TrainingViewModel @Inject constructor(
         var timeSeconds = 0L
         viewModelScope.launch(Dispatchers.Default) {
             while (true) {
-                delay(MILLIS_IN_SECOND)
-                _state.postValue(TimerTime(formatStopwatchTime(++timeSeconds)))
                 if (isWorkoutCompleted != null) {
                     this.cancel()
                 }
+                delay(MILLIS_IN_SECOND)
+                _state.value = TimerTime(formatStopwatchTime(++timeSeconds))
             }
         }
     }

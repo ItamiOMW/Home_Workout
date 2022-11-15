@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.homeworkout.AppWorkout
@@ -60,23 +62,40 @@ class PlanWorkoutFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory)[PlanWorkoutViewModel::class.java]
         setupRV()
-        observeViewModelState()
+        collectUIState()
         setupDialog()
     }
 
-    private fun observeViewModelState() {
-        viewModel.state.observe(viewLifecycleOwner) {
-            when (it) {
-                //todo add new functions to plan workout screen
+    private fun collectUIState() {
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.state.collect { state ->
+                if (state is Loading) {
+                    binding.progressBarLoading.visibility = View.VISIBLE
+                } else {
+                    binding.progressBarLoading.visibility = View.GONE
+                }
+                when (state) {
+                    is Failure -> {
+                        Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
+                    }
+                    is WorkoutPlanned -> {
+                        Toast.makeText(context,
+                            getString(R.string.workout_planned),
+                            Toast.LENGTH_SHORT).show()
+                    }
+                    is ListWorkouts -> {
+                        workoutAdapter.submitList(state.list)
+                    }
+                }
             }
         }
+
     }
 
     private fun setupRV() {
         binding.rvTrainings.adapter = workoutAdapter
-        viewModel.list.observe(viewLifecycleOwner) {
-            workoutAdapter.submitList(it)
-        }
+
         workoutAdapter.onItemClicked = {
             updateWorkoutModel(it)
             dialog.show()

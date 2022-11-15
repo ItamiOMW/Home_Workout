@@ -4,35 +4,33 @@ import android.app.Application
 import android.graphics.Bitmap
 import android.net.Uri
 import android.text.format.DateFormat
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.homeworkout.R
+import com.example.homeworkout.domain.models.Response
 import com.example.homeworkout.domain.models.UserInfoModel
 import com.example.homeworkout.domain.usecase.workout_repository_usecases.*
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
 class ProgressViewModel @Inject constructor(
-    getListUserInfoUseCase: GetListUserInfoUseCase,
+    private val getListUserInfoUseCase: GetListUserInfoUseCase,
     private val application: Application,
     private val addUserInfoUseCase: AddUserInfoUseCase,
     private val updateUserInfoUseCase: UpdateUserInfoUseCase,
-    private val getUserInfoByDateUseCase: GetUserInfoByDateUseCase,
     private val getCountOfCompletedWorkoutsUseCase: GetCountOfCompletedWorkoutsUseCase,
     private val deleteUserInfoUseCase: DeleteUserInfoUseCase,
 ) : ViewModel() {
 
-    private val _state = MutableLiveData<ProgressViewModelState>()
-    val state: LiveData<ProgressViewModelState>
-        get() = _state
+    private val _state = MutableStateFlow(ProgressUIState())
+    val state = _state.asStateFlow()
 
-    val listUserInfo = getListUserInfoUseCase.invoke()
 
     init {
+        getListUserInfo()
         getCountOfCompletedWorkouts()
         updateDate(getCurrentDate())
     }
@@ -45,43 +43,107 @@ class ProgressViewModel @Inject constructor(
         _state.value = DateForProgressScreen(date)
     }
 
-    fun getCountOfCompletedWorkouts() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _state.postValue(CompletedWorkouts(getCountOfCompletedWorkoutsUseCase.invoke()))
+    fun getListUserInfo() {
+
+        viewModelScope.launch {
+            getListUserInfoUseCase.invoke().collect {
+                when (it) {
+                    is Response.Loading -> {
+                        _state.value = Loading
+                    }
+                    is Response.Failed -> {
+                        _state.value = Failure(it.message)
+                    }
+                    is Response.Success -> {
+                        _state.value = ListUserInfo(it.data)
+                    }
+                }
+            }
         }
+
+    }
+
+    fun getCountOfCompletedWorkouts() {
+
+        viewModelScope.launch {
+            getCountOfCompletedWorkoutsUseCase.invoke().collect {
+                when (it) {
+                    is Response.Loading -> {
+                        _state.value = Loading
+                    }
+                    is Response.Failed -> {
+                        _state.value = Failure(it.message)
+                    }
+                    is Response.Success -> {
+                        _state.value = CompletedWorkouts(it.data)
+                    }
+                }
+            }
+        }
+
     }
 
     fun addUserInfo(date: String, weight: String, photo: Bitmap) {
         if (checkDate(date) && checkWeight(weight)) {
-            viewModelScope.launch(Dispatchers.IO) {
-                addUserInfoUseCase.invoke(UserInfoModel(date, weight, photo))
+            viewModelScope.launch {
+                addUserInfoUseCase.invoke(UserInfoModel(date, weight, photo)).collect {
+                    when (it) {
+                        is Response.Loading -> {
+                            _state.value = Loading
+                        }
+                        is Response.Failed -> {
+                            _state.value = Failure(it.message)
+                        }
+                        is Response.Success -> {
+                            _state.value = AddedUserInfo(it.data)
+                            getListUserInfo()
+                        }
+                    }
+                }
             }
-        } else {
-            resetFailures()
         }
         updateDate(getCurrentDate())
     }
 
     fun updateUserInfo(date: String, weight: String, photo: Bitmap) {
         if (checkDate(date) && checkWeight(weight)) {
-            viewModelScope.launch(Dispatchers.IO) {
-                updateUserInfoUseCase.invoke(UserInfoModel(date, weight, photo))
+            viewModelScope.launch {
+                updateUserInfoUseCase.invoke(UserInfoModel(date, weight, photo)).collect {
+                    when (it) {
+                        is Response.Loading -> {
+                            _state.value = Loading
+                        }
+                        is Response.Failed -> {
+                            _state.value = Failure(it.message)
+                        }
+                        is Response.Success -> {
+                            _state.value = UpdatedUserInfo(it.data)
+                            getListUserInfo()
+                        }
+                    }
+                }
             }
-        } else {
-            resetFailures()
         }
         updateDate(getCurrentDate())
     }
 
-    fun getUserInfoByDate(date: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            getUserInfoByDateUseCase.invoke(date)
-        }
-    }
 
     fun deleteUserInfo(userInfo: UserInfoModel) {
-        viewModelScope.launch(Dispatchers.IO) {
-            deleteUserInfoUseCase.invoke(userInfo)
+        viewModelScope.launch {
+            deleteUserInfoUseCase.invoke(userInfo).collect {
+                when (it) {
+                    is Response.Loading -> {
+                        _state.value = Loading
+                    }
+                    is Response.Failed -> {
+                        _state.value = Failure(it.message)
+                    }
+                    is Response.Success -> {
+                        _state.value = DeletedUserInfo(it.data)
+                        getListUserInfo()
+                    }
+                }
+            }
         }
     }
 
@@ -92,7 +154,7 @@ class ProgressViewModel @Inject constructor(
 
     private fun checkDate(date: String): Boolean {
         if (date.isEmpty()) {
-            _state.value = DateFailure(true)
+            _state.value = Failure(application.getString(R.string.date_wasnt_selected))
             return false
         }
         return true
@@ -100,15 +162,11 @@ class ProgressViewModel @Inject constructor(
 
     private fun checkWeight(weight: String): Boolean {
         if (weight.isEmpty()) {
-            _state.value = WeightFailure(true)
+            _state.value = Failure(application.getString(R.string.weight_wasnt_entered))
             return false
         }
         return true
     }
 
-    private fun resetFailures() {
-        _state.value = DateFailure(false)
-        _state.value = WeightFailure(false)
-    }
 
 }

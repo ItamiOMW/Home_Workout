@@ -8,14 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.homeworkout.AppWorkout
 import com.example.homeworkout.R
 import com.example.homeworkout.databinding.FragmentProfileBinding
-import com.example.homeworkout.databinding.FragmentProgressBinding
 import com.example.homeworkout.domain.models.UserModel
-import com.example.homeworkout.presentation.screens.progress_screen.ProgressViewModel
 import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
 import javax.inject.Inject
 
@@ -52,21 +51,28 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory)[ProfileViewModel::class.java]
         setOnButtonSignOutClickListener()
-        observeViewModel()
+        collectUIState()
     }
 
-    private fun observeViewModel() {
+    private fun collectUIState() {
 
-        viewModel.state.observe(viewLifecycleOwner) {
-            when (it) {
-                is SignedOutSuccessfully -> {
-                    //GO TO LOGIN SCREEN
-                    if (it.boolean) {
+        lifecycleScope.launchWhenStarted {
+            viewModel.state.collect { state ->
+                if (state is Loading) {
+                    binding.progressBarLoading.visibility = View.VISIBLE
+                } else {
+                    binding.progressBarLoading.visibility = View.GONE
+                }
+                when (state) {
+                    is CurrentUser -> {
+                        handleUser(state.user)
+                    }
+                    is SignedOutSuccessfully -> {
                         findNavController().navigate(R.id.action_profileFragment_to_main_graph)
                     }
-                }
-                is CurrentUser -> {
-                    handleUser(it.user)
+                    is Failure -> {
+                        Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }

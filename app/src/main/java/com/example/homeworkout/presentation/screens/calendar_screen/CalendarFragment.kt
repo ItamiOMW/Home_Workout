@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +19,6 @@ import com.example.homeworkout.databinding.FragmentCalendarBinding
 import com.example.homeworkout.domain.models.PlannedWorkoutModel
 import com.example.homeworkout.formatDateFromCalendarView
 import com.example.homeworkout.presentation.adapters.planned_workouts_adapter.PlannedWorkoutAdapter
-import com.example.homeworkout.presentation.screens.plan_workout_screen.PlanWorkoutFragmentDirections
 import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
 import javax.inject.Inject
 
@@ -66,17 +67,33 @@ class CalendarFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory)[CalendarViewModel::class.java]
         setupRV()
-        observeViewModelState()
+        collectUIState()
         setupDialog()
         setCalendarDateChangedListener()
         setOnButtonAddClickListener()
     }
 
-    private fun observeViewModelState() {
-        viewModel.state.observe(viewLifecycleOwner) {
-            when (it) {
-                is PlannedWorkoutList -> {
-                    workoutAdapter.submitList(it.list)
+    private fun collectUIState() {
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.state.collect { state ->
+                if (state is Loading) {
+                    binding.progressBarLoading.visibility = View.VISIBLE
+                } else {
+                    binding.progressBarLoading.visibility = View.GONE
+                }
+                when (state) {
+                    is Failure -> {
+                        Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
+                    }
+                    is PlannedWorkoutList -> {
+                        workoutAdapter.submitList(state.list)
+                    }
+                    is WorkoutDeleted -> {
+                        Toast.makeText(requireContext(),
+                            getString(R.string.workout_deleted),
+                            Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
@@ -85,9 +102,7 @@ class CalendarFragment : Fragment() {
     private fun setOnButtonAddClickListener() {
         binding.buttonAdd.setOnClickListener {
             findNavController().navigate(
-                CalendarFragmentDirections.actionCalendarFragmentToPlaneWorkout(
-                    viewModel.date
-                )
+                CalendarFragmentDirections.actionCalendarFragmentToPlaneWorkout(viewModel.date)
             )
         }
     }
@@ -105,10 +120,7 @@ class CalendarFragment : Fragment() {
         setOnSwapListener(binding.rvScheduledWorkouts)
         workoutAdapter.onItemClicked = {
             findNavController().navigate(
-                CalendarFragmentDirections.actionCalendarFragmentToWorkout(
-                    it.workoutModel,
-                    it
-                )
+                CalendarFragmentDirections.actionCalendarFragmentToWorkout(it.workoutModel, it)
             )
         }
         workoutAdapter.onItemLongClicked = {
@@ -176,8 +188,7 @@ class CalendarFragment : Fragment() {
                 dialog.dismiss()
                 findNavController().navigate(
                     CalendarFragmentDirections.actionCalendarFragmentToWorkout(
-                        plannedWorkoutModel.workoutModel,
-                        plannedWorkoutModel
+                        plannedWorkoutModel.workoutModel, plannedWorkoutModel
                     )
                 )
             }
