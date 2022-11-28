@@ -9,8 +9,6 @@ object Loading: ProgressUIState()
 
 class Failure(val message: String): ProgressUIState()
 
-class ListUserInfo(val list: List<UserInfoModel>): ProgressUIState()
-
 class AddedUserInfo(val boolean: Boolean): ProgressUIState()
 
 class UpdatedUserInfo(val boolean: Boolean): ProgressUIState()

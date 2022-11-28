@@ -1,9 +1,9 @@
-package com.example.homeworkout.data.database.firebase
+package com.example.homeworkout.data.database.firebase.authentication
 
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseUser
 
-interface UserAuthHelper {
+interface UserAuthDatabaseHelper {
 
     suspend fun signIn(credential: AuthCredential)
 

@@ -1,7 +1,6 @@
 package com.example.homeworkout.data.repository_impl
 
 import com.example.homeworkout.data.database.room.WorkoutDao
-import com.example.homeworkout.data.mapper.WorkoutMapper
 import com.example.homeworkout.data.shared_preferences.PreferencesHelper
 import com.example.homeworkout.domain.models.PlannedWorkoutModel
 import com.example.homeworkout.domain.models.Response
@@ -15,19 +14,14 @@ import javax.inject.Inject
 class WorkoutLocalRepositoryImpl @Inject constructor(
     private val preferencesHelper: PreferencesHelper,
     private val dao: WorkoutDao,
-    private val mapper: WorkoutMapper,
 ) : WorkoutRepository {
 
     override fun getPlannedWorkoutsByDate(date: String) = flow {
         emit(Response.loading())
 
-        val plannedWorkoutsDbModel = dao.getPlannedWorkoutsByDate(date)
+        val list = dao.getPlannedWorkoutsByDate(date)
 
-        val plannedWorkouts = plannedWorkoutsDbModel.map {
-            mapper.mapPlannedWorkoutDbToEntity(it)
-        }
-
-        emit(Response.success(plannedWorkouts))
+        emit(Response.success(list))
 
     }.catch {
         emit(Response.failed(it.message.toString()))
@@ -35,10 +29,10 @@ class WorkoutLocalRepositoryImpl @Inject constructor(
 
 
     override fun addPlannedWorkout(plannedWorkoutModel: PlannedWorkoutModel) = flow {
+
         emit(Response.loading())
 
-        val plannedWorkoutDbModel = mapper.mapPlannedWorkoutEntityToDb(plannedWorkoutModel)
-        dao.addPlannedWorkout(plannedWorkoutDbModel)
+        dao.addPlannedWorkout(plannedWorkoutModel)
 
         emit(Response.success(true))
 
@@ -63,7 +57,7 @@ class WorkoutLocalRepositoryImpl @Inject constructor(
         emit(Response.loading())
 
         val plannedWorkout = plannedWorkoutModel.copy(isCompleted = true)
-        dao.addPlannedWorkout(mapper.mapPlannedWorkoutEntityToDb(plannedWorkout))
+        dao.addPlannedWorkout(plannedWorkout)
 
         emit(Response.success(true))
 
@@ -72,13 +66,12 @@ class WorkoutLocalRepositoryImpl @Inject constructor(
     }
 
 
-    override fun getAllWorkouts() = flow {
-        emit(Response.loading())
+    override fun getAllWorkouts() = channelFlow {
+        send(Response.loading())
 
-        val workoutsDbModel = dao.getAllWorkouts()
-        val workouts = workoutsDbModel.map { mapper.mapWorkoutDbToWorkoutEntity(it) }
-
-        emit(Response.success(workouts))
+        dao.getAllWorkouts().collectLatest {
+            send(Response.success(it))
+        }
 
     }.catch {
         emit(Response.failed(it.message.toString()))
@@ -88,7 +81,7 @@ class WorkoutLocalRepositoryImpl @Inject constructor(
     override fun addWorkout(workoutModel: WorkoutModel) = flow {
         emit(Response.loading())
 
-        dao.addWorkout(mapper.mapWorkoutEntityToWorkoutDb(workoutModel))
+        dao.addWorkout(workoutModel)
 
         emit(Response.success(true))
 
@@ -109,13 +102,12 @@ class WorkoutLocalRepositoryImpl @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
 
-    override fun getListUserInfo() = flow {
-        emit(Response.loading())
+    override fun getListUserInfo() = channelFlow {
+        send(Response.loading())
 
-        val listUserInfoDbModel = dao.getListUserInfo()
-        val listUserInfo = listUserInfoDbModel.map { mapper.mapDbModelToUserInfo(it) }
-
-        emit(Response.success(listUserInfo))
+        dao.getListUserInfo().collectLatest {
+            send(Response.success(it))
+        }
 
     }.catch {
         emit(Response.failed(it.message.toString()))
@@ -124,10 +116,10 @@ class WorkoutLocalRepositoryImpl @Inject constructor(
     override fun getUserInfoByDate(date: String) = flow<Response<UserInfoModel>> {
         emit(Response.loading())
 
-        val userInfoDbModel = dao.getUserInfoByDate(date)
-        val userInfo = mapper.mapDbModelToUserInfo(userInfoDbModel)
+        val userInfo = dao.getUserInfoByDate(date)
 
         emit(Response.success(userInfo))
+
     }.catch {
         emit(Response.failed(it.message.toString()))
     }.flowOn(Dispatchers.IO)
@@ -137,7 +129,7 @@ class WorkoutLocalRepositoryImpl @Inject constructor(
         emit(Response.loading())
 
         //ON CONFLICT STRATEGY = REPLACE, SO NO NEED TO CREATE NEW DAO METHOD
-        dao.addUserInfo(mapper.mapUserInfoToDbModel(userInfoModel))
+        dao.addUserInfo(userInfoModel)
 
         emit(Response.success(true))
 
@@ -146,10 +138,10 @@ class WorkoutLocalRepositoryImpl @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
 
-    override fun addUserInfo(userInfoModel: UserInfoModel) = flow<Response<Boolean>> {
+    override fun addUserInfo(userInfoModel: UserInfoModel) = flow {
         emit(Response.loading())
 
-        dao.addUserInfo(mapper.mapUserInfoToDbModel(userInfoModel))
+        dao.addUserInfo(userInfoModel)
 
         emit(Response.success(true))
 

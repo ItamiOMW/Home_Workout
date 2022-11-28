@@ -23,7 +23,7 @@
                 app:nullable="true" />
         </action>
         <action
-            android:id="@+id/action_calendarFragment_to_plane_workout"
+            android:id="@+id/action_calendarFragment_to_plan_workout"
             app:destination="@id/plan_workout"
             app:popUpTo="@id/calendarFragment">
             <argument

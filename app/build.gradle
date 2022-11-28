@@ -57,17 +57,17 @@ dependencies {
     //JUNIT
     testImplementation "org.junit.jupiter:junit-jupiter:$junit_version"
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junit_version")
+    androidTestImplementation 'org.junit.jupiter:junit-jupiter'
+    androidTestImplementation 'org.junit.jupiter:junit-jupiter'
 
     //SPLASH SCREEN API
-    implementation ("androidx.core:core-splashscreen:$splash_api_version")
+    implementation("androidx.core:core-splashscreen:$splash_api_version")
 
     //CHART
-    implementation ("com.github.PhilJay:MPAndroidChart:$chart_version")
+    implementation("com.github.PhilJay:MPAndroidChart:$chart_version")
 
     //DAGGER 2
     implementation "com.google.dagger:dagger:$dagger_version"
-    androidTestImplementation 'org.junit.jupiter:junit-jupiter'
-    androidTestImplementation 'org.junit.jupiter:junit-jupiter'
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
 
     //COROUTINES
@@ -97,6 +97,9 @@ dependencies {
     //FIREBASE AUTH
     implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
     implementation 'com.google.android.gms:play-services-auth:20.3.0'
+
+    //FIREBASE FIRESTORE
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.4.0'
 
     //GLIDE
     implementation 'com.github.bumptech.glide:glide:4.14.2'

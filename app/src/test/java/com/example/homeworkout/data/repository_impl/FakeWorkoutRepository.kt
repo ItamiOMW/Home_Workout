@@ -2,9 +2,6 @@ package com.example.homeworkout.data.repository_impl
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.homeworkout.domain.models.PlannedWorkoutModel
-import com.example.homeworkout.domain.models.UserInfoModel
-import com.example.homeworkout.domain.models.WorkoutModel
 import com.example.homeworkout.domain.repository.WorkoutRepository
 
 class FakeWorkoutRepository : WorkoutRepository {

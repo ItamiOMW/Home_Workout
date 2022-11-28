@@ -2,6 +2,7 @@ package com.example.homeworkout.presentation.screens.plan_workout_screen
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -130,7 +131,7 @@ class PlanWorkoutFragment : Fragment() {
                 dialog.dismiss()
             }
 
-            tvRightward.text = getString(R.string.plane_workout_caps)
+            tvRightward.text = getString(R.string.plan_workout_caps)
             tvRightward.setOnClickListener {
                 viewModel.planWorkout(args.date, workoutModel)
                 dialog.dismiss()

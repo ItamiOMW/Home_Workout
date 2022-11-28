@@ -1,7 +1,7 @@
 package com.example.homeworkout.data.database.room.converters
 
 import androidx.room.TypeConverter
-import com.example.homeworkout.data.database.room.room_db_models.WorkoutDbModel
+import com.example.homeworkout.domain.models.WorkoutModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.Serializable
@@ -9,16 +9,16 @@ import java.io.Serializable
 class WorkoutConverter : Serializable {
 
     @TypeConverter
-    fun fromWorkout(value: WorkoutDbModel): String {
+    fun fromWorkout(value: WorkoutModel): String {
         val gson = Gson()
-        val type = object : TypeToken<WorkoutDbModel>() {}.type
+        val type = object : TypeToken<WorkoutModel>() {}.type
         return gson.toJson(value, type)
     }
 
     @TypeConverter
-    fun toWorkoutList(value: String): WorkoutDbModel {
+    fun toWorkoutList(value: String): WorkoutModel {
         val gson = Gson()
-        val type = object : TypeToken<WorkoutDbModel>() {}.type
+        val type = object : TypeToken<WorkoutModel>() {}.type
         return gson.fromJson(value, type)
     }
 

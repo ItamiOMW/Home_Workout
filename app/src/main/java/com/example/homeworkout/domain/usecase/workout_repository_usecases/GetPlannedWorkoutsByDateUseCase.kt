@@ -5,6 +5,6 @@ import javax.inject.Inject
 
 class GetPlannedWorkoutsByDateUseCase @Inject constructor (private val repository: WorkoutRepository) {
 
-    suspend operator fun invoke(date: String) = repository.getPlannedWorkoutsByDate(date)
+    operator fun invoke(date: String) = repository.getPlannedWorkoutsByDate(date)
 
 }

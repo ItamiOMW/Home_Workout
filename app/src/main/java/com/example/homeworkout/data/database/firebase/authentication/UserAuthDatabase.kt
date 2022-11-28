@@ -1,4 +1,4 @@
-package com.example.homeworkout.data.database.firebase
+package com.example.homeworkout.data.database.firebase.authentication
 
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
@@ -6,12 +6,12 @@ import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-class UserAuthDatabase @Inject constructor(
-
-) : UserAuthHelper {
+class UserAuthDatabase @Inject constructor() : UserAuthDatabaseHelper {
 
     companion object {
+
         private val fAuth = FirebaseAuth.getInstance()
+
     }
 
     override suspend fun signIn(credential: AuthCredential) {

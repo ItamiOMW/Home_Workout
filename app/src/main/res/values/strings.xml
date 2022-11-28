@@ -18,7 +18,7 @@
     <string name="workout_icon">workout icon</string>
     <string name="go_to_detail">GO TO DETAIL</string>
     <string name="close">CLOSE</string>
-    <string name="plane_workout_caps">PLANE WORKOUT</string>
+    <string name="plan_workout_caps">PLAN WORKOUT</string>
     <string name="delete">DELETE</string>
     <string name="time_format">%02d:%02d:%02d</string>
     <string name="exercise_count_format">%02d/%02d</string>
@@ -51,4 +51,5 @@
     <string name="updated_scfly">UPDATED SUCCESSFULLY</string>
     <string name="deleted_scfly">DELETED SUCCESSFULLY</string>
     <string name="comleted_planned_workout">YOU HAVE JUST COMPLETED PLANNED WORKOUT</string>
+    <string name="login_locally">LOGIN LOCALLY</string>
 </resources>

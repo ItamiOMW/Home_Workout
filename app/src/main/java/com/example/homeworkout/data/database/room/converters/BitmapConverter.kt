@@ -3,6 +3,7 @@ package com.example.homeworkout.data.database.room.converters
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.room.TypeConverter
+import com.google.firebase.firestore.Blob
 import java.io.ByteArrayOutputStream
 
 class BitmapConverter {

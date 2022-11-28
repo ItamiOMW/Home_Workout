@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.homeworkout.R
 import com.example.homeworkout.databinding.UserItemBinding
 import com.example.homeworkout.domain.models.UserInfoModel
+import com.example.homeworkout.fromByteArrayToBitmap
 import javax.inject.Inject
 
 class UserInfoAdapter @Inject constructor(val application: Application) :
@@ -32,7 +33,7 @@ class UserInfoAdapter @Inject constructor(val application: Application) :
             tvDate.text = item.date
             tvWeight.text =
                 String.format(application.getString(R.string.weight_format), item.weight)
-            ivUserPhoto.setImageBitmap(item.photo)
+            ivUserPhoto.setImageBitmap(fromByteArrayToBitmap(item.photo))
         }
 
         holder.itemView.setOnLongClickListener {
