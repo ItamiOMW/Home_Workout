@@ -20,7 +20,7 @@ class MainViewModel @Inject constructor(
     fun checkSignedIn() {
         viewModelScope.launch {
             checkSignedInUseCase.invoke().collectLatest {
-                when(it) {
+                when (it) {
                     is Response.Loading -> {
                         _state.value = Loading
                     }

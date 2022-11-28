@@ -1,5 +1,7 @@
 package com.example.homeworkout.presentation.screens.workout_detail_screen
 
+import android.content.res.Resources
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.homeworkout.AppWorkout
 import com.example.homeworkout.databinding.FragmentWorkoutDetailBinding
 import com.example.homeworkout.presentation.adapters.exercises_adapter.ExerciseAdapter
+import com.example.homeworkout.fromByteArrayToBitmap
 import javax.inject.Inject
 
 
@@ -55,7 +58,10 @@ class WorkoutDetailFragment : Fragment() {
     }
 
     private fun setupWorkoutCardView() {
-        binding.llWorkout.setBackgroundResource(args.workoutModel.imagePath)
+        binding.llWorkout.background = BitmapDrawable(
+            Resources.getSystem(),
+            fromByteArrayToBitmap(args.workoutModel.image)
+        )
         binding.tvWorkoutDuration.text = args.workoutModel.duration.toString()
         binding.tvWorkoutName.text = args.workoutModel.title
     }

@@ -1,9 +1,6 @@
 package com.example.homeworkout.domain.usecase
 
 import com.example.homeworkout.data.repository_impl.FakeWorkoutRepository
-import com.example.homeworkout.domain.models.ExerciseModel
-import com.example.homeworkout.domain.models.PlannedWorkoutModel
-import com.example.homeworkout.domain.models.WorkoutModel
 import com.example.homeworkout.domain.usecase.workout_repository_usecases.CompletePlannedWorkoutUseCase
 import com.example.homeworkout.formatDate
 import kotlinx.coroutines.ExperimentalCoroutinesApi

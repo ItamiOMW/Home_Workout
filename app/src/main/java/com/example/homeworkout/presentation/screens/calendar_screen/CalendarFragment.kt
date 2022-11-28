@@ -2,6 +2,7 @@ package com.example.homeworkout.presentation.screens.calendar_screen
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import com.example.homeworkout.domain.models.PlannedWorkoutModel
 import com.example.homeworkout.formatDateFromCalendarView
 import com.example.homeworkout.presentation.adapters.planned_workouts_adapter.PlannedWorkoutAdapter
 import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
+import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 
@@ -38,10 +40,6 @@ class CalendarFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.updateDate(viewModel.date)
-    }
 
     @Inject
     lateinit var viewModelFactory: WorkoutViewModelFactory
@@ -67,9 +65,9 @@ class CalendarFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory)[CalendarViewModel::class.java]
         setupRV()
+        setCalendarDateChangedListener()
         collectUIState()
         setupDialog()
-        setCalendarDateChangedListener()
         setOnButtonAddClickListener()
     }
 
@@ -102,7 +100,7 @@ class CalendarFragment : Fragment() {
     private fun setOnButtonAddClickListener() {
         binding.buttonAdd.setOnClickListener {
             findNavController().navigate(
-                CalendarFragmentDirections.actionCalendarFragmentToPlaneWorkout(viewModel.date)
+                CalendarFragmentDirections.actionCalendarFragmentToPlanWorkout(viewModel.date)
             )
         }
     }

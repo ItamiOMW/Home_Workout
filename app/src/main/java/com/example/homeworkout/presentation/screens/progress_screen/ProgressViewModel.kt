@@ -10,8 +10,10 @@ import com.example.homeworkout.R
 import com.example.homeworkout.domain.models.Response
 import com.example.homeworkout.domain.models.UserInfoModel
 import com.example.homeworkout.domain.usecase.workout_repository_usecases.*
+import com.example.homeworkout.fromBitmapToByteArray
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -28,9 +30,9 @@ class ProgressViewModel @Inject constructor(
     private val _state = MutableStateFlow(ProgressUIState())
     val state = _state.asStateFlow()
 
+    val listUserInfo = getListUserInfoUseCase.invoke()
 
     init {
-        getListUserInfo()
         getCountOfCompletedWorkouts()
         updateDate(getCurrentDate())
     }
@@ -43,25 +45,6 @@ class ProgressViewModel @Inject constructor(
         _state.value = DateForProgressScreen(date)
     }
 
-    fun getListUserInfo() {
-
-        viewModelScope.launch {
-            getListUserInfoUseCase.invoke().collect {
-                when (it) {
-                    is Response.Loading -> {
-                        _state.value = Loading
-                    }
-                    is Response.Failed -> {
-                        _state.value = Failure(it.message)
-                    }
-                    is Response.Success -> {
-                        _state.value = ListUserInfo(it.data)
-                    }
-                }
-            }
-        }
-
-    }
 
     fun getCountOfCompletedWorkouts() {
 
@@ -86,7 +69,7 @@ class ProgressViewModel @Inject constructor(
     fun addUserInfo(date: String, weight: String, photo: Bitmap) {
         if (checkDate(date) && checkWeight(weight)) {
             viewModelScope.launch {
-                addUserInfoUseCase.invoke(UserInfoModel(date, weight, photo)).collect {
+                addUserInfoUseCase.invoke(UserInfoModel(date, weight, fromBitmapToByteArray(photo))).collect {
                     when (it) {
                         is Response.Loading -> {
                             _state.value = Loading
@@ -96,7 +79,6 @@ class ProgressViewModel @Inject constructor(
                         }
                         is Response.Success -> {
                             _state.value = AddedUserInfo(it.data)
-                            getListUserInfo()
                         }
                     }
                 }
@@ -108,7 +90,7 @@ class ProgressViewModel @Inject constructor(
     fun updateUserInfo(date: String, weight: String, photo: Bitmap) {
         if (checkDate(date) && checkWeight(weight)) {
             viewModelScope.launch {
-                updateUserInfoUseCase.invoke(UserInfoModel(date, weight, photo)).collect {
+                updateUserInfoUseCase.invoke(UserInfoModel(date, weight, fromBitmapToByteArray(photo))).collect {
                     when (it) {
                         is Response.Loading -> {
                             _state.value = Loading
@@ -118,7 +100,6 @@ class ProgressViewModel @Inject constructor(
                         }
                         is Response.Success -> {
                             _state.value = UpdatedUserInfo(it.data)
-                            getListUserInfo()
                         }
                     }
                 }
@@ -140,7 +121,6 @@ class ProgressViewModel @Inject constructor(
                     }
                     is Response.Success -> {
                         _state.value = DeletedUserInfo(it.data)
-                        getListUserInfo()
                     }
                 }
             }

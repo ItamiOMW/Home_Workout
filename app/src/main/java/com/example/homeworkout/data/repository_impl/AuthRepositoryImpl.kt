@@ -1,6 +1,6 @@
 package com.example.homeworkout.data.repository_impl
 
-import com.example.homeworkout.data.database.firebase.UserAuthHelper
+import com.example.homeworkout.data.database.firebase.authentication.UserAuthDatabaseHelper
 import com.example.homeworkout.data.mapper.UserMapper
 import com.example.homeworkout.domain.models.Response
 import com.example.homeworkout.domain.repository.AuthRepository
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
-    private val authHelper: UserAuthHelper,
+    private val authHelper: UserAuthDatabaseHelper,
     private val mapper: UserMapper,
 ) : AuthRepository {
 

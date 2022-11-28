@@ -6,5 +6,5 @@ import javax.inject.Inject
 
 class SignInUseCase @Inject constructor(private val repository: AuthRepository) {
 
-    suspend operator fun invoke(credential: AuthCredential) = repository.signIn(credential)
+    operator fun invoke(credential: AuthCredential) = repository.signIn(credential)
 }

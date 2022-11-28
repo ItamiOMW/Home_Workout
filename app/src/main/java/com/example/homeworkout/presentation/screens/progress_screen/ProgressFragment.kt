@@ -19,12 +19,15 @@ import com.example.homeworkout.*
 import com.example.homeworkout.databinding.AddWeightDialogBinding
 import com.example.homeworkout.databinding.EditUserDialogBinding
 import com.example.homeworkout.databinding.FragmentProgressBinding
+import com.example.homeworkout.domain.models.Response
 import com.example.homeworkout.domain.models.UserInfoModel
 import com.example.homeworkout.presentation.adapters.user_info_adapter.UserInfoAdapter
 import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import java.io.File
 import javax.inject.Inject
 
@@ -49,7 +52,6 @@ class ProgressFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.getCountOfCompletedWorkouts()
-        viewModel.getListUserInfo()
     }
 
     @Inject
@@ -89,6 +91,27 @@ class ProgressFragment : Fragment() {
     private fun collectUIState() {
 
         lifecycleScope.launchWhenStarted {
+            viewModel.listUserInfo.collect {
+                if (it is Response.Loading) {
+                    binding.progressBarLoading.visibility = View.VISIBLE
+                } else {
+                    binding.progressBarLoading.visibility = View.GONE
+                }
+                when (it) {
+                    is Response.Success -> {
+                        userInfoAdapter.submitList(it.data)
+                        setupBarChart(it.data)
+                    }
+                    is Response.Failed -> {
+                        Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
+
+        lifecycleScope.launchWhenStarted {
+
             viewModel.state.collect { state ->
                 if (state is Loading) {
                     binding.progressBarLoading.visibility = View.VISIBLE
@@ -98,10 +121,6 @@ class ProgressFragment : Fragment() {
                 when (state) {
                     is Failure -> {
                         Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
-                    }
-                    is ListUserInfo -> {
-                        setupBarChart(state.list)
-                        userInfoAdapter.submitList(state.list)
                     }
                     is AddedUserInfo -> {
                         Toast.makeText(context, getString(R.string.added_scfly), Toast.LENGTH_SHORT)
@@ -293,7 +312,7 @@ class ProgressFragment : Fragment() {
                 dialog.hide()
             }
 
-            ivUserPhoto.setImageBitmap(userInfo.photo)
+            ivUserPhoto.setImageBitmap(fromByteArrayToBitmap(userInfo.photo))
 
             ivUserPhoto.setOnClickListener {
                 takeImage()

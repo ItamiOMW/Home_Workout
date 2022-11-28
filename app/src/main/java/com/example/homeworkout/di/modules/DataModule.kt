@@ -3,8 +3,8 @@ package com.example.homeworkout.di.modules
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.homeworkout.data.database.firebase.UserAuthDatabase
-import com.example.homeworkout.data.database.firebase.UserAuthHelper
+import com.example.homeworkout.data.database.firebase.authentication.UserAuthDatabase
+import com.example.homeworkout.data.database.firebase.authentication.UserAuthDatabaseHelper
 import com.example.homeworkout.data.database.room.WorkoutDao
 import com.example.homeworkout.data.database.room.WorkoutDatabase
 import com.example.homeworkout.data.repository_impl.AuthRepositoryImpl
@@ -43,7 +43,7 @@ interface DataModule {
     @Binds
     fun bindUserAuthDatabase(
         userAuthDatabase: UserAuthDatabase,
-    ): UserAuthHelper
+    ): UserAuthDatabaseHelper
 
 
     companion object {

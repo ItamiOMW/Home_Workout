@@ -1,7 +1,5 @@
 package com.example.homeworkout.presentation.screens.choose_workout_screen
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.homeworkout.domain.models.Response

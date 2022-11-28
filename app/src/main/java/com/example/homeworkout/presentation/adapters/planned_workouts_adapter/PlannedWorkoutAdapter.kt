@@ -1,13 +1,15 @@
 package com.example.homeworkout.presentation.adapters.planned_workouts_adapter
 
 import  android.app.Application
+import android.content.res.Resources
+import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.ListAdapter
 import com.example.homeworkout.R
 import com.example.homeworkout.databinding.PlannedWorkoutItemBinding
 import com.example.homeworkout.domain.models.PlannedWorkoutModel
+import com.example.homeworkout.fromByteArrayToBitmap
 import javax.inject.Inject
 
 class PlannedWorkoutAdapter @Inject constructor(private val application: Application) :
@@ -29,10 +31,8 @@ class PlannedWorkoutAdapter @Inject constructor(private val application: Applica
     override fun onBindViewHolder(holder: PlannedWorkoutViewHolder, position: Int) {
         val plannedWorkoutModel = currentList[position]
         with(holder.binding) {
-            llWorkout.background = AppCompatResources.getDrawable(
-                application,
-                plannedWorkoutModel.workoutModel.imagePath
-            )
+            llWorkout.background = BitmapDrawable(Resources.getSystem(),
+                fromByteArrayToBitmap(plannedWorkoutModel.workoutModel.image))
             tvWorkoutName.text = plannedWorkoutModel.workoutModel.title
             tvWorkoutDuration.text = plannedWorkoutModel.workoutModel.duration.toString()
             if (plannedWorkoutModel.isCompleted) {
