@@ -118,11 +118,8 @@ class LoginFragment : Fragment() {
             val account: GoogleSignInAccount? = task.result
             if (account != null) {
                 val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-
                 viewModel.signIn(credential)
             }
-        } else {
-            Toast.makeText(context, "SOMETHING WENT WRONG", Toast.LENGTH_SHORT).show()
         }
     }
 
