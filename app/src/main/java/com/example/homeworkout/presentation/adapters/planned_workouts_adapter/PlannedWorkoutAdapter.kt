@@ -1,16 +1,18 @@
 package com.example.homeworkout.presentation.adapters.planned_workouts_adapter
 
-import  android.app.Application
-import android.content.res.Resources
-import android.graphics.drawable.BitmapDrawable
+import android.app.Application
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.example.homeworkout.R
 import com.example.homeworkout.databinding.PlannedWorkoutItemBinding
 import com.example.homeworkout.domain.models.PlannedWorkoutModel
-import com.example.homeworkout.fromByteArrayToBitmap
 import javax.inject.Inject
+
 
 class PlannedWorkoutAdapter @Inject constructor(private val application: Application) :
     ListAdapter<PlannedWorkoutModel, PlannedWorkoutViewHolder>(DiffUtilItemCallbackPlannedWorkout()) {
@@ -31,11 +33,19 @@ class PlannedWorkoutAdapter @Inject constructor(private val application: Applica
     override fun onBindViewHolder(holder: PlannedWorkoutViewHolder, position: Int) {
         val plannedWorkoutModel = currentList[position]
         with(holder.binding) {
-            llWorkout.background = BitmapDrawable(Resources.getSystem(),
-                fromByteArrayToBitmap(plannedWorkoutModel.workoutModel.image))
+            Glide.with(application).asDrawable().load(plannedWorkoutModel.workoutModel.image)
+                .into(object : CustomTarget<Drawable>() {
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        transition: Transition<in Drawable>?,
+                    ) {
+                        llWorkout.background = resource
+                    }
+                    override fun onLoadCleared(placeholder: Drawable?) {}
+                })
             tvWorkoutName.text = plannedWorkoutModel.workoutModel.title
             tvWorkoutDuration.text = plannedWorkoutModel.workoutModel.duration.toString()
-            if (plannedWorkoutModel.isCompleted) {
+            if (plannedWorkoutModel.completed) {
                 tvIsCompleted.text = application.getText(R.string.completed)
             } else {
                 tvIsCompleted.text = application.getText(R.string.empty)
@@ -49,5 +59,6 @@ class PlannedWorkoutAdapter @Inject constructor(private val application: Applica
             true
         }
     }
+
 
 }

@@ -1,6 +1,5 @@
 package com.example.homeworkout.presentation.screens.choose_workout_screen
 
-import android.os.Binder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View

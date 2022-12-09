@@ -2,7 +2,6 @@ package com.example.homeworkout.presentation.screens.tabs_screen
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -54,10 +53,5 @@ class TabsFragment : Fragment() {
         binding.bottomNavigation.visibility = View.GONE
     }
 
-
-
-    companion object {
-
-    }
 
 }

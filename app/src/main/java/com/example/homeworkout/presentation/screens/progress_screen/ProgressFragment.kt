@@ -2,6 +2,7 @@ package com.example.homeworkout.presentation.screens.progress_screen
 
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -11,10 +12,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
-import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.example.homeworkout.*
 import com.example.homeworkout.databinding.AddWeightDialogBinding
 import com.example.homeworkout.databinding.EditUserDialogBinding
@@ -26,9 +27,11 @@ import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFa
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import java.io.File
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.*
 import javax.inject.Inject
 
 
@@ -76,16 +79,19 @@ class ProgressFragment : Fragment() {
         return binding.root
     }
 
+    //URI OF CHOSEN OR TAKEN IMAGE
     private var latestTmpUri: Uri? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory)[ProgressViewModel::class.java]
+        setupBarChart(null)
         setupUserInfoAdapter()
         collectUIState()
         setupDatePicker()
         setupDialogAddUser()
         setupOnButtonAddUserInfoClickListener()
+        requestPermissions()
     }
 
     private fun collectUIState() {
@@ -108,7 +114,6 @@ class ProgressFragment : Fragment() {
                 }
             }
         }
-
 
         lifecycleScope.launchWhenStarted {
 
@@ -164,8 +169,8 @@ class ProgressFragment : Fragment() {
 
     }
 
-    private fun setupBarChart(listUserInfo: List<UserInfoModel>) {
-        val array: List<BarEntry> = if (listUserInfo.isNotEmpty()) {
+    private fun setupBarChart(listUserInfo: List<UserInfoModel>?) {
+        val array: List<BarEntry> = if (listUserInfo != null && listUserInfo.isNotEmpty()) {
             listUserInfo.mapIndexed { index, userInfoModel ->
                 BarEntry(index.toFloat() * 10, userInfoModel.weight.toFloat())
             }
@@ -188,6 +193,66 @@ class ProgressFragment : Fragment() {
         }
 
     }
+
+    private fun requestPermissions() {
+        lifecycleScope.launchWhenStarted {
+            requestPermissionsResult.launch(listOfPermissions)
+        }
+    }
+
+    private val requestPermissionsResult =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            permissions.map {
+                if (!it.value) {
+                    Toast.makeText(context,
+                        getString(R.string.features_without_permissions),
+                        Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+
+    private fun takeImage() {
+        lifecycleScope.launchWhenStarted {
+            getFileUri().let { uri ->
+                latestTmpUri = uri
+                takeImageResult.launch(uri)
+            }
+        }
+    }
+
+    private val takeImageResult =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
+            if (isSuccess) {
+                latestTmpUri?.let { uri ->
+                    viewModel.updateImageUri(uri)
+                }
+            }
+        }
+
+
+    private fun selectImageFromGallery() = selectImageFromGalleryResult.launch("image/*")
+
+    private val selectImageFromGalleryResult =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let { viewModel.updateImageUri(uri) }
+        }
+
+
+    private fun getFileUri(): Uri {
+        val imageName = SimpleDateFormat(FILENAME_FORMAT, Locale.getDefault())
+            .format(System.currentTimeMillis())
+
+        val file = File.createTempFile(imageName, ".png").apply {
+            createNewFile()
+        }
+        return FileProvider.getUriForFile(
+            requireContext(),
+            "${BuildConfig.APPLICATION_ID}.provider",
+            file
+        )
+    }
+
 
     private fun setupDialogAddUser() {
         val addWeightDialogBinding = AddWeightDialogBinding.inflate(layoutInflater)
@@ -212,15 +277,26 @@ class ProgressFragment : Fragment() {
 
             tvAdd.setOnClickListener {
                 viewModel.addUserInfo(
-                    tvDate.text.toString(),
+                    getDateFromDatePickerInLong(),
                     etWeight.text.toString(),
-                    ivUserPhoto.drawable.toBitmap(200, 200, null)
+                    if (latestTmpUri == null) getUriFromDrawable(
+                        requireActivity().application,
+                        R.drawable.nfoto)
+                    else latestTmpUri.toString()
                 )
                 dialog.hide()
             }
 
             ivUserPhoto.setOnClickListener {
-                takeImage()
+                if (checkIfPermissionIsGranted(android.Manifest.permission.CAMERA)) {
+                    takeImage()
+                } else {
+                    Toast.makeText(
+                        context,
+                        getString(R.string.permissions_werenot_granted),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
 
             tvDate.setOnClickListener {
@@ -239,43 +315,6 @@ class ProgressFragment : Fragment() {
         }
     }
 
-    private val takeImageResult =
-        registerForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
-            if (isSuccess) {
-                latestTmpUri?.let { uri ->
-                    viewModel.updateImageUri(uri)
-                }
-            }
-        }
-
-    private val selectImageFromGalleryResult =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            uri?.let { viewModel.updateImageUri(uri) }
-        }
-
-
-    private fun takeImage() {
-        lifecycleScope.launchWhenStarted {
-            getTmpFileUri().let { uri ->
-                latestTmpUri = uri
-                takeImageResult.launch(uri)
-            }
-        }
-    }
-
-    private fun selectImageFromGallery() = selectImageFromGalleryResult.launch("image/*")
-
-    private fun getTmpFileUri(): Uri {
-        val tmpFile = File.createTempFile("tmp_image_file", ".png").apply {
-            createNewFile()
-            deleteOnExit()
-        }
-        return FileProvider.getUriForFile(
-            requireContext(),
-            "${BuildConfig.APPLICATION_ID}.provider",
-            tmpFile
-        )
-    }
 
     private fun setupDialogEditUser(userInfo: UserInfoModel) {
         val editUserDialogBinding = EditUserDialogBinding.inflate(layoutInflater)
@@ -300,9 +339,10 @@ class ProgressFragment : Fragment() {
 
             tvEdit.setOnClickListener {
                 viewModel.updateUserInfo(
-                    tvDate.text.toString(),
-                    etWeight.text.toString(),
-                    ivUserPhoto.drawable.toBitmap(200, 200, null)
+                    date = getDateFromDatePickerInLong(),
+                    weight = etWeight.text.toString(),
+                    photoUri = if (latestTmpUri == null) userInfo.photo else latestTmpUri.toString(),
+                    userInfo.firebaseId
                 )
                 dialog.hide()
             }
@@ -312,15 +352,23 @@ class ProgressFragment : Fragment() {
                 dialog.hide()
             }
 
-            ivUserPhoto.setImageBitmap(fromByteArrayToBitmap(userInfo.photo))
+            Glide.with(requireContext()).load(userInfo.photo).into(ivUserPhoto)
 
             ivUserPhoto.setOnClickListener {
-                takeImage()
+                if (checkIfPermissionIsGranted(android.Manifest.permission.CAMERA)) {
+                    takeImage()
+                } else {
+                    Toast.makeText(
+                        context,
+                        getString(R.string.permissions_werenot_granted),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
 
             etWeight.setText(userInfo.weight)
 
-            tvDate.text = userInfo.date
+            tvDate.text = longToTime(userInfo.date).format(DateTimeFormatter.ISO_LOCAL_DATE)
 
             lifecycleScope.launchWhenStarted {
                 viewModel.state.collect { state ->
@@ -342,5 +390,27 @@ class ProgressFragment : Fragment() {
             viewModel.updateDate(date)
         }
 
+    }
+
+    private fun checkIfPermissionIsGranted(permissionToCheck: String) =
+        requireActivity().checkSelfPermission(permissionToCheck) == PackageManager.PERMISSION_GRANTED
+
+
+    private fun getDateFromDatePickerInLong(): Long {
+        val year = datePickerDialog.datePicker.year
+        val day = datePickerDialog.datePicker.dayOfMonth
+        val month = datePickerDialog.datePicker.month
+        return LocalDate.of(year, month + 1, day).toEpochDay()
+    }
+
+    companion object {
+
+        private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
+
+        private val listOfPermissions = arrayOf(
+            android.Manifest.permission.CAMERA,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            android.Manifest.permission.READ_EXTERNAL_STORAGE
+        )
     }
 }

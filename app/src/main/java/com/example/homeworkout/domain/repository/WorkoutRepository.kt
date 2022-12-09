@@ -5,13 +5,13 @@ import com.example.homeworkout.domain.models.Response
 import com.example.homeworkout.domain.models.UserInfoModel
 import com.example.homeworkout.domain.models.WorkoutModel
 import kotlinx.coroutines.flow.Flow
+import java.util.*
 
-//TODO CREATE 2 REPOSITORY IMPLEMENTATIONS: REMOTE AND LOCAL(firebase and room)
 //HERE THE METHODS THAT USED WITH WORKOUT MODEL, PLANNED WORKOUT MODEL, USER INFO MODEL
 interface WorkoutRepository {
 
     //METHODS FOR WORK WITH PLANNED WORKOUT MODEL
-    fun getPlannedWorkoutsByDate(date: String): Flow<Response<List<PlannedWorkoutModel>>>
+    fun getPlannedWorkoutsByDate(date: Long): Flow<Response<List<PlannedWorkoutModel>>>
 
     fun addPlannedWorkout(plannedWorkoutModel: PlannedWorkoutModel): Flow<Response<Boolean>>
 
@@ -30,8 +30,6 @@ interface WorkoutRepository {
     //METHODS FOR WORK WITH USER INFO
     fun getListUserInfo(): Flow<Response<List<UserInfoModel>>>
 
-    fun getUserInfoByDate(date: String): Flow<Response<UserInfoModel>>
-
     fun updateUserInfo(userInfoModel: UserInfoModel): Flow<Response<Boolean>>
 
     fun addUserInfo(userInfoModel: UserInfoModel): Flow<Response<Boolean>>
@@ -39,7 +37,7 @@ interface WorkoutRepository {
     fun deleteUserInfo(userInfoModel: UserInfoModel): Flow<Response<Boolean>>
 
 
-    //FOR WORK WITH PREFERENCES
+    //SAVE COUNT OF COMPLETED WORKOUTS
     fun getCountOfCompletedWorkouts(): Flow<Response<Int>>
 
 }

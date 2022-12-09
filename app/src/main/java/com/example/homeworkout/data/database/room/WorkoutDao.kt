@@ -8,13 +8,14 @@ import com.example.homeworkout.domain.models.PlannedWorkoutModel
 import com.example.homeworkout.domain.models.UserInfoModel
 import com.example.homeworkout.domain.models.WorkoutModel
 import kotlinx.coroutines.flow.Flow
+import java.util.*
 
 @Dao
 interface WorkoutDao {
 
     //METHODS FOR WORK WITH PLANNED WORKOUT MODEL
     @Query("SELECT * FROM planned_workout_models WHERE date=:date")
-    fun getPlannedWorkoutsByDate(date: String): List<PlannedWorkoutModel>
+    fun getPlannedWorkoutsByDate(date: Long): Flow<List<PlannedWorkoutModel>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addPlannedWorkout(plannedWorkoutModel: PlannedWorkoutModel)
@@ -41,9 +42,9 @@ interface WorkoutDao {
     fun getListUserInfo(): Flow<List<UserInfoModel>>
 
     @Query("SELECT * FROM user_info WHERE date=:date")
-    suspend fun getUserInfoByDate(date: String): UserInfoModel
+    suspend fun getUserInfoByDate(date: Long): UserInfoModel
 
     @Query("DELETE FROM user_info WHERE date=:date")
-    suspend fun deleteUserInfo(date: String)
+    suspend fun deleteUserInfo(date: Long)
 
 }

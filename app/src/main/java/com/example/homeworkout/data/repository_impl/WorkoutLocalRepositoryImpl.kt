@@ -1,5 +1,7 @@
 package com.example.homeworkout.data.repository_impl
 
+import android.app.Application
+import com.example.homeworkout.R
 import com.example.homeworkout.data.database.room.WorkoutDao
 import com.example.homeworkout.data.shared_preferences.PreferencesHelper
 import com.example.homeworkout.domain.models.PlannedWorkoutModel
@@ -14,14 +16,15 @@ import javax.inject.Inject
 class WorkoutLocalRepositoryImpl @Inject constructor(
     private val preferencesHelper: PreferencesHelper,
     private val dao: WorkoutDao,
+    private val application: Application,
 ) : WorkoutRepository {
 
-    override fun getPlannedWorkoutsByDate(date: String) = flow {
-        emit(Response.loading())
+    override fun getPlannedWorkoutsByDate(date: Long) = channelFlow {
+        send(Response.loading())
 
-        val list = dao.getPlannedWorkoutsByDate(date)
-
-        emit(Response.success(list))
+        dao.getPlannedWorkoutsByDate(date).collectLatest {
+            trySend(Response.success(it))
+        }
 
     }.catch {
         emit(Response.failed(it.message.toString()))
@@ -56,7 +59,7 @@ class WorkoutLocalRepositoryImpl @Inject constructor(
     override fun completePlannedWorkout(plannedWorkoutModel: PlannedWorkoutModel) = flow {
         emit(Response.loading())
 
-        val plannedWorkout = plannedWorkoutModel.copy(isCompleted = true)
+        val plannedWorkout = plannedWorkoutModel.copy(completed = true)
         dao.addPlannedWorkout(plannedWorkout)
 
         emit(Response.success(true))
@@ -113,20 +116,17 @@ class WorkoutLocalRepositoryImpl @Inject constructor(
         emit(Response.failed(it.message.toString()))
     }.flowOn(Dispatchers.IO)
 
-    override fun getUserInfoByDate(date: String) = flow<Response<UserInfoModel>> {
-        emit(Response.loading())
-
-        val userInfo = dao.getUserInfoByDate(date)
-
-        emit(Response.success(userInfo))
-
-    }.catch {
-        emit(Response.failed(it.message.toString()))
-    }.flowOn(Dispatchers.IO)
-
 
     override fun updateUserInfo(userInfoModel: UserInfoModel) = flow {
         emit(Response.loading())
+
+        val oldObject = dao.getUserInfoByDate(userInfoModel.date)
+
+        if (userInfoModel == oldObject) {
+            emit(Response.failed(application.getString(R.string.changes_not_found)))
+        } else if (userInfoModel.photo == oldObject.photo) {
+
+        }
 
         //ON CONFLICT STRATEGY = REPLACE, SO NO NEED TO CREATE NEW DAO METHOD
         dao.addUserInfo(userInfoModel)
