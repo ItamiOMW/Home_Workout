@@ -2,7 +2,6 @@ package com.example.homeworkout.presentation.screens.calendar_screen
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,10 +17,10 @@ import com.example.homeworkout.R
 import com.example.homeworkout.databinding.CustomActionDialogBinding
 import com.example.homeworkout.databinding.FragmentCalendarBinding
 import com.example.homeworkout.domain.models.PlannedWorkoutModel
-import com.example.homeworkout.formatDateFromCalendarView
 import com.example.homeworkout.presentation.adapters.planned_workouts_adapter.PlannedWorkoutAdapter
 import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
-import kotlinx.coroutines.flow.collectLatest
+import com.example.homeworkout.timeToLong
+import java.time.LocalDate
 import javax.inject.Inject
 
 
@@ -107,8 +106,9 @@ class CalendarFragment : Fragment() {
 
     private fun setCalendarDateChangedListener() {
         binding.calendar.setOnDateChangeListener { p0, year, month, day ->
+            val localDate = LocalDate.of(year, month + 1, day)
             viewModel.updateDate(
-                formatDateFromCalendarView(day, month, year)
+                timeToLong(localDate)
             )
         }
     }

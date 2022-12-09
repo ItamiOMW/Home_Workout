@@ -1,7 +1,6 @@
 package com.example.homeworkout.presentation.screens.progress_screen
 
 import android.app.Application
-import android.graphics.Bitmap
 import android.net.Uri
 import android.text.format.DateFormat
 import androidx.lifecycle.ViewModel
@@ -10,10 +9,8 @@ import com.example.homeworkout.R
 import com.example.homeworkout.domain.models.Response
 import com.example.homeworkout.domain.models.UserInfoModel
 import com.example.homeworkout.domain.usecase.workout_repository_usecases.*
-import com.example.homeworkout.fromBitmapToByteArray
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -66,10 +63,10 @@ class ProgressViewModel @Inject constructor(
 
     }
 
-    fun addUserInfo(date: String, weight: String, photo: Bitmap) {
+    fun addUserInfo(date: Long, weight: String, photoUri: String) {
         if (checkDate(date) && checkWeight(weight)) {
             viewModelScope.launch {
-                addUserInfoUseCase.invoke(UserInfoModel(date, weight, fromBitmapToByteArray(photo))).collect {
+                addUserInfoUseCase.invoke(UserInfoModel(date, weight, photoUri)).collect {
                     when (it) {
                         is Response.Loading -> {
                             _state.value = Loading
@@ -87,22 +84,23 @@ class ProgressViewModel @Inject constructor(
         updateDate(getCurrentDate())
     }
 
-    fun updateUserInfo(date: String, weight: String, photo: Bitmap) {
+    fun updateUserInfo(date: Long, weight: String, photoUri: String, firebaseId: String) {
         if (checkDate(date) && checkWeight(weight)) {
             viewModelScope.launch {
-                updateUserInfoUseCase.invoke(UserInfoModel(date, weight, fromBitmapToByteArray(photo))).collect {
-                    when (it) {
-                        is Response.Loading -> {
-                            _state.value = Loading
-                        }
-                        is Response.Failed -> {
-                            _state.value = Failure(it.message)
-                        }
-                        is Response.Success -> {
-                            _state.value = UpdatedUserInfo(it.data)
+                updateUserInfoUseCase.invoke(UserInfoModel(date, weight, photoUri, firebaseId))
+                    .collect {
+                        when (it) {
+                            is Response.Loading -> {
+                                _state.value = Loading
+                            }
+                            is Response.Failed -> {
+                                _state.value = Failure(it.message)
+                            }
+                            is Response.Success -> {
+                                _state.value = UpdatedUserInfo(it.data)
+                            }
                         }
                     }
-                }
             }
         }
         updateDate(getCurrentDate())
@@ -132,8 +130,8 @@ class ProgressViewModel @Inject constructor(
         return DateFormat.format(application.getString(R.string.date_format), date.time).toString()
     }
 
-    private fun checkDate(date: String): Boolean {
-        if (date.isEmpty()) {
+    private fun checkDate(date: Long): Boolean {
+        if (date == 0L) {
             _state.value = Failure(application.getString(R.string.date_wasnt_selected))
             return false
         }

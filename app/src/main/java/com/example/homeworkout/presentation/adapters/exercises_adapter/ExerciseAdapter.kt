@@ -1,13 +1,17 @@
 package com.example.homeworkout.presentation.adapters.exercises_adapter
 
+import android.app.Application
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
+import com.bumptech.glide.Glide
 import com.example.homeworkout.databinding.ExerciseItemBinding
 import com.example.homeworkout.domain.models.ExerciseModel
 import javax.inject.Inject
 
-class ExerciseAdapter @Inject constructor (): ListAdapter<ExerciseModel, ExerciseViewHolder>(
+class ExerciseAdapter @Inject constructor(
+    private val application: Application,
+) : ListAdapter<ExerciseModel, ExerciseViewHolder>(
     DiffUtilItemCallbackExercise()
 ) {
 
@@ -25,7 +29,7 @@ class ExerciseAdapter @Inject constructor (): ListAdapter<ExerciseModel, Exercis
         with(holder.binding) {
             tvTitle.text = item.title
             tvReps.text = item.reps.toString()
-            //TODO ADD GIFS FOR ivExerciseGif
+            Glide.with(application).asGif().load(item.exerciseGif).into(ivExerciseGif)
         }
     }
 

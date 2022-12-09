@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.util.*
 import javax.inject.Inject
 
@@ -26,8 +27,8 @@ class CalendarViewModel @Inject constructor(
     private val _state = MutableStateFlow(CalendarUIState())
     val state = _state.asStateFlow()
 
-    private var _date: String = getCurrentDate()
-    val date: String
+    private var _date: Long = getCurrentDate()
+    val date: Long
         get() = _date
 
     init {
@@ -35,7 +36,7 @@ class CalendarViewModel @Inject constructor(
     }
 
 
-    fun updateDate(newDate: String) {
+    fun updateDate(newDate: Long) {
         _date = newDate
         updateList(newDate)
     }
@@ -60,7 +61,7 @@ class CalendarViewModel @Inject constructor(
     }
 
 
-    private fun updateList(date: String) {
+    private fun updateList(date: Long) {
         viewModelScope.launch {
             getPlannedWorkoutsByDateUseCase.invoke(date).collect {
                 when (it) {
@@ -78,8 +79,7 @@ class CalendarViewModel @Inject constructor(
         }
     }
 
-    private fun getCurrentDate(): String {
-        val date = Date()
-        return DateFormat.format(application.getString(R.string.date_format), date.time).toString()
+    private fun getCurrentDate(): Long {
+        return LocalDate.now().toEpochDay()
     }
 }

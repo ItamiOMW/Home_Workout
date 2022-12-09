@@ -1,17 +1,12 @@
 package com.example.homeworkout.presentation.screens.training_screen
 
 import android.app.Dialog
-import android.graphics.ImageDecoder
-import android.graphics.drawable.AnimatedImageDrawable
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -22,12 +17,8 @@ import com.example.homeworkout.AppWorkout
 import com.example.homeworkout.R
 import com.example.homeworkout.databinding.FragmentTrainingBinding
 import com.example.homeworkout.databinding.WorkoutCompletedDialogBinding
-import com.example.homeworkout.fromByteArrayToBitmap
 import com.example.homeworkout.presentation.adapters.planned_workouts_adapter.PlannedWorkoutAdapter
 import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
-import java.io.File
-import java.io.InputStream
-import java.nio.ByteBuffer
 import javax.inject.Inject
 
 
@@ -169,8 +160,8 @@ class TrainingFragment : Fragment() {
         }
     }
 
-    private fun setupAnimation(data: ByteArray, iv: ImageView) {
-        Glide.with(requireContext()).asGif().load(data).into(iv)
+    private fun setupAnimation(imageUri: String, iv: ImageView) {
+        Glide.with(requireContext()).asGif().load(imageUri).into(iv)
     }
 
 }

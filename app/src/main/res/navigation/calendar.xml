@@ -13,6 +13,7 @@
         <action
             android:id="@+id/action_calendarFragment_to_workout"
             app:destination="@id/workout"
+            app:launchSingleTop="false"
             app:popUpTo="@id/calendarFragment">
             <argument
                 android:name="workoutModel"
@@ -25,10 +26,12 @@
         <action
             android:id="@+id/action_calendarFragment_to_plan_workout"
             app:destination="@id/plan_workout"
-            app:popUpTo="@id/calendarFragment">
+            app:launchSingleTop="false"
+            app:popUpTo="@id/calendarFragment"
+            app:popUpToInclusive="false">
             <argument
                 android:name="date"
-                app:argType="string" />
+                app:argType="long" />
         </action>
     </fragment>
     <include app:graph="@navigation/workout" />

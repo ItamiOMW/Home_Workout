@@ -11,8 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.homeworkout.AppWorkout
-import com.example.homeworkout.R
+import com.example.homeworkout.*
 import com.example.homeworkout.databinding.FragmentLoginBinding
 import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -75,7 +74,7 @@ class LoginFragment : Fragment() {
                 }
                 when (state) {
                     is AuthenticationSucceed -> {
-                        findNavController().navigate(R.id.action_loginFragment_to_tabsFragment)
+                        goToTabsScreen()
                     }
                     is Failure -> {
                         Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
@@ -89,13 +88,19 @@ class LoginFragment : Fragment() {
     private fun setupOnButtonLoginClickListener() {
 
         binding.buttonLoginFirebase.setOnClickListener {
+            DATABASE_TO_USE = FIRESTORE_DATABASE
             signInGoogle()
         }
 
         binding.buttonLoginRoom.setOnClickListener {
-            //TODO SHOW DIALOG WITH EXPLAINING WHAT WILL HAPPEN NEXT
+            DATABASE_TO_USE = ROOM_DATABASE
+            goToTabsScreen()
         }
 
+    }
+
+    private fun goToTabsScreen() {
+        findNavController().navigate(R.id.action_loginFragment_to_tabsFragment)
     }
 
     private fun signInGoogle() {

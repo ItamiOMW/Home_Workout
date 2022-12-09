@@ -1,25 +1,19 @@
 package com.example.homeworkout.presentation.screens.parent_screen
 
 import android.content.res.Configuration
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import com.example.homeworkout.AppWorkout
+import com.example.homeworkout.DATABASE_TO_USE
+import com.example.homeworkout.FIRESTORE_DATABASE
 import com.example.homeworkout.R
-import com.example.homeworkout.presentation.screens.tabs_screen.TabsFragment
 import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
-import com.google.android.material.navigation.NavigationView
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
@@ -55,6 +49,7 @@ class MainActivity : AppCompatActivity() {
             viewModel.state.collect { state ->
                 when (state) {
                     is IsSignedIn -> {
+                        DATABASE_TO_USE = FIRESTORE_DATABASE
                         setStartDestination(state.isSignedIn, navController)
                     }
                     is Failure -> {

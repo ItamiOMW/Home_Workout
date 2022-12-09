@@ -44,14 +44,14 @@ class PlanWorkoutViewModel @Inject constructor(
         }
     }
 
-    fun planWorkout(date: String, workoutModel: WorkoutModel) {
+    fun planWorkout(date: Long, workoutModel: WorkoutModel) {
         viewModelScope.launch {
             addPlannedWorkoutUseCase.invoke(
                 PlannedWorkoutModel(
                     id = UNKNOWN_ID,
                     date = date,
                     workoutModel = workoutModel,
-                    isCompleted = WORKOUT_NOT_COMPLETED
+                    completed = WORKOUT_NOT_COMPLETED
                 )
             ).collect {
                 when (it) {

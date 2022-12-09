@@ -52,4 +52,9 @@
     <string name="deleted_scfly">DELETED SUCCESSFULLY</string>
     <string name="comleted_planned_workout">YOU HAVE JUST COMPLETED PLANNED WORKOUT</string>
     <string name="login_locally">LOGIN LOCALLY</string>
+    <string name="user_isnt_signed">USER IS NOT SIGNED IN</string>
+    <string name="splash_icon">Splash Icon</string>
+    <string name="permissions_werenot_granted">PERMISSIONS WERE NOT GRANTED</string>
+    <string name="features_without_permissions">WITHOUT PERMISSIONS SOME FEATURES CAN\'T BE USED</string>
+    <string name="changes_not_found">NO CHANGES FOUND</string>
 </resources>

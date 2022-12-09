@@ -25,7 +25,7 @@
         </action>
         <argument
             android:name="date"
-            app:argType="string" />
+            app:argType="long" />
     </fragment>
     <include app:graph="@navigation/workout" />
 </navigation>

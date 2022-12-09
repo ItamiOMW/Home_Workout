@@ -46,13 +46,16 @@ android {
 
 dependencies {
 
+    //ANDROIDX
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation "androidx.activity:activity-ktx:1.6.1"
     implementation "androidx.fragment:fragment-ktx:1.5.4"
     implementation 'androidx.test:monitor:1.6.0'
+
+    //MATERIAL
+    implementation 'com.google.android.material:material:1.7.0'
 
     //JUNIT
     testImplementation "org.junit.jupiter:junit-jupiter:$junit_version"
@@ -91,17 +94,14 @@ dependencies {
     //GSON
     implementation "com.google.code.gson:gson:$gson_version"
 
-    //FIREBASE BOM
-    implementation platform('com.google.firebase:firebase-bom:31.0.0')
-
-    //FIREBASE AUTH
+    //FIREBASE
     implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
-    implementation 'com.google.android.gms:play-services-auth:20.3.0'
-
-    //FIREBASE FIRESTORE
-    implementation 'com.google.firebase:firebase-firestore-ktx:24.4.0'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.4.1'
+    implementation 'com.google.firebase:firebase-storage-ktx:20.1.0'
+    implementation 'com.google.android.gms:play-services-auth:20.4.0'
 
     //GLIDE
     implementation 'com.github.bumptech.glide:glide:4.14.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
+
 }

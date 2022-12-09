@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 @Database(
     entities = [PlannedWorkoutModel::class, WorkoutModel::class, UserInfoModel::class],
-    version = 6,
+    version = 8,
     exportSchema = false
 )
 @TypeConverters(
