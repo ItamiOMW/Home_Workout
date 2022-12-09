@@ -2,15 +2,21 @@
 
 # STACK:
 
-### - NAVIGATION COMPONENT
-
-### - DAGGER
-
-### - COROUTINES
+### - CLEAN ARCHITECTURE
 
 ### - MVVM
 
+### - COROUTINES
+
+### - FLOW
+
 ### - ROOM
+
+### - Firebase SDK(Firestore, Storage, Authentication)
+
+### - DAGGER
+
+### - NAVIGATION COMPONENT
 
 ### - VIEW BINDING
 
@@ -22,8 +28,14 @@ This app is in beta, need to add complete workouts and animation for exercises.
 
 # APPLICATION FEATURES:
 
-- YOU CAN TRAIN AT HOME OR ANYWHERE YOU WANT USING THIS APP WITH OUR WORKOUTS
-- PLANE YOUR WORKOUTS USING A CALENDAR
-- SHOWS COUNT OF COMPLETED WORKOUTS
-- APP HELPS YOU TO MONITOR YOUR PROGRESS DUE TO OPPORTUNITY OF ATTACHING YOUR PHOTO AND WEIGHT
-- YOU CAN SEE HOW MUCH TIME HAS PASSED SINCE THE START OF THE WORKOUT
+- Local and Remote access due to using Room and Firebase together.
+
+- Planning workout with calendar
+
+- App makes workout more comfortable with:
+  Showing an animated exercise execution, 
+  Workout-Timer, 
+  Tips, 
+  Current position between all the exercises.
+  
+- Make and save your photo to keep track of your progress
