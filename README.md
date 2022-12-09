@@ -32,12 +32,12 @@ This app is in beta, need to add complete workouts and animation for exercises.
 
 - Planning workout with calendar
 
-- Showing an animated exercise execution, 
+- Showing an animated exercise execution
   
-- Workout-Timer, 
+- Workout-Timer
   
-- Tips, 
+- Tips
   
-- Current position between all the exercises.
+- Current position between all the exercises
   
 - Make and save your photo to keep track of your progress
