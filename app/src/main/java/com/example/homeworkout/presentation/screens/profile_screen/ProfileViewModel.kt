@@ -1,15 +1,12 @@
 package com.example.homeworkout.presentation.screens.profile_screen
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.homeworkout.domain.models.Response
 import com.example.homeworkout.domain.usecase.auth_repository_usecases.GetCurrentUserUseCase
 import com.example.homeworkout.domain.usecase.auth_repository_usecases.SignOutUseCase
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

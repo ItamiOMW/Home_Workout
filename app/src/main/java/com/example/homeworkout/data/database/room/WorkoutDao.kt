@@ -41,10 +41,10 @@ interface WorkoutDao {
     @Query("SELECT * FROM user_info")
     fun getListUserInfo(): Flow<List<UserInfoModel>>
 
-    @Query("SELECT * FROM user_info WHERE date=:date")
-    suspend fun getUserInfoByDate(date: Long): UserInfoModel
+    @Query("SELECT * FROM user_info WHERE id=:id")
+    suspend fun getUserInfoById(id: Int): UserInfoModel
 
-    @Query("DELETE FROM user_info WHERE date=:date")
-    suspend fun deleteUserInfo(date: Long)
+    @Query("DELETE FROM user_info WHERE id=:id")
+    suspend fun deleteUserInfo(id: Int)
 
 }

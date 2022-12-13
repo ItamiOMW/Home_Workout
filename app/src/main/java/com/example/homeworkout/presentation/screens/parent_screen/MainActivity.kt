@@ -1,8 +1,6 @@
 package com.example.homeworkout.presentation.screens.parent_screen
 
-import android.content.res.Configuration
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModelProvider
@@ -14,6 +12,7 @@ import com.example.homeworkout.DATABASE_TO_USE
 import com.example.homeworkout.FIRESTORE_DATABASE
 import com.example.homeworkout.R
 import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
+import com.example.homeworkout.utils.ToastUtil.Companion.makeToast
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
@@ -53,7 +52,7 @@ class MainActivity : AppCompatActivity() {
                         setStartDestination(state.isSignedIn, navController)
                     }
                     is Failure -> {
-                        Toast.makeText(applicationContext, state.message, Toast.LENGTH_SHORT).show()
+                        makeToast(applicationContext, state.message)
                     }
                 }
             }
@@ -88,9 +87,5 @@ class MainActivity : AppCompatActivity() {
     private fun getTabsDestination() = R.id.tabsFragment
 
     private fun getSignInDestination() = R.id.loginFragment
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-    }
 
 }

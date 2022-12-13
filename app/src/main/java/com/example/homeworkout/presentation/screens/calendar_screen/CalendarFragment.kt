@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -19,7 +18,8 @@ import com.example.homeworkout.databinding.FragmentCalendarBinding
 import com.example.homeworkout.domain.models.PlannedWorkoutModel
 import com.example.homeworkout.presentation.adapters.planned_workouts_adapter.PlannedWorkoutAdapter
 import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
-import com.example.homeworkout.timeToLong
+import com.example.homeworkout.utils.DateFormatterUtil
+import com.example.homeworkout.utils.ToastUtil.Companion.makeToast
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -81,15 +81,13 @@ class CalendarFragment : Fragment() {
                 }
                 when (state) {
                     is Failure -> {
-                        Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
+                        makeToast(requireContext(), state.message)
                     }
                     is PlannedWorkoutList -> {
                         workoutAdapter.submitList(state.list)
                     }
                     is WorkoutDeleted -> {
-                        Toast.makeText(requireContext(),
-                            getString(R.string.workout_deleted),
-                            Toast.LENGTH_SHORT).show()
+                        makeToast(requireContext(), getString(R.string.workout_deleted))
                     }
                 }
             }
@@ -105,10 +103,10 @@ class CalendarFragment : Fragment() {
     }
 
     private fun setCalendarDateChangedListener() {
-        binding.calendar.setOnDateChangeListener { p0, year, month, day ->
+        binding.calendar.setOnDateChangeListener { _, year, month, day ->
             val localDate = LocalDate.of(year, month + 1, day)
             viewModel.updateDate(
-                timeToLong(localDate)
+                DateFormatterUtil.timeToLong(localDate)
             )
         }
     }

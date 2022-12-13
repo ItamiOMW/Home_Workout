@@ -6,5 +6,5 @@ import javax.inject.Inject
 
 class DeleteUserInfoUseCase @Inject constructor(private val repository: WorkoutRepository) {
 
-    suspend operator fun invoke(userInfo: UserInfoModel) = repository.deleteUserInfo(userInfo)
+    operator fun invoke(userInfo: UserInfoModel) = repository.deleteUserInfo(userInfo)
 }

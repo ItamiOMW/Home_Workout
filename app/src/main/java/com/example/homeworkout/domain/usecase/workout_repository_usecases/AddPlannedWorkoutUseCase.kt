@@ -9,7 +9,7 @@ class AddPlannedWorkoutUseCase @Inject constructor(
     private val repository: WorkoutRepository,
 ) {
 
-    suspend operator fun invoke(plannedWorkoutModel: PlannedWorkoutModel) =
+    operator fun invoke(plannedWorkoutModel: PlannedWorkoutModel) =
         repository.addPlannedWorkout(plannedWorkoutModel)
 
 }

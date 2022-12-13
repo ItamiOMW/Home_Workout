@@ -97,7 +97,8 @@
             android:layout_weight="1"
             android:background="@color/black"
             android:text="@string/previous"
-            android:textColor="@color/crimson" />
+            android:textColor="@color/crimson"
+            style="?android:attr/buttonBarButtonStyle" />
 
         <Button
             android:id="@+id/button_completed"
@@ -107,7 +108,8 @@
             android:layout_weight="1"
             android:background="@color/black"
             android:text="@string/complete"
-            android:textColor="@color/crimson" />
+            android:textColor="@color/crimson"
+            style="?android:attr/buttonBarButtonStyle" />
 
         <Button
             android:id="@+id/button_skip"
@@ -117,7 +119,8 @@
             android:layout_weight="1"
             android:background="@color/black"
             android:text="@string/skip"
-            android:textColor="@color/crimson" />
+            android:textColor="@color/crimson"
+            style="?android:attr/buttonBarButtonStyle" />
 
     </LinearLayout>
 

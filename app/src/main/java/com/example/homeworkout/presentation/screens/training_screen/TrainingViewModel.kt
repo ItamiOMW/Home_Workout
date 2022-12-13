@@ -90,13 +90,13 @@ class TrainingViewModel @Inject constructor(
         viewModelScope.launch {
             if (plannedWorkoutModel != null) {
                 plannedWorkoutModel?.let {
-                    completePlannedWorkoutUseCase.invoke(it).collect {
-                        when (it) {
+                    completePlannedWorkoutUseCase.invoke(it).collect { response ->
+                        when (response) {
                             is Response.Loading -> {
                                 _state.value = Loading
                             }
                             is Response.Failed -> {
-                                _state.value = Failure(it.message)
+                                _state.value = Failure(response.message)
                             }
                             is Response.Success -> {
                                 _state.value = IsPlannedWorkoutCompleted
@@ -106,13 +106,13 @@ class TrainingViewModel @Inject constructor(
                 }
             }
             viewModelScope.launch {
-                completeWorkoutUseCase.invoke(workoutModel).collect {
-                    when (it) {
+                completeWorkoutUseCase.invoke(workoutModel).collect { response ->
+                    when (response) {
                         is Response.Loading -> {
                             _state.value = Loading
                         }
                         is Response.Failed -> {
-                            _state.value = Failure(it.message)
+                            _state.value = Failure(response.message)
                         }
                         is Response.Success -> {
                             _state.value = IsWorkoutCompleted

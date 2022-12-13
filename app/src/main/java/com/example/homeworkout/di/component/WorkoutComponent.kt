@@ -1,6 +1,5 @@
 package com.example.homeworkout.di.component
 
-import android.app.Activity
 import android.app.Application
 import com.example.homeworkout.di.annotations.AppScope
 import com.example.homeworkout.di.modules.DataModule

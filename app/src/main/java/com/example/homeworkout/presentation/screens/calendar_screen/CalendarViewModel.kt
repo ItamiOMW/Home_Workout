@@ -1,25 +1,18 @@
 package com.example.homeworkout.presentation.screens.calendar_screen
 
-import android.app.Application
-import android.text.format.DateFormat
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.homeworkout.R
 import com.example.homeworkout.domain.models.PlannedWorkoutModel
 import com.example.homeworkout.domain.models.Response
 import com.example.homeworkout.domain.usecase.workout_repository_usecases.DeletePlannedWorkoutUseCase
 import com.example.homeworkout.domain.usecase.workout_repository_usecases.GetPlannedWorkoutsByDateUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.util.*
 import javax.inject.Inject
 
 class CalendarViewModel @Inject constructor(
-    private val application: Application,
     private val getPlannedWorkoutsByDateUseCase: GetPlannedWorkoutsByDateUseCase,
     private val deletePlannedWorkoutUseCase: DeletePlannedWorkoutUseCase,
 ) : ViewModel() {

@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +18,7 @@ import com.example.homeworkout.databinding.FragmentTrainingBinding
 import com.example.homeworkout.databinding.WorkoutCompletedDialogBinding
 import com.example.homeworkout.presentation.adapters.planned_workouts_adapter.PlannedWorkoutAdapter
 import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
+import com.example.homeworkout.utils.ToastUtil.Companion.makeToast
 import javax.inject.Inject
 
 
@@ -77,10 +77,7 @@ class TrainingFragment : Fragment() {
                 }
                 when (state) {
                     is Exercise -> {
-                        setupAnimation(state.exerciseModel.exerciseGif, binding.ivExerciseGif)
-                        binding.tvExerciseTitle.text = state.exerciseModel.title
-                        binding.tvReps.text = state.exerciseModel.reps.toString()
-                        binding.tvExerciseDetail.text = state.exerciseModel.description
+                        handleExercise(state)
                     }
                     is TimerTime -> {
                         binding.tvTimer.text = state.time
@@ -92,17 +89,22 @@ class TrainingFragment : Fragment() {
                         dialog.show()
                     }
                     is IsPlannedWorkoutCompleted -> {
-                        Toast.makeText(context,
-                            getString(R.string.comleted_planned_workout),
-                            Toast.LENGTH_SHORT).show()
+                        makeToast(requireContext(), getString(R.string.comleted_planned_workout))
                     }
                     is Failure -> {
-                        Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
+                        makeToast(requireContext(), state.message)
                     }
                 }
             }
         }
 
+    }
+
+    private fun handleExercise(state: Exercise) {
+        setupAnimation(state.exerciseModel.exerciseGif, binding.ivExerciseGif)
+        binding.tvExerciseTitle.text = state.exerciseModel.title
+        binding.tvReps.text = state.exerciseModel.reps.toString()
+        binding.tvExerciseDetail.text = state.exerciseModel.description
     }
 
 

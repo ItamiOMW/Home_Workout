@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -18,6 +17,7 @@ import com.example.homeworkout.databinding.FragmentPlanWorkoutBinding
 import com.example.homeworkout.domain.models.WorkoutModel
 import com.example.homeworkout.presentation.adapters.workouts_adapter.WorkoutAdapter
 import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
+import com.example.homeworkout.utils.ToastUtil.Companion.makeToast
 import javax.inject.Inject
 
 
@@ -77,12 +77,10 @@ class PlanWorkoutFragment : Fragment() {
                 }
                 when (state) {
                     is Failure -> {
-                        Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
+                        makeToast(requireContext(), state.message)
                     }
                     is WorkoutPlanned -> {
-                        Toast.makeText(context,
-                            getString(R.string.workout_planned),
-                            Toast.LENGTH_SHORT).show()
+                        makeToast(requireContext(), getString(R.string.workout_planned))
                     }
                     is ListWorkouts -> {
                         workoutAdapter.submitList(state.list)

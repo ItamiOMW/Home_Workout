@@ -16,7 +16,7 @@ import java.util.*
 import javax.inject.Inject
 
 class ProgressViewModel @Inject constructor(
-    private val getListUserInfoUseCase: GetListUserInfoUseCase,
+    getListUserInfoUseCase: GetListUserInfoUseCase,
     private val application: Application,
     private val addUserInfoUseCase: AddUserInfoUseCase,
     private val updateUserInfoUseCase: UpdateUserInfoUseCase,
@@ -66,7 +66,11 @@ class ProgressViewModel @Inject constructor(
     fun addUserInfo(date: Long, weight: String, photoUri: String) {
         if (checkDate(date) && checkWeight(weight)) {
             viewModelScope.launch {
-                addUserInfoUseCase.invoke(UserInfoModel(date, weight, photoUri)).collect {
+                addUserInfoUseCase.invoke(UserInfoModel(
+                    date = date,
+                    weight = weight,
+                    photo = photoUri)
+                ).collect {
                     when (it) {
                         is Response.Loading -> {
                             _state.value = Loading
@@ -87,20 +91,23 @@ class ProgressViewModel @Inject constructor(
     fun updateUserInfo(date: Long, weight: String, photoUri: String, firebaseId: String) {
         if (checkDate(date) && checkWeight(weight)) {
             viewModelScope.launch {
-                updateUserInfoUseCase.invoke(UserInfoModel(date, weight, photoUri, firebaseId))
-                    .collect {
-                        when (it) {
-                            is Response.Loading -> {
-                                _state.value = Loading
-                            }
-                            is Response.Failed -> {
-                                _state.value = Failure(it.message)
-                            }
-                            is Response.Success -> {
-                                _state.value = UpdatedUserInfo(it.data)
-                            }
+                updateUserInfoUseCase.invoke(UserInfoModel(date = date,
+                    weight = weight,
+                    photo = photoUri,
+                    firebaseId = firebaseId)
+                ).collect {
+                    when (it) {
+                        is Response.Loading -> {
+                            _state.value = Loading
+                        }
+                        is Response.Failed -> {
+                            _state.value = Failure(it.message)
+                        }
+                        is Response.Success -> {
+                            _state.value = UpdatedUserInfo(it.data)
                         }
                     }
+                }
             }
         }
         updateDate(getCurrentDate())

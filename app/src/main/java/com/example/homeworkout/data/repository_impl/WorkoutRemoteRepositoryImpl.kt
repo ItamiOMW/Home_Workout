@@ -33,7 +33,8 @@ class WorkoutRemoteRepositoryImpl @Inject constructor(
         callbackFlow<Response<List<PlannedWorkoutModel>>> {
             send(Response.loading())
 
-            val snapshotListener = auth.currentUser?.uid?.let {
+            //SNAPSHOT LISTENER FOR PLANNED WORKOUT REFERENCE
+            auth.currentUser?.uid?.let {
                 db.collection(USERS_PATH).document(it)
                     .collection(PLANNED_WORKOUT_PATH)
                     .addSnapshotListener { snapshot, error ->
@@ -69,6 +70,7 @@ class WorkoutRemoteRepositoryImpl @Inject constructor(
     override fun addPlannedWorkout(plannedWorkoutModel: PlannedWorkoutModel) = flow {
         emit(Response.loading())
 
+        //PLANNED WORKOUT REFERENCE
         val reference = auth.currentUser?.uid?.let {
             db.collection(USERS_PATH)
                 .document(it)
@@ -93,7 +95,8 @@ class WorkoutRemoteRepositoryImpl @Inject constructor(
 
             //PLANNED WORKOUT REFERENCE
             val reference = auth.currentUser?.uid?.let {
-                db.collection(USERS_PATH).document(it)
+                db.collection(USERS_PATH)
+                    .document(it)
                     .collection(PLANNED_WORKOUT_PATH)
             }
 
@@ -143,7 +146,8 @@ class WorkoutRemoteRepositoryImpl @Inject constructor(
     override fun getAllWorkouts() = callbackFlow<Response<List<WorkoutModel>>> {
         send(Response.loading())
 
-        val snapshotListener = db.collection(WORKOUT_PATH).addSnapshotListener { snapshot, e ->
+        //SNAPSHOT LISTENER FOR WORKOUT REFERENCE
+        db.collection(WORKOUT_PATH).addSnapshotListener { snapshot, e ->
             trySend(Response.loading())
             //IF SNAPSHOT IS NULL THEN HERE IS AN ERROR OCCURRED
             if (snapshot != null) {
@@ -190,7 +194,7 @@ class WorkoutRemoteRepositoryImpl @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
 
-    override fun completeWorkout(workoutModel: WorkoutModel) = flow<Response<Boolean>> {
+    override fun completeWorkout(workoutModel: WorkoutModel) = flow {
         emit(Response.loading())
 
         //COUNT OF COMPLETED WORKOUTS REFERENCE
@@ -226,7 +230,8 @@ class WorkoutRemoteRepositoryImpl @Inject constructor(
     override fun getListUserInfo() = callbackFlow<Response<List<UserInfoModel>>> {
         send(Response.loading())
 
-        val snapshotListener = auth.uid?.let {
+        //SNAPSHOT LISTENER FOR USER INFO REFERENCE
+        auth.uid?.let {
             db.collection(USERS_PATH).document(it)
                 .collection(USER_INF0_PATH)
                 .orderBy(DATE_MILLIS)
@@ -375,7 +380,8 @@ class WorkoutRemoteRepositoryImpl @Inject constructor(
     override fun getCountOfCompletedWorkouts() = callbackFlow<Response<Int>> {
         send(Response.loading())
 
-        val snapshotListener = auth.currentUser?.uid?.let {
+        //SNAPSHOT LISTENER FOR COUNT OF COMPLETED WORKOUTS REFERENCE
+        auth.currentUser?.uid?.let {
             db.collection(USERS_PATH).document(it)
                 .collection(COUNT_OF_COMPLETED_WORKOUTS_PATH)
                 .document(COUNT_OF_COMPLETED_WORKOUTS_DOCUMENT)
