@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +12,7 @@ import com.example.homeworkout.AppWorkout
 import com.example.homeworkout.databinding.FragmentChooseWorkoutBinding
 import com.example.homeworkout.presentation.adapters.workouts_adapter.WorkoutAdapter
 import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
+import com.example.homeworkout.utils.ToastUtil.Companion.makeToast
 import javax.inject.Inject
 
 
@@ -68,7 +68,7 @@ open class ChooseWorkoutFragment : Fragment() {
                         workoutAdapter.submitList(state.list)
                     }
                     is Failure -> {
-                        Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
+                        makeToast(requireContext(), state.message)
                     }
                 }
             }

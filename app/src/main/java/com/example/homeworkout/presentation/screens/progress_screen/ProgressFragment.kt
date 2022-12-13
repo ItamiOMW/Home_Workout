@@ -9,14 +9,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.example.homeworkout.*
+import com.example.homeworkout.AppWorkout
+import com.example.homeworkout.BAR_CHART_ANIMATION_DURATION
+import com.example.homeworkout.BuildConfig
+import com.example.homeworkout.R
 import com.example.homeworkout.databinding.AddWeightDialogBinding
 import com.example.homeworkout.databinding.EditUserDialogBinding
 import com.example.homeworkout.databinding.FragmentProgressBinding
@@ -24,6 +26,9 @@ import com.example.homeworkout.domain.models.Response
 import com.example.homeworkout.domain.models.UserInfoModel
 import com.example.homeworkout.presentation.adapters.user_info_adapter.UserInfoAdapter
 import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
+import com.example.homeworkout.utils.DateFormatterUtil
+import com.example.homeworkout.utils.ToastUtil.Companion.makeToast
+import com.example.homeworkout.utils.UriFromDrawableUtil
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
@@ -79,7 +84,7 @@ class ProgressFragment : Fragment() {
         return binding.root
     }
 
-    //URI OF CHOSEN OR TAKEN IMAGE
+    //URI OF SELECTED OR CAPTURED IMAGE
     private var latestTmpUri: Uri? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -97,19 +102,19 @@ class ProgressFragment : Fragment() {
     private fun collectUIState() {
 
         lifecycleScope.launchWhenStarted {
-            viewModel.listUserInfo.collect {
-                if (it is Response.Loading) {
+            viewModel.listUserInfo.collect { result ->
+                if (result is Response.Loading) {
                     binding.progressBarLoading.visibility = View.VISIBLE
                 } else {
                     binding.progressBarLoading.visibility = View.GONE
                 }
-                when (it) {
+                when (result) {
                     is Response.Success -> {
-                        userInfoAdapter.submitList(it.data)
-                        setupBarChart(it.data)
+                        userInfoAdapter.submitList(result.data)
+                        setupBarChart(result.data)
                     }
                     is Response.Failed -> {
-                        Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                        makeToast(requireContext(), result.message)
                     }
                 }
             }
@@ -125,23 +130,16 @@ class ProgressFragment : Fragment() {
                 }
                 when (state) {
                     is Failure -> {
-                        Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
+                        makeToast(requireContext(), state.message)
                     }
                     is AddedUserInfo -> {
-                        Toast.makeText(context, getString(R.string.added_scfly), Toast.LENGTH_SHORT)
-                            .show()
+                        makeToast(requireContext(), getString(R.string.added_scfly))
                     }
                     is UpdatedUserInfo -> {
-                        Toast.makeText(context,
-                            getString(R.string.updated_scfly),
-                            Toast.LENGTH_SHORT)
-                            .show()
+                        makeToast(requireContext(), getString(R.string.updated_scfly))
                     }
                     is DeletedUserInfo -> {
-                        Toast.makeText(context,
-                            getString(R.string.deleted_scfly),
-                            Toast.LENGTH_SHORT)
-                            .show()
+                        makeToast(requireContext(), getString(R.string.deleted_scfly))
                     }
                     is CompletedWorkouts -> {
                         binding.tvCompletedWorkouts.text = String.format(
@@ -194,24 +192,25 @@ class ProgressFragment : Fragment() {
 
     }
 
+    //LAUNCH TO REQUEST PERMISSIONS
     private fun requestPermissions() {
         lifecycleScope.launchWhenStarted {
             requestPermissionsResult.launch(listOfPermissions)
         }
     }
 
+    //REQUESTED PERMISSIONS RESULT
     private val requestPermissionsResult =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             permissions.map {
                 if (!it.value) {
-                    Toast.makeText(context,
-                        getString(R.string.features_without_permissions),
-                        Toast.LENGTH_SHORT).show()
+                    makeToast(requireContext(), getString(R.string.features_without_permissions))
                 }
             }
         }
 
 
+    //LAUNCH TO CAPTURE IMAGE
     private fun takeImage() {
         lifecycleScope.launchWhenStarted {
             getFileUri().let { uri ->
@@ -221,6 +220,7 @@ class ProgressFragment : Fragment() {
         }
     }
 
+    //CAPTURED IMAGE URI
     private val takeImageResult =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
             if (isSuccess) {
@@ -231,8 +231,10 @@ class ProgressFragment : Fragment() {
         }
 
 
+    //LAUNCH TO SELECT IMAGE FROM GALLERY
     private fun selectImageFromGallery() = selectImageFromGalleryResult.launch("image/*")
 
+    //SELECTED IMAGE URI
     private val selectImageFromGalleryResult =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let { viewModel.updateImageUri(uri) }
@@ -279,7 +281,7 @@ class ProgressFragment : Fragment() {
                 viewModel.addUserInfo(
                     getDateFromDatePickerInLong(),
                     etWeight.text.toString(),
-                    if (latestTmpUri == null) getUriFromDrawable(
+                    if (latestTmpUri == null) UriFromDrawableUtil.getUriFromDrawable(
                         requireActivity().application,
                         R.drawable.nfoto)
                     else latestTmpUri.toString()
@@ -291,11 +293,7 @@ class ProgressFragment : Fragment() {
                 if (checkIfPermissionIsGranted(android.Manifest.permission.CAMERA)) {
                     takeImage()
                 } else {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.permissions_werenot_granted),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    makeToast(requireContext(), getString(R.string.permissions_werenot_granted))
                 }
             }
 
@@ -358,17 +356,14 @@ class ProgressFragment : Fragment() {
                 if (checkIfPermissionIsGranted(android.Manifest.permission.CAMERA)) {
                     takeImage()
                 } else {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.permissions_werenot_granted),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    makeToast(requireContext(), getString(R.string.permissions_werenot_granted))
                 }
             }
 
             etWeight.setText(userInfo.weight)
 
-            tvDate.text = longToTime(userInfo.date).format(DateTimeFormatter.ISO_LOCAL_DATE)
+            tvDate.text = DateFormatterUtil.longToTime(userInfo.date)
+                .format(DateTimeFormatter.ISO_LOCAL_DATE)
 
             lifecycleScope.launchWhenStarted {
                 viewModel.state.collect { state ->
@@ -385,8 +380,8 @@ class ProgressFragment : Fragment() {
 
         datePickerDialog = DatePickerDialog(requireContext())
 
-        datePickerDialog.datePicker.setOnDateChangedListener { datePicker, year, month, day ->
-            val date = formatDateFromDatePicker(day, month, year)
+        datePickerDialog.datePicker.setOnDateChangedListener { _, year, month, day ->
+            val date = DateFormatterUtil.formatDateFromDatePicker(day, month, year)
             viewModel.updateDate(date)
         }
 
@@ -409,7 +404,6 @@ class ProgressFragment : Fragment() {
 
         private val listOfPermissions = arrayOf(
             android.Manifest.permission.CAMERA,
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
             android.Manifest.permission.READ_EXTERNAL_STORAGE
         )
     }

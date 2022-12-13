@@ -6,5 +6,5 @@ import javax.inject.Inject
 class GetCountOfCompletedWorkoutsUseCase @Inject constructor(
     private val repository: WorkoutRepository,
 ) {
-    suspend operator fun invoke() = repository.getCountOfCompletedWorkouts()
+    operator fun invoke() = repository.getCountOfCompletedWorkouts()
 }

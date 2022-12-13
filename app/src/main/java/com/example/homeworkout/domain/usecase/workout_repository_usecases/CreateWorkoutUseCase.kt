@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class CreateWorkoutUseCase @Inject constructor (private val repository: WorkoutRepository) {
 
-    suspend operator fun invoke(workoutModel: WorkoutModel) =
+    operator fun invoke(workoutModel: WorkoutModel) =
         repository.addWorkout(workoutModel)
 
 }

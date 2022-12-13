@@ -6,5 +6,5 @@ import javax.inject.Inject
 
 class AddUserInfoUseCase @Inject constructor(private val repository: WorkoutRepository) {
 
-    suspend operator fun invoke(userInfo: UserInfoModel) = repository.addUserInfo(userInfo)
+    operator fun invoke(userInfo: UserInfoModel) = repository.addUserInfo(userInfo)
 }

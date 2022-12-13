@@ -120,18 +120,15 @@ class WorkoutLocalRepositoryImpl @Inject constructor(
     override fun updateUserInfo(userInfoModel: UserInfoModel) = flow {
         emit(Response.loading())
 
-        val oldObject = dao.getUserInfoByDate(userInfoModel.date)
+        val oldObject = dao.getUserInfoById(userInfoModel.id)
 
         if (userInfoModel == oldObject) {
             emit(Response.failed(application.getString(R.string.changes_not_found)))
-        } else if (userInfoModel.photo == oldObject.photo) {
-
+        } else {
+            //ON CONFLICT STRATEGY = REPLACE, SO NO NEED TO DELETE OLD OBJECT
+            dao.addUserInfo(userInfoModel)
+            emit(Response.success(true))
         }
-
-        //ON CONFLICT STRATEGY = REPLACE, SO NO NEED TO CREATE NEW DAO METHOD
-        dao.addUserInfo(userInfoModel)
-
-        emit(Response.success(true))
 
     }.catch {
         emit(Response.failed(it.message.toString()))
@@ -153,7 +150,7 @@ class WorkoutLocalRepositoryImpl @Inject constructor(
     override fun deleteUserInfo(userInfoModel: UserInfoModel) = flow {
         emit(Response.loading())
 
-        dao.deleteUserInfo(userInfoModel.date)
+        dao.deleteUserInfo(userInfoModel.id)
 
         emit(Response.success(true))
 

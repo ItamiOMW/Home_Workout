@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -16,6 +15,7 @@ import com.example.homeworkout.R
 import com.example.homeworkout.databinding.FragmentProfileBinding
 import com.example.homeworkout.domain.models.UserModel
 import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
+import com.example.homeworkout.utils.ToastUtil.Companion.makeToast
 import javax.inject.Inject
 
 
@@ -71,7 +71,7 @@ class ProfileFragment : Fragment() {
                         findNavController().navigate(R.id.action_profileFragment_to_main_graph)
                     }
                     is Failure -> {
-                        Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
+                        makeToast(requireContext(), state.message)
                     }
                 }
             }

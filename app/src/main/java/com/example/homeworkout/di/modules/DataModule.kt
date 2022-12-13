@@ -3,6 +3,7 @@ package com.example.homeworkout.di.modules
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.homeworkout.DATABASE_TO_USE
 import com.example.homeworkout.FIRESTORE_DATABASE
 import com.example.homeworkout.ROOM_DATABASE
 import com.example.homeworkout.data.database.room.WorkoutDao
@@ -12,13 +13,11 @@ import com.example.homeworkout.data.repository_impl.WorkoutLocalRepositoryImpl
 import com.example.homeworkout.data.repository_impl.WorkoutRemoteRepositoryImpl
 import com.example.homeworkout.data.shared_preferences.AppSharedPreferences
 import com.example.homeworkout.data.shared_preferences.PreferencesHelper
-import com.example.homeworkout.DATABASE_TO_USE
 import com.example.homeworkout.di.annotations.AppScope
 import com.example.homeworkout.domain.repository.AuthRepository
 import com.example.homeworkout.domain.repository.WorkoutRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -46,7 +45,7 @@ interface DataModule {
     companion object {
 
         @Provides
-        fun bindWorkoutLocalRepositoryImpl(
+        fun bindWorkoutRepositoryImpl(
             repositoryImplLocal: WorkoutLocalRepositoryImpl,
             repositoryImplRemote: WorkoutRemoteRepositoryImpl,
         ): WorkoutRepository {

@@ -1,13 +1,10 @@
 package com.example.homeworkout.presentation.screens.workout_detail_screen
 
-import android.content.res.Resources
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -16,7 +13,6 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.homeworkout.AppWorkout
 import com.example.homeworkout.databinding.FragmentWorkoutDetailBinding
-import com.example.homeworkout.getRealPathFromURI
 import com.example.homeworkout.presentation.adapters.exercises_adapter.ExerciseAdapter
 import javax.inject.Inject
 
@@ -38,6 +34,7 @@ class WorkoutDetailFragment : Fragment() {
 
     @Inject
     lateinit var exerciseAdapter: ExerciseAdapter
+
 
     private val args by navArgs<WorkoutDetailFragmentArgs>()
 
@@ -63,6 +60,7 @@ class WorkoutDetailFragment : Fragment() {
     }
 
     private fun setupWorkoutCardView() {
+        //LOADING DRAWABLE INTO THE BACKGROUND OF THE CARD VIEW
         Glide.with(requireContext()).asDrawable().load(args.workoutModel.image)
             .into(object : CustomTarget<Drawable>() {
                 override fun onResourceReady(
@@ -84,7 +82,8 @@ class WorkoutDetailFragment : Fragment() {
                 .actionWorkoutDetailFragmentToTrainingFragment(
                     args.workoutModel,
                     args.plannedWorkoutModel
-                ))
+                )
+            )
         }
     }
 

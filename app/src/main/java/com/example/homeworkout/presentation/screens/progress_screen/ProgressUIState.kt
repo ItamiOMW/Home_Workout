@@ -1,7 +1,6 @@
 package com.example.homeworkout.presentation.screens.progress_screen
 
 import android.net.Uri
-import com.example.homeworkout.domain.models.UserInfoModel
 
 open class ProgressUIState
 

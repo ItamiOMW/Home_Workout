@@ -1,13 +1,11 @@
 package com.example.homeworkout.data.database.room
 
 import android.app.Application
-import android.content.ContentResolver
-import android.net.Uri
 import com.example.homeworkout.R
 import com.example.homeworkout.UNKNOWN_ID
 import com.example.homeworkout.domain.models.ExerciseModel
 import com.example.homeworkout.domain.models.WorkoutModel
-import com.example.homeworkout.getUriFromDrawable
+import com.example.homeworkout.utils.UriFromDrawableUtil
 
 
 class DataGenerator {
@@ -16,14 +14,14 @@ class DataGenerator {
         WorkoutModel(
             id = UNKNOWN_ID,
             title = "TEST WORKOUT",
-            image = getUriFromDrawable(application, R.drawable.fullbody),
+            image = UriFromDrawableUtil.getUriFromDrawable(application, R.drawable.fullbody),
             duration = 0f,
             listExercises = listOf(
                 ExerciseModel(
                     title = "PUSH UP",
                     reps = 10,
                     description = "PERFORM THE EXERCISE KEEPING THE CORE MUSCLES IN TENSION",
-                    exerciseGif = getUriFromDrawable(application, R.drawable.pushup)
+                    exerciseGif = UriFromDrawableUtil.getUriFromDrawable(application, R.drawable.pushup)
                 )
             )
         )
