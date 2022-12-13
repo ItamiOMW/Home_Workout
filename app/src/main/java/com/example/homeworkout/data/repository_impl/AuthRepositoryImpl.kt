@@ -1,8 +1,12 @@
 package com.example.homeworkout.data.repository_impl
 
+import android.app.Application
+import com.example.homeworkout.R
 import com.example.homeworkout.data.mapper.UserMapper
 import com.example.homeworkout.domain.models.Response
+import com.example.homeworkout.domain.models.UserModel
 import com.example.homeworkout.domain.repository.AuthRepository
+import com.example.homeworkout.utils.UriFromDrawableUtil.Companion.getUriFromDrawable
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
@@ -14,6 +18,7 @@ import javax.inject.Inject
 class AuthRepositoryImpl @Inject constructor(
     private val firestoreAuth: FirebaseAuth,
     private val mapper: UserMapper,
+    private val application: Application,
 ) : AuthRepository {
 
     override fun signIn(credential: AuthCredential) = flow {
@@ -56,7 +61,12 @@ class AuthRepositoryImpl @Inject constructor(
         emit(Response.loading())
 
         val currentFirebaseUser = firestoreAuth.currentUser
-        val userModel = currentFirebaseUser?.let { mapper.mapFireBaseUserToUserModel(it) }
+        val userModel = currentFirebaseUser?.let {
+            mapper.mapFireBaseUserToUserModel(it)
+        } ?: UserModel(
+            application.getString(R.string.athlete),
+            getUriFromDrawable(application, R.drawable.nfoto)
+        )
 
         emit(Response.success(userModel))
 
