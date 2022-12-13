@@ -57,4 +57,5 @@
     <string name="permissions_werenot_granted">PERMISSIONS WERE NOT GRANTED</string>
     <string name="features_without_permissions">WITHOUT PERMISSIONS SOME FEATURES CAN\'T BE USED</string>
     <string name="changes_not_found">NO CHANGES FOUND</string>
+    <string name="athlete">Athlete</string>
 </resources>
