@@ -22,7 +22,7 @@
 
 ### - SPLASH SCREEN API
 
-### - JUNIT 4
+### - JUNIT 4(NOT IMPLEMENTED YET)
 
 This app is in beta, need to add complete workouts and animation for exercises.
 
