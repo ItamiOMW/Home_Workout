@@ -41,3 +41,5 @@ This app is in beta, need to add complete workouts and animation for exercises.
 - Current position between all the exercises
   
 - Make and save your photo to keep track of your progress
+
+- Observing internet connection and warns if it is lost
