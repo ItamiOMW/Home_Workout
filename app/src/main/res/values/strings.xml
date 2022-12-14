@@ -58,4 +58,9 @@
     <string name="features_without_permissions">WITHOUT PERMISSIONS SOME FEATURES CAN\'T BE USED</string>
     <string name="changes_not_found">NO CHANGES FOUND</string>
     <string name="athlete">Athlete</string>
+    <string name="no_internet_connection">NO INTERNET CONNECTION</string>
+    <string name="network_connection_available">Network Connection: Available</string>
+    <string name="network_connection_unavailable">Network Connection: Unavailable</string>
+    <string name="network_connection_lost">Network Connection: Lost</string>
+    <string name="network_connection_losing">Network Connection: Losing</string>
 </resources>
