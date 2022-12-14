@@ -3,9 +3,9 @@ package com.example.homeworkout.di.modules
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.homeworkout.DATABASE_TO_USE
-import com.example.homeworkout.FIRESTORE_DATABASE
-import com.example.homeworkout.ROOM_DATABASE
+import com.example.homeworkout.utils.DATABASE_TO_USE
+import com.example.homeworkout.utils.FIRESTORE_DATABASE
+import com.example.homeworkout.utils.ROOM_DATABASE
 import com.example.homeworkout.data.database.room.WorkoutDao
 import com.example.homeworkout.data.database.room.WorkoutDatabase
 import com.example.homeworkout.data.repository_impl.AuthRepositoryImpl

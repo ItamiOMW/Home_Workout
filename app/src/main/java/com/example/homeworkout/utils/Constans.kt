@@ -1,4 +1,4 @@
-package com.example.homeworkout
+package com.example.homeworkout.utils
 
 const val ROOM_DATABASE = "room"
 

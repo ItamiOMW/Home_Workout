@@ -3,10 +3,10 @@ package com.example.homeworkout.presentation.screens.training_screen
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.homeworkout.MILLIS_IN_SECOND
+import com.example.homeworkout.utils.MILLIS_IN_SECOND
 import com.example.homeworkout.R
-import com.example.homeworkout.SECONDS_IN_HOUR
-import com.example.homeworkout.SECONDS_IN_MINUTE
+import com.example.homeworkout.utils.SECONDS_IN_HOUR
+import com.example.homeworkout.utils.SECONDS_IN_MINUTE
 import com.example.homeworkout.domain.models.PlannedWorkoutModel
 import com.example.homeworkout.domain.models.Response
 import com.example.homeworkout.domain.models.WorkoutModel

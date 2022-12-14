@@ -9,12 +9,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.homeworkout.AppWorkout
-import com.example.homeworkout.DATABASE_TO_USE
-import com.example.homeworkout.FIRESTORE_DATABASE
+import com.example.homeworkout.utils.DATABASE_TO_USE
+import com.example.homeworkout.utils.FIRESTORE_DATABASE
 import com.example.homeworkout.R
 import com.example.homeworkout.databinding.ActivityMainBinding
 import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
-import com.example.homeworkout.utils.ConnectivityObserver
+import com.example.homeworkout.utils.connectivity.ConnectivityObserver
 import com.example.homeworkout.utils.ToastUtil.Companion.makeToast
 import javax.inject.Inject
 
@@ -45,29 +45,33 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         navController = getRootNavController()
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
-        collectNetworkState()
+        collectNetworkStateIfUsingRemoteDatabase()
         collectUIState()
         checkSignedIn()
     }
 
-    private fun collectNetworkState() {
+    private fun collectNetworkStateIfUsingRemoteDatabase() {
         lifecycleScope.launchWhenStarted {
             networkConnectivityObserver.observe().collect { state ->
                 when (state) {
                     ConnectivityObserver.ConnectivityStatus.Available -> {
-                        binding.tvInternetConnection.text = getString(R.string.network_connection_available)
+                        binding.tvInternetConnection.text =
+                            getString(R.string.network_connection_available)
                         binding.tvInternetConnection.visibility = View.GONE
                     }
                     ConnectivityObserver.ConnectivityStatus.Unavailable -> {
-                        binding.tvInternetConnection.text = getString(R.string.network_connection_unavailable)
+                        binding.tvInternetConnection.text =
+                            getString(R.string.network_connection_unavailable)
                         binding.tvInternetConnection.visibility = View.VISIBLE
                     }
                     ConnectivityObserver.ConnectivityStatus.Lost -> {
-                        binding.tvInternetConnection.text = getString(R.string.network_connection_lost)
+                        binding.tvInternetConnection.text =
+                            getString(R.string.network_connection_lost)
                         binding.tvInternetConnection.visibility = View.VISIBLE
                     }
                     ConnectivityObserver.ConnectivityStatus.Losing -> {
-                        binding.tvInternetConnection.text = getString(R.string.network_connection_losing)
+                        binding.tvInternetConnection.text =
+                            getString(R.string.network_connection_losing)
                         binding.tvInternetConnection.visibility = View.VISIBLE
                     }
                 }

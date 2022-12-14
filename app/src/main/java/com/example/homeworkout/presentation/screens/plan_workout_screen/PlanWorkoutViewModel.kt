@@ -2,8 +2,8 @@ package com.example.homeworkout.presentation.screens.plan_workout_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.homeworkout.UNKNOWN_ID
-import com.example.homeworkout.WORKOUT_NOT_COMPLETED
+import com.example.homeworkout.utils.UNKNOWN_ID
+import com.example.homeworkout.utils.WORKOUT_NOT_COMPLETED
 import com.example.homeworkout.domain.models.PlannedWorkoutModel
 import com.example.homeworkout.domain.models.Response
 import com.example.homeworkout.domain.models.WorkoutModel

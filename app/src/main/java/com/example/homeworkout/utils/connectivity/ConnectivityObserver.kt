@@ -1,4 +1,4 @@
-package com.example.homeworkout.utils
+package com.example.homeworkout.utils.connectivity
 
 import kotlinx.coroutines.flow.Flow
 

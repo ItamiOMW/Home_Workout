@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.homeworkout.AppWorkout
-import com.example.homeworkout.BAR_CHART_ANIMATION_DURATION
+import com.example.homeworkout.utils.BAR_CHART_ANIMATION_DURATION
 import com.example.homeworkout.BuildConfig
 import com.example.homeworkout.R
 import com.example.homeworkout.databinding.AddWeightDialogBinding

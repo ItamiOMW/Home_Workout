@@ -13,6 +13,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.homeworkout.*
 import com.example.homeworkout.databinding.FragmentLoginBinding
 import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
+import com.example.homeworkout.utils.DATABASE_TO_USE
+import com.example.homeworkout.utils.FIRESTORE_DATABASE
+import com.example.homeworkout.utils.ROOM_DATABASE
 import com.example.homeworkout.utils.ToastUtil.Companion.makeToast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
