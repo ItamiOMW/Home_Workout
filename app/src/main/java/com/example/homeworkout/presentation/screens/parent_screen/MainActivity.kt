@@ -9,13 +9,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.homeworkout.AppWorkout
-import com.example.homeworkout.utils.DATABASE_TO_USE
-import com.example.homeworkout.utils.FIRESTORE_DATABASE
 import com.example.homeworkout.R
 import com.example.homeworkout.databinding.ActivityMainBinding
 import com.example.homeworkout.presentation.viewmodel_factory.WorkoutViewModelFactory
-import com.example.homeworkout.utils.connectivity.ConnectivityObserver
+import com.example.homeworkout.utils.DATABASE_TO_USE
+import com.example.homeworkout.utils.FIRESTORE_DATABASE
 import com.example.homeworkout.utils.ToastUtil.Companion.makeToast
+import com.example.homeworkout.utils.connectivity.ConnectivityObserver
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
@@ -45,12 +45,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         navController = getRootNavController()
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
-        collectNetworkStateIfUsingRemoteDatabase()
-        collectUIState()
-        checkSignedIn()
+        collectNetworkState()
+        if (savedInstanceState == null) {
+            //IF SAVED INSTANCE STATE IS NULL, THEN IT'S THE FIRST CALL OF onCreate AND WE SHOULD CHECK IF THE USER IS ALREADY SIGNED IN
+            collectUIState()
+            checkSignedIn()
+        }
     }
 
-    private fun collectNetworkStateIfUsingRemoteDatabase() {
+
+    private fun collectNetworkState() {
         lifecycleScope.launchWhenStarted {
             networkConnectivityObserver.observe().collect { state ->
                 when (state) {
@@ -124,5 +128,4 @@ class MainActivity : AppCompatActivity() {
     private fun getTabsDestination() = R.id.tabsFragment
 
     private fun getSignInDestination() = R.id.loginFragment
-
 }

@@ -9,14 +9,15 @@
 
     <ImageView
         android:id="@+id/iv_splash"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_gravity="center"
+        android:contentDescription="@string/splash_icon"
         android:src="@drawable/ic_splash_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/splash_icon" />
+        />
 
     <TextView
         android:id="@+id/tv_welcome"
@@ -40,7 +41,7 @@
         android:text="@string/login_with_google"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/button_login_room"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_welcome" />
 
@@ -55,8 +56,8 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_login_firebase" />
+        app:layout_constraintStart_toEndOf="@id/button_login_firebase"
+        app:layout_constraintTop_toBottomOf="@id/tv_welcome" />
 
     <ProgressBar
         android:id="@+id/progress_bar_loading"
