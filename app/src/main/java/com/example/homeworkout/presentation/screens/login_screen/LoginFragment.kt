@@ -118,6 +118,8 @@ class LoginFragment : Fragment() {
             if (result.resultCode == Activity.RESULT_OK) {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
                 handleResult(task)
+            } else {
+                makeToast(requireContext(), getString(R.string.failed_with_google))
             }
         }
 
@@ -128,6 +130,8 @@ class LoginFragment : Fragment() {
                 val credential = GoogleAuthProvider.getCredential(account.idToken, null)
                 viewModel.signIn(credential)
             }
+        } else {
+            makeToast(requireContext(), requireContext().getString(R.string.failed_with_google))
         }
     }
 

@@ -63,4 +63,5 @@
     <string name="network_connection_unavailable">Network Connection: Unavailable</string>
     <string name="network_connection_lost">Network Connection: Lost</string>
     <string name="network_connection_losing">Network Connection: Losing</string>
+    <string name="failed_with_google">FAILED TO LOG IN WITH GOOGLE</string>
 </resources>
